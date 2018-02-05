@@ -7,6 +7,17 @@ injectable
 function parameters without worrying to initialize these dependencies
 latter if the caller didn't inject them.
 
+.. |build| image:: https://travis-ci.org/allrod5/injectable.svg?branch=master
+    :target: https://travis-ci.org/allrod5/injectable
+    :scale: 100%
+    :align: middle
+.. |coverage| image:: https://coveralls.io/repos/github/allrod5/injectable/badge.svg?branch=master
+    :target: https://coveralls.io/github/allrod5/injectable?branch=master
+    :scale: 100%
+    :align: middle
+
+|build| |coverage|
+
 .. _usage:
 
 Usage
