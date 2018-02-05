@@ -21,11 +21,11 @@ extras = {
 
 setup(
     name='injectable',
-    version='0.1.0',
+    version='0.1.1',
     packages=['tests', 'injectable'],
     url='https://github.com/allrod5/injectable',
     license='MIT',
-    author='rodrigo',
+    author='Rodrigo Martins de Oliveira',
     author_email='allrod5@hotmail.com',
     description='Cleanly expose injectable arguments in Python 3 functions',
     requires=deps,
