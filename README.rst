@@ -1,11 +1,7 @@
 .. _injectable:
 
-injectable
-==========
-
-**@injectable** decorator enables exposing injectable arguments in
-function parameters without worrying to initialize these dependencies
-latter if the caller didn't inject them.
+@injectable
+===========
 
 .. |build| image:: https://travis-ci.org/allrod5/injectable.svg?branch=master
     :target: https://travis-ci.org/allrod5/injectable
@@ -18,6 +14,40 @@ latter if the caller didn't inject them.
 
 |build| |coverage|
 
+**@injectable** decorator enables exposing injectable arguments in
+function parameters without worrying to initialize these dependencies
+latter if the caller didn't inject them.
+
+**Turn this:**
+
+.. code:: python
+
+    def example(self, *, model: Model = None, service: Service = None):
+        if model is None:
+            model = Model()
+
+        if service is None:
+            service = Service()
+
+        # actual code
+
+**Into this:**
+
+.. code:: python
+
+    @injectable()
+    def example(self, *, model: Model, service: Service):
+        # actual code
+
+.. _install:
+
+Install
+-------
+
+.. code:: bash
+
+    pip install injectable
+
 .. _usage:
 
 Usage
@@ -28,6 +58,8 @@ about initializing it's injectable dependencies when the caller do not
 pass them explicitly:
 
 .. code:: python
+
+    from injectable import injectable
 
     class Printer:
         def print_something(self):

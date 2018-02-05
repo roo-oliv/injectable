@@ -12,20 +12,18 @@ def injectable(injectable_kwargs: Iterable[str] = None):
     dependency not injected by the caller will be automatically
     injected.
     
-    >>> try:
-    ...     class Dependency:
-    ...         def __init__(self):
-    ...             self.msg = "dependency initialized"
-    ...    
-    ...     def foo(*, dep: Dependency):
-    ...         return dep.msg
+    >>> class Dependency:
+    ...     def __init__(self):
+    ...         self.msg = "dependency initialized"
     ...
-    ... finally:
-    ...     injectable()(foo)()
+    >>> def foo(*, dep: Dependency):
+    ...     return dep.msg
+    ...
+    >>> injectable()(foo)()
     'dependency initialized'
     
-    :param injectable_kwargs: 
-    :return: 
+    :param injectable_kwargs: explicit list of which arguments to inject 
+    :return: the function with all injectable arguments initialized
     """
     def decorator(func: callable):
         specs = inspect.getfullargspec(func)
