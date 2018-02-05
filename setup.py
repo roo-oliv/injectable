@@ -1,10 +1,14 @@
 from setuptools import setup
 
-setup_deps = [
+deps = [
+    'typing',
+]
+
+setup_deps = deps + [
     'pytest-runner',
 ]
 
-test_deps = [
+test_deps = deps + [
     'testfixtures',
     'pytest',
     'pytest-cov',
@@ -24,6 +28,7 @@ setup(
     author='rodrigo',
     author_email='allrod5@hotmail.com',
     description='Cleanly expose injectable arguments in Python 3 functions',
+    requires=deps,
     setup_requires=setup_deps,
     test_requires=test_deps,
     extras_require=extras,

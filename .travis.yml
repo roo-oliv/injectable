@@ -3,14 +3,13 @@ sudo: false
 language: python
 
 python:
-  - 3.0
   - 3.3
   - 3.4
   - 3.5
   - 3.6
-  - 3.7
 
 install:
+  - pip install coveralls
   - pip install tox-travis
 
 script:
