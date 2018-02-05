@@ -42,12 +42,13 @@ def qux(*, nope: NoDefaultConstructorClass):
 
 class TestInjectableAnnotation(object):
 
-    def test_ineffective_use_of_annotation_logs_warning(self, mocker):
-        logging = mocker.patch('injectable.logging')
-
+    def test_ineffective_use_of_annotation_logs_warning(self, log_capture):
         injectable()(bar)
 
-        assert logging.warning.called
+        log_capture.check(
+            ('root', 'WARNING',
+             "Function 'bar' is annotated with '@injectable' but no arguments"
+             " that qualify as injectable were found"))
 
     def test_positional_arg_as_injectable_raises_type_error(self):
         with pytest.raises(TypeError):
