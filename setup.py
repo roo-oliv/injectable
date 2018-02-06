@@ -22,13 +22,14 @@ extras = {
 
 setup(
     name='injectable',
-    version='0.1.1',
+    version='0.2.0',
     packages=['tests', 'injectable'],
     url='https://github.com/allrod5/injectable',
     license='MIT',
     author='Rodrigo Martins de Oliveira',
     author_email='allrod5@hotmail.com',
-    description='Cleanly expose injectable arguments in Python 3 functions',
+    description='Clean dependency injection and lazy initialization support',
+    keywords='injection dependency-injection lazy circular-dependency ioc',
     requires=deps,
     setup_requires=setup_deps,
     test_requires=test_deps,
