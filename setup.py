@@ -2,7 +2,7 @@ from setuptools import setup
 
 deps = [
     'typing',
-    'lazy-object-proxy',
+    'lazy_object_proxy',
 ]
 
 setup_deps = deps + [
