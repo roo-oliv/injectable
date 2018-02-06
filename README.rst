@@ -14,29 +14,69 @@
 
 |build| |coverage|
 
-**@injectable** decorator enables exposing injectable arguments in
-function parameters without worrying to initialize these dependencies
-latter if the caller didn't inject them.
+**@injectable** decorator enables easy dependency-injection:
 
-**Turn this:**
+* *Zero setup*: start using it is as simple as decorating the function
+
+* *Automatic injection*: injection is transparent to the function
+
+* *Zero boilerplate*: get to function-relevant code right away
+
+* *Support for lazy injection*: circular dependencies are no longer a problem
+
+* *Manually supply dependencies with ease*: using mocked dependencies for testing is easy
+
+**turn this:**
 
 .. code:: python
 
-    def example(self, *, model: Model = None, service: Service = None):
+    def __init__(self, *, model: Model = None, service: Service = None):
         if model is None:
             model = Model()
 
         if service is None:
             service = Service()
 
+        self.model = model
+        self.service = service
         # actual code
 
-**Into this:**
+**into this:**
 
 .. code:: python
 
     @injectable()
-    def example(self, *, model: Model, service: Service):
+    def __init__(self, *, model: Model, service: Service):
+        self.model = model
+        self.service = service
+        # actual code
+
+**or this:**
+
+.. code:: python
+
+    class Example:
+        def __init__(self, *, lazy_service: Service = None):
+            self._service = lazy_service
+
+        @property
+        def service(self) -> Service:
+            if self._service is None:
+                self._service = Service()
+
+            return self._service
+
+        # actual code
+
+**into this:**
+
+.. code:: python
+
+    class Example:
+        @injectable(lazy=True)
+        def __init__(self, *, lazy_service: Service):
+            self.service = service
+
         # actual code
 
 .. _install:
@@ -53,9 +93,7 @@ Install
 Usage
 -----
 
-Just annotate a function with *@injectable* and worry no more
-about initializing it's injectable dependencies when the caller do not
-pass them explicitly:
+Just annotate a function with *@injectable*:
 
 .. code:: python
 
@@ -107,7 +145,34 @@ to inject the dependency. Some conditions may be observed:
                 ...
 
     Attempting to use a not suitable class for injection will result in a
-    TypeError raised during initialization of the annotated function.
+    ``TypeError`` raised during initialization of the annotated function.
+
+.. _lazy-init:
+
+Lazy initialize dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are a number of reasons why one may want to lazy initialize dependencies.
+Common use cases for this are circular dependencies and forward declarations.
+
+*@injectable* decorator takes optional parameter ``lazy`` which when set to ``True``
+will force lazy initialization of all injectable dependencies:
+
+.. code:: python
+
+    @injectable(lazy=True)
+    def foo(*, a: CircularDependantClass, b: 'ForwardDeclaredClass'):
+        ...
+
+It is also possible to keep eager initialization as default and specify lazy
+initialization per dependency by using :function:`injectable.lazy` in the annotated
+type:
+
+.. code:: python
+
+    @injectable()
+    def foo(*, a: MustEagerInit, b: lazy(MustLazyInit)):
+        ...
 
 .. _specify-injectables:
 

@@ -1,10 +1,13 @@
+from lazy_object_proxy import Proxy
 import pytest
 
 from injectable import injectable
+from injectable import lazy
 
 
 class DummyClass(object):
-    pass
+    def dummy_method(self):
+        return 42
 
 
 class NoDefaultConstructorClass(object):
@@ -12,8 +15,8 @@ class NoDefaultConstructorClass(object):
         pass
 
 
-def bar(*args, x: DummyClass = None, y: 'DummyClass', f: callable):
-    return args, {'x': x, 'y': y, 'f': f}
+def bar(*args, x: DummyClass = None, f: callable):
+    return args, {'x': x, 'f': f}
 
 
 def foo(a,
@@ -25,6 +28,8 @@ def foo(a,
         y: 'bool',
         z: DummyClass,
         f: callable,
+        l: lazy(DummyClass),
+        s: lazy('DummyClass'),
         **kwargs):
     kwargs.update({
         'w': w,
@@ -32,12 +37,22 @@ def foo(a,
         'y': y,
         'z': z,
         'f': f,
+        'l': l,
+        's': s,
     })
     return (a, b, c), kwargs
 
 
+def baz(*, nope: 'NoDefaultConstructorClass'):
+    return nope
+
+
 def qux(*, nope: NoDefaultConstructorClass):
     return nope
+
+
+def quux(*, definetly_nope: 'nonsense'):
+    return definetly_nope
 
 
 class TestInjectableAnnotation(object):
@@ -74,6 +89,8 @@ class TestInjectableAnnotation(object):
             'y': True,
             'z': None,
             'f': lambda x: print(x),
+            'l': 42,
+            's': '42',
             'extra': True,
         }
 
@@ -87,22 +104,91 @@ class TestInjectableAnnotation(object):
         caller_kwargs = {
             'w': {},
             'x': "string",
-            'y': True,
             'f': lambda x: print(x),
             'kwargs': {'extra': True},
         }
 
-        args, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+        _, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
 
+        assert isinstance(kwargs['y'], bool)
         assert isinstance(kwargs['z'], DummyClass)
+        assert isinstance(kwargs['l'], DummyClass)
+        assert isinstance(kwargs['s'], DummyClass)
+
+    def test_injectable_lazy_initialization(self):
+        caller_args = (False, None, True)
+        caller_kwargs = {
+            'w': {},
+            'x': "string",
+            'f': lambda x: print(x),
+            'kwargs': {'extra': True},
+        }
+
+        _, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+
+        assert isinstance(kwargs['l'], Proxy)
+        assert isinstance(kwargs['l'], DummyClass)
+        assert kwargs['l'].dummy_method() == 42
+
+    def test_force_lazy_initialization(self, log_capture):
+        caller_args = (False, None, True)
+        caller_kwargs = {
+            'w': {},
+            'x': "string",
+            'f': lambda x: print(x),
+            'kwargs': {'extra': True},
+        }
+
+        decorated = injectable(lazy=True)(foo)
+
+        log_capture.check(
+            ('root', 'WARNING',
+             "@injectable decorator is set to always lazy initialize"
+             " dependencies. Usage of 'lazy' function to mark dependencies"
+             " as lazy is redundant"))
+
+        _, kwargs = decorated(*caller_args, **caller_kwargs)
+
+        assert isinstance(kwargs['y'], Proxy)
+        assert isinstance(kwargs['z'], Proxy)
+        assert isinstance(kwargs['l'], Proxy)
+        assert isinstance(kwargs['s'], Proxy)
+        assert isinstance(kwargs['y'], bool)
+        assert isinstance(kwargs['z'], DummyClass)
+        assert isinstance(kwargs['l'], DummyClass)
+        assert isinstance(kwargs['s'], DummyClass)
+
+    def test_default_not_to_lazy_initialize(self):
+        caller_args = (False, None, True)
+        caller_kwargs = {
+            'w': {},
+            'x': "string",
+            'f': lambda x: print(x),
+            'kwargs': {'extra': True},
+        }
+
+        _, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+
+        assert not isinstance(kwargs['y'], Proxy)
+        assert not isinstance(kwargs['z'], Proxy)
+        assert isinstance(kwargs['l'], Proxy)
+        assert isinstance(kwargs['s'], Proxy)
 
     def test_injectable_with_non_instantiable_class_raises_type_error(self):
         # eligible injectable argument is annotated with non
         # instantiable class
         with pytest.raises(TypeError):
+            injectable()(baz)
+        with pytest.raises(TypeError):
             injectable()(qux)
 
-        # specificed argument for injection is annotated with non
+        # specified argument for injection is annotated with non
         # instantiable class
         with pytest.raises(TypeError):
+            injectable(['nope'])(baz)
+        with pytest.raises(TypeError):
             injectable(['nope'])(qux)
+
+    def test_injectable_with_unresolvable_reference_raises_type_error(self):
+        with pytest.raises(TypeError):
+            injectable()(quux)
