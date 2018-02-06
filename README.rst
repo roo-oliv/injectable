@@ -1,7 +1,7 @@
 .. _injectable:
 
-@injectable
-===========
+Injectable
+==========
 
 .. |build| image:: https://travis-ci.org/allrod5/injectable.svg?branch=master
     :target: https://travis-ci.org/allrod5/injectable
@@ -14,11 +14,11 @@
 
 |build| |coverage|
 
-**@injectable** decorator enables easy dependency-injection:
+Injectable provides an **@autowired** decorator to enable easy and clean dependency injection:
 
 * *Zero setup*: start using it is as simple as decorating the function
 
-* *Automatic injection*: injection is transparent to the function
+* *Autowiring*: injection is transparent to the function
 
 * *Zero boilerplate*: get to function-relevant code right away
 
@@ -45,7 +45,7 @@
 
 .. code:: python
 
-    @injectable()
+    @autowired()
     def __init__(self, *, model: Model, service: Service):
         self.model = model
         self.service = service
@@ -73,7 +73,7 @@
 .. code:: python
 
     class Example:
-        @injectable(lazy=True)
+        @autowired(lazy=True)
         def __init__(self, *, lazy_service: Service):
             self.service = service
 
@@ -93,17 +93,17 @@ Install
 Usage
 -----
 
-Just annotate a function with *@injectable*:
+Just annotate a function with *@autowired*:
 
 .. code:: python
 
-    from injectable import injectable
+    from injectable import autowired
 
     class Printer:
         def print_something(self):
             print("Something")
 
-    @injectable()
+    @autowired()
     def foo(*, printer: Printer):
         printer.print_something()
 
@@ -115,18 +115,18 @@ Just annotate a function with *@injectable*:
 How does this work?
 ~~~~~~~~~~~~~~~~~~~
 
-**@injectable** decorator uses type annotations to decide whether or not
+**@autowired** decorator uses type annotations to decide whether or not
 to inject the dependency. Some conditions may be observed:
 
-* Only Keyword-Only arguments can be injected:
+* Only Keyword-Only arguments can be autowired:
     .. code:: python
 
-        @injectable()
+        @autowired()
         def foo(not_injectable: MyClass, not_injectable_either: MyClass = None,
                 *, injectable_kwarg: MyClass):
             ...
 
-* If a default value is provided, the argument will **not** be injected:
+* If a default value is provided, the argument will **not** be autowired:
     .. code:: python
 
         @injectable()
@@ -155,12 +155,12 @@ Lazy initialize dependencies
 There are a number of reasons why one may want to lazy initialize dependencies.
 Common use cases for this are circular dependencies and forward declarations.
 
-*@injectable* decorator takes optional parameter ``lazy`` which when set to ``True``
+**@autowired** decorator takes optional parameter ``lazy`` which when set to ``True``
 will force lazy initialization of all injectable dependencies:
 
 .. code:: python
 
-    @injectable(lazy=True)
+    @autowired(lazy=True)
     def foo(*, a: CircularDependantClass, b: 'ForwardDeclaredClass'):
         ...
 
@@ -170,33 +170,33 @@ type:
 
 .. code:: python
 
-    @injectable()
+    @autowired()
     def foo(*, a: MustEagerInit, b: lazy(MustLazyInit)):
         ...
 
 .. _specify-injectables:
 
-Cherry picking arguments for injection
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Cherry picking arguments for autowiring
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If no parameters are passed into **@injectable** decorator then it will consider every
+If no parameters are passed into **@autowired** decorator then it will consider every
 keyword-only argument that does not have a default value to be an injectable
 argument. This can be undesired because situations like this can happen:
 
 .. code:: python
 
-    @injectable()
+    @autowired()
     def foo(*, injectable_dependency: MyClass, not_injectable: ClassWithoutNoArgsContructor):
         ...
 
-    # This will raise a TypeError as parameter `not_injectable` cannot be injected
+    # This will raise a TypeError as parameter `not_injectable` cannot be autowired
 
-This is solved by naming which arguments shall be injected:
+This is solved by naming which arguments shall be autowired:
 
 .. code:: python
 
-    @injectable(['injectable_dependency'])
+    @autowired(['injectable_dependency'])
     def foo(*, injectable_dependency: MyClass, not_injectable: ClassWithoutNoArgsContructor):
         ...
 
-    # This will run just fine and only `injectable_dependecy` will be injected
+    # This will run just fine and only `injectable_dependecy` will be autowired

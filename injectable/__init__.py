@@ -1,7 +1,7 @@
-from injectable.injectable import injectable
+from injectable.autowired import autowired
 from injectable.util import lazy
 
 __all__ = [
-    injectable,
+    autowired,
     lazy,
 ]

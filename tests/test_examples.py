@@ -1,4 +1,4 @@
-from injectable import injectable
+from injectable import autowired
 from injectable.util import lazy
 
 
@@ -11,7 +11,7 @@ class Model:
 
 
 class Service:
-    @injectable()
+    @autowired()
     def __init__(self, *, model: Model):
         self.model = model
 
@@ -30,7 +30,7 @@ def test_manual_injection():
 
 
 class CircularDependant1:
-    @injectable()
+    @autowired()
     def __init__(self, *, dep: lazy('CircularDependant2')):
         self.dep = dep
         self.color = "yellow"
@@ -43,7 +43,7 @@ class CircularDependant1:
 
 
 class CircularDependant2:
-    @injectable()
+    @autowired()
     def __init__(self, *, dep: lazy(CircularDependant1)):
         self.dep = dep
         self.color = "blue"
@@ -65,7 +65,7 @@ def test_circular_dependency():
 
 
 class Umbrella:
-    @injectable(lazy=True)
+    @autowired(lazy=True)
     def __init__(self, *, dep1: CircularDependant1, dep2: CircularDependant2):
         self.dep1 = dep1
         self.dep2 = dep2
