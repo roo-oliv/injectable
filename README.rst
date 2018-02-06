@@ -14,9 +14,15 @@
 
 |build| |coverage|
 
-**@injectable** decorator enables exposing injectable arguments in
-function parameters without worrying to initialize these dependencies
-latter if the caller didn't inject them.
+**@injectable** decorator enables easy dependency-injection:
+
+* **Automatic injection with zero setup**: using it is as simple as decorating a function
+
+* **Zero boilerplate code**: get to relevant code right-away
+
+* **Support for lazy injection in an easy and clean way**: circular dependencies are no longer a problem
+
+* **Really easy to manually supply instances**: testing becomes easier
 
 **Turn this:**
 
@@ -53,9 +59,7 @@ Install
 Usage
 -----
 
-Just annotate a function with *@injectable* and worry no more
-about initializing it's injectable dependencies when the caller do not
-pass them explicitly:
+Just annotate a function with *@injectable*:
 
 .. code:: python
 
@@ -107,7 +111,34 @@ to inject the dependency. Some conditions may be observed:
                 ...
 
     Attempting to use a not suitable class for injection will result in a
-    TypeError raised during initialization of the annotated function.
+    ``TypeError`` raised during initialization of the annotated function.
+
+.. _lazy-init:
+
+Lazy initialize dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are a number of reasons why one may want to lazy initialize dependencies.
+Common use cases for this are circular dependencies and forward declarations.
+
+*@injectable* decorator takes optional parameter ``lazy`` which when set to ``True``
+will force lazy initialization of all injectable dependencies:
+
+.. code:: python
+
+    @injectable(lazy=True)
+    def foo(*, a: CircularDependantClass, b: 'ForwardDeclaredClass'):
+        ...
+
+It is also possible to keep eager initialization as default and specify lazy
+initialization per dependency by using :function:`injectable.lazy` in the annotated
+type:
+
+.. code:: python
+
+    @injectable()
+    def foo(*, a: MustEagerInit, b: lazy(MustLazyInit)):
+        ...
 
 .. _specify-injectables:
 

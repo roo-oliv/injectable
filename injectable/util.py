@@ -1,10 +1,9 @@
-"""
-Do not try to reproduce anything you see here at home
-"""
-import types
+import inspect
+
+from typing import Type
 
 
-def get_class(reference: str, reference_module: dict):
+def get_class(reference: str, reference_module: dict) -> Type:
     """
     return a class reference found in the reference_module
     """
@@ -14,13 +13,32 @@ def get_class(reference: str, reference_module: dict):
         return reference_module.get('__builtins__').get(reference)
 
 
-def copy_func(f, name=None):
-    """
-    return a function with same code, globals, defaults, closure, and
-    name (or provide a new name)
-    """
-    fn = types.FunctionType(f.__code__, f.__globals__, name or f.__name__,
-                            f.__defaults__, f.__closure__)
-    # in case f was given attrs (note this dict is a shallow copy):
-    fn.__dict__.update(f.__dict__)
-    return fn
+def is_lazy(reference) -> bool:
+    try:
+        return reference.lazy_init
+    except AttributeError:
+        return False
+
+
+def is_injectable(argument: str, specs: inspect.FullArgSpec) -> bool:
+    if specs.kwonlydefaults is not None and argument in specs.kwonlydefaults:
+        return False
+
+    annotation = specs.annotations.get(argument)
+
+    if inspect.isclass(annotation):
+        return True
+
+    if isinstance(annotation, str):
+        return True
+
+    return is_lazy(annotation)
+
+
+def lazy(type_annotation: (Type, str)):
+
+    def wrapper():
+        return type_annotation
+    wrapper.lazy_init = True
+
+    return wrapper
