@@ -1,7 +1,7 @@
 from lazy_object_proxy import Proxy
 import pytest
 
-from injectable import injectable
+from injectable import autowired
 from injectable import lazy
 
 
@@ -58,28 +58,28 @@ def quux(*, definetly_nope: 'nonsense'):
 class TestInjectableAnnotation(object):
 
     def test_ineffective_use_of_annotation_logs_warning(self, log_capture):
-        injectable()(bar)
+        autowired()(bar)
 
         log_capture.check(
             ('root', 'WARNING',
-             "Function 'bar' is annotated with '@injectable' but no arguments"
+             "Function 'bar' is annotated with '@autowired' but no arguments"
              " that qualify as injectable were found"))
 
     def test_positional_arg_as_injectable_raises_type_error(self):
         with pytest.raises(TypeError):
-            injectable(['b'])(foo)
+            autowired(['b'])(foo)
 
     def test_injectable_kwarg_with_no_class_annotation_raises_type_error(self):
         with pytest.raises(TypeError):
-            injectable(['f'])(foo)
+            autowired(['f'])(foo)
 
     def test_missing_positional_arguments_raises_type_error(self):
         with pytest.raises(TypeError):
-            injectable()(foo)()
+            autowired()(foo)()
 
     def test_missing_kwonly_args_raises_type_error(self):
         with pytest.raises(TypeError):
-            injectable()(foo)(a=None, b=10, c='')
+            autowired()(foo)(a=None, b=10, c='')
 
     def test_caller_defined_arguments_are_not_overridden(self):
         caller_args = (True, 80, [])
@@ -94,7 +94,7 @@ class TestInjectableAnnotation(object):
             'extra': True,
         }
 
-        args, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+        args, kwargs = autowired()(foo)(*caller_args, **caller_kwargs)
 
         assert args == caller_args
         assert kwargs == caller_kwargs
@@ -108,7 +108,7 @@ class TestInjectableAnnotation(object):
             'kwargs': {'extra': True},
         }
 
-        _, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+        _, kwargs = autowired()(foo)(*caller_args, **caller_kwargs)
 
         assert isinstance(kwargs['y'], bool)
         assert isinstance(kwargs['z'], DummyClass)
@@ -124,7 +124,7 @@ class TestInjectableAnnotation(object):
             'kwargs': {'extra': True},
         }
 
-        _, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+        _, kwargs = autowired()(foo)(*caller_args, **caller_kwargs)
 
         assert isinstance(kwargs['l'], Proxy)
         assert isinstance(kwargs['l'], DummyClass)
@@ -139,11 +139,11 @@ class TestInjectableAnnotation(object):
             'kwargs': {'extra': True},
         }
 
-        decorated = injectable(lazy=True)(foo)
+        decorated = autowired(lazy=True)(foo)
 
         log_capture.check(
             ('root', 'WARNING',
-             "@injectable decorator is set to always lazy initialize"
+             "@autowired decorator is set to always lazy initialize"
              " dependencies. Usage of 'lazy' function to mark dependencies"
              " as lazy is redundant"))
 
@@ -167,7 +167,7 @@ class TestInjectableAnnotation(object):
             'kwargs': {'extra': True},
         }
 
-        _, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
+        _, kwargs = autowired()(foo)(*caller_args, **caller_kwargs)
 
         assert not isinstance(kwargs['y'], Proxy)
         assert not isinstance(kwargs['z'], Proxy)
@@ -178,17 +178,17 @@ class TestInjectableAnnotation(object):
         # eligible injectable argument is annotated with non
         # instantiable class
         with pytest.raises(TypeError):
-            injectable()(baz)
+            autowired()(baz)
         with pytest.raises(TypeError):
-            injectable()(qux)
+            autowired()(qux)
 
         # specified argument for injection is annotated with non
         # instantiable class
         with pytest.raises(TypeError):
-            injectable(['nope'])(baz)
+            autowired(['nope'])(baz)
         with pytest.raises(TypeError):
-            injectable(['nope'])(qux)
+            autowired(['nope'])(qux)
 
     def test_injectable_with_unresolvable_reference_raises_type_error(self):
         with pytest.raises(TypeError):
-            injectable()(quux)
+            autowired()(quux)

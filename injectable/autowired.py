@@ -8,26 +8,27 @@ from typing import Iterable
 from injectable.util import get_class, is_injectable, is_lazy
 
 
-def injectable(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
+def autowired(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
     """
     Returns a functions decorated for injection. The caller can
     explicitly pass into the function wanted dependencies. Any
     dependency not injected by the caller will be automatically
-    injected.
+    autowired.
     
     >>> class Dependency:
     ...     def __init__(self):
     ...         self.msg = "dependency initialized"
     ...
-    >>> def foo(*, dep: Dependency):
+    >>> @autowired()
+    ... def foo(*, dep: Dependency):
     ...     return dep.msg
     ...
-    >>> injectable()(foo)()
+    >>> foo()
     'dependency initialized'
     
-    :param injectable_kwargs: explicit list of which arguments to inject
+    :param injectable_kwargs: explicit list of which arguments to autowire
     :param lazy: flag to force lazy initialization of all dependencies
-    :return: the function with all injectable arguments initialized
+    :return: the function with all injectable arguments autowired
     """
     def decorator(func: callable):
         func_module = inspect.getmodule(func).__dict__
@@ -40,7 +41,7 @@ def injectable(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
             }
             if len(injectables) is 0:
                 logging.warning("Function '{function}' is annotated with"
-                                " '@injectable' but no arguments that"
+                                " '@autowired' but no arguments that"
                                 " qualify as injectable were found"
                                 .format(function=func.__name__))
         else:
@@ -65,7 +66,7 @@ def injectable(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
             injectables[kwarg] = cls
 
         if redundant_lazy_use:
-            logging.warning("@injectable decorator is set to always lazy"
+            logging.warning("@autowired decorator is set to always lazy"
                             " initialize dependencies. Usage of 'lazy'"
                             " function to mark dependencies as lazy is"
                             " redundant")
@@ -84,7 +85,8 @@ def injectable(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
             if issue is None and cls is None:
                 issue = ("Unable to find a reference to the annotated class."
                          " You may want to try marking this dependency as"
-                         " lazy: ... {argument}: lazy('YourClass') ...")
+                         " lazy: ... {argument}: lazy('YourClass') ..."
+                         .format(argument=kwarg))
 
             if issue is None and not inspect.isclass(cls):
                 issue = ("Injectable arguments must be annotated with a"
@@ -103,7 +105,7 @@ def injectable(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
             if issue is not None:
                 raise TypeError(
                     "Argument '{argument}' in function '{function}' cannot"
-                    " be injected: {reason}"
+                    " be autowired: {reason}"
                     .format(argument=kwarg, function=func.__name__,
                             reason=issue))
 
