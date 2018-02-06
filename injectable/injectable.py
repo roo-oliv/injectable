@@ -4,6 +4,9 @@ from typing import Iterable
 
 import logging
 
+from injectable.lazy import Lazy
+from injectable.util import get_class
+
 
 def injectable(injectable_kwargs: Iterable[str] = None):
     """
@@ -26,6 +29,7 @@ def injectable(injectable_kwargs: Iterable[str] = None):
     :return: the function with all injectable arguments initialized
     """
     def decorator(func: callable):
+        func_module = inspect.getmodule(func).__dict__
         specs = inspect.getfullargspec(func)
 
         if injectable_kwargs is None:
@@ -33,7 +37,8 @@ def injectable(injectable_kwargs: Iterable[str] = None):
                 kwarg: specs.annotations.get(kwarg)
                 for kwarg in specs.kwonlyargs
                 if (kwarg not in (specs.kwonlydefaults or [])
-                    and inspect.isclass(specs.annotations.get(kwarg)))
+                    and (inspect.isclass(specs.annotations.get(kwarg))
+                         or isinstance(specs.annotations.get(kwarg), str)))
             }
             if len(injectables) is 0:
                 logging.warning("Function '{function}' is annotated with"
@@ -46,11 +51,23 @@ def injectable(injectable_kwargs: Iterable[str] = None):
                 for kwarg in injectable_kwargs
             }
 
+        for kwarg, ref in injectables.items():
+            if not isinstance(ref, str):
+                continue
+
+            cls = get_class(ref, func_module)
+            if cls is None:
+                continue
+
+            injectables[kwarg] = cls
+
         for kwarg, cls in injectables.items():
+            if isinstance(cls, str):
+                continue
+
             issue = None
             if kwarg not in specs.kwonlyargs:
-                issue = ("Injectable arguments must be keyword arguments"
-                         " only")
+                issue = "Injectable arguments must be keyword arguments only"
             elif not inspect.isclass(cls):
                 issue = ("Injectable arguments must be annotated with a"
                          " class type")
@@ -76,7 +93,11 @@ def injectable(injectable_kwargs: Iterable[str] = None):
             for kwarg, cls in injectables.items():
                 if kwarg in kwargs:
                     continue
-                kwargs[kwarg] = cls()
+                if isinstance(cls, str):
+                    injected = Lazy(cls, func_module)
+                else:
+                    injected = cls()
+                kwargs[kwarg] = injected
             return func(*args, **kwargs)
         return wrapper
 

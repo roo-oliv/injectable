@@ -12,8 +12,8 @@ class NoDefaultConstructorClass(object):
         pass
 
 
-def bar(*args, x: DummyClass = None, y: 'DummyClass', f: callable):
-    return args, {'x': x, 'y': y, 'f': f}
+def bar(*args, x: DummyClass = None, f: callable):
+    return args, {'x': x, 'f': f}
 
 
 def foo(a,
@@ -87,13 +87,13 @@ class TestInjectableAnnotation(object):
         caller_kwargs = {
             'w': {},
             'x': "string",
-            'y': True,
             'f': lambda x: print(x),
             'kwargs': {'extra': True},
         }
 
         args, kwargs = injectable()(foo)(*caller_args, **caller_kwargs)
 
+        assert isinstance(kwargs['y'], bool)
         assert isinstance(kwargs['z'], DummyClass)
 
     def test_injectable_with_non_instantiable_class_raises_type_error(self):
