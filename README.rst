@@ -16,33 +16,67 @@
 
 **@injectable** decorator enables easy dependency-injection:
 
-* **Automatic injection with zero setup**: using it is as simple as decorating a function
+* *Zero setup*: start using it is as simple as decorating the function
 
-* **Zero boilerplate code**: get to relevant code right-away
+* *Automatic injection*: injection is transparent to the function
 
-* **Support for lazy injection in an easy and clean way**: circular dependencies are no longer a problem
+* *Zero boilerplate*: get to function-relevant code right away
 
-* **Really easy to manually supply instances**: testing becomes easier
+* *Support for lazy injection*: circular dependencies are no longer a problem
 
-**Turn this:**
+* *Manually supply dependencies with ease*: using mocked dependencies for testing is easy
+
+**turn this:**
 
 .. code:: python
 
-    def example(self, *, model: Model = None, service: Service = None):
+    def __init__(self, *, model: Model = None, service: Service = None):
         if model is None:
             model = Model()
 
         if service is None:
             service = Service()
 
+        self.model = model
+        self.service = service
         # actual code
 
-**Into this:**
+**into this:**
 
 .. code:: python
 
     @injectable()
-    def example(self, *, model: Model, service: Service):
+    def __init__(self, *, model: Model, service: Service):
+        self.model = model
+        self.service = service
+        # actual code
+
+**or this:**
+
+.. code:: python
+
+    class Example:
+        def __init__(self, *, lazy_service: Service = None):
+            self._service = lazy_service
+
+        @property
+        def service(self) -> Service:
+            if self._service is None:
+                self._service = Service()
+
+            return self._service
+
+        # actual code
+
+**into this:**
+
+.. code:: python
+
+    class Example:
+        @injectable(lazy=True)
+        def __init__(self, *, lazy_service: Service):
+            self.service = service
+
         # actual code
 
 .. _install:
