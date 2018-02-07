@@ -22,7 +22,7 @@ extras = {
 
 setup(
     name='injectable',
-    version='1.0.0',
+    version='1.0.1',
     packages=['tests', 'injectable'],
     url='https://github.com/allrod5/injectable',
     license='MIT',
@@ -33,6 +33,7 @@ setup(
               ' lazy lazy-initialization circular-dependency'
               ' inversion-of-control ioc'),
     requires=deps,
+    install_requires=deps,
     setup_requires=setup_deps,
     test_requires=test_deps,
     extras_require=extras,
