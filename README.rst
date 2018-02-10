@@ -26,7 +26,7 @@ Injectable provides an **@autowired** decorator to enable easy and clean depende
 
 * *Manually supply dependencies with ease*: using mocked dependencies for testing is easy
 
-**turn this:**
+**Turn this:**
 
 .. code:: python
 
@@ -41,17 +41,17 @@ Injectable provides an **@autowired** decorator to enable easy and clean depende
         self.service = service
         # actual code
 
-**into this:**
+**Into this:**
 
 .. code:: python
 
-    @autowired()
+    @autowired
     def __init__(self, *, model: Model, service: Service):
         self.model = model
         self.service = service
         # actual code
 
-**or this:**
+**And this:**
 
 .. code:: python
 
@@ -68,7 +68,7 @@ Injectable provides an **@autowired** decorator to enable easy and clean depende
 
         # actual code
 
-**into this:**
+**Into this:**
 
 .. code:: python
 
@@ -103,7 +103,7 @@ Just annotate a function with *@autowired*:
         def print_something(self):
             print("Something")
 
-    @autowired()
+    @autowired
     def foo(*, printer: Printer):
         printer.print_something()
 
@@ -121,7 +121,7 @@ to inject the dependency. Some conditions may be observed:
 * Only Keyword-Only arguments can be autowired:
     .. code:: python
 
-        @autowired()
+        @autowired
         def foo(not_injectable: MyClass, not_injectable_either: MyClass = None,
                 *, injectable_kwarg: MyClass):
             ...
@@ -129,7 +129,7 @@ to inject the dependency. Some conditions may be observed:
 * If a default value is provided, the argument will **not** be autowired:
     .. code:: python
 
-        @injectable()
+        @injectable
         def foo(*, injectable_kwarg: MyClass, not_injectable_kwarg: MyClass = None):
             ...
 
@@ -170,7 +170,7 @@ type:
 
 .. code:: python
 
-    @autowired()
+    @autowired
     def foo(*, a: MustEagerInit, b: lazy(MustLazyInit)):
         ...
 
@@ -185,7 +185,7 @@ argument. This can be undesired because situations like this can happen:
 
 .. code:: python
 
-    @autowired()
+    @autowired
     def foo(*, injectable_dependency: MyClass, not_injectable: ClassWithoutNoArgsContructor):
         ...
 

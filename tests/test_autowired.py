@@ -55,7 +55,7 @@ def quux(*, definetly_nope: 'nonsense'):
     return definetly_nope
 
 
-class TestInjectableAnnotation(object):
+class TestAutowiredAnnotation(object):
 
     def test_ineffective_use_of_annotation_logs_warning(self, log_capture):
         autowired()(bar)
@@ -99,7 +99,7 @@ class TestInjectableAnnotation(object):
         assert args == caller_args
         assert kwargs == caller_kwargs
 
-    def test_injectables_initialization_when_not_injected(self):
+    def test_autowiring(self):
         caller_args = (False, None, True)
         caller_kwargs = {
             'w': {},
@@ -109,6 +109,22 @@ class TestInjectableAnnotation(object):
         }
 
         _, kwargs = autowired()(foo)(*caller_args, **caller_kwargs)
+
+        assert isinstance(kwargs['y'], bool)
+        assert isinstance(kwargs['z'], DummyClass)
+        assert isinstance(kwargs['l'], DummyClass)
+        assert isinstance(kwargs['s'], DummyClass)
+
+    def test_autowired_without_parenthesis(self):
+        caller_args = (False, None, True)
+        caller_kwargs = {
+            'w': {},
+            'x': "string",
+            'f': lambda x: print(x),
+            'kwargs': {'extra': True},
+        }
+
+        _, kwargs = autowired(foo)(*caller_args, **caller_kwargs)
 
         assert isinstance(kwargs['y'], bool)
         assert isinstance(kwargs['z'], DummyClass)

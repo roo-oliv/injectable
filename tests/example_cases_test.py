@@ -11,7 +11,7 @@ class Model:
 
 
 class Service:
-    @autowired()
+    @autowired
     def __init__(self, *, model: Model):
         self.model = model
 
@@ -30,7 +30,7 @@ def test_manual_injection():
 
 
 class CircularDependant1:
-    @autowired()
+    @autowired
     def __init__(self, *, dep: lazy('CircularDependant2')):
         self.dep = dep
         self.color = "yellow"
@@ -43,7 +43,7 @@ class CircularDependant1:
 
 
 class CircularDependant2:
-    @autowired()
+    @autowired
     def __init__(self, *, dep: lazy(CircularDependant1)):
         self.dep = dep
         self.color = "blue"

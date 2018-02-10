@@ -10,16 +10,18 @@ from injectable.util import get_class, is_injectable, is_lazy
 
 def autowired(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
     """
-    Returns a functions decorated for injection. The caller can
+    Returns a function decorated for injection. The caller can
     explicitly pass into the function wanted dependencies. Any
     dependency not injected by the caller will be automatically
     autowired.
+    
+    This decorator can be used with or without parenthesis.
     
     >>> class Dependency:
     ...     def __init__(self):
     ...         self.msg = "dependency initialized"
     ...
-    >>> @autowired()
+    >>> @autowired
     ... def foo(*, dep: Dependency):
     ...     return dep.msg
     ...
@@ -30,6 +32,11 @@ def autowired(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
     :param lazy: flag to force lazy initialization of all dependencies
     :return: the function with all injectable arguments autowired
     """
+    f = None
+    if callable(injectable_kwargs):
+        f = injectable_kwargs
+        injectable_kwargs = None
+
     def decorator(func: callable):
         func_module = inspect.getmodule(func).__dict__
         specs = inspect.getfullargspec(func)
@@ -117,6 +124,9 @@ def autowired(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
                 kwargs[kwarg] = get_instance(reference, func_module, lazy)
             return func(*args, **kwargs)
         return wrapper
+
+    if f is not None:
+        return decorator(f)
 
     return decorator
 
