@@ -129,7 +129,7 @@ to inject the dependency. Some conditions may be observed:
 * If a default value is provided, the argument will **not** be autowired:
     .. code:: python
 
-        @injectable
+        @autowired
         def foo(*, injectable_kwarg: MyClass, not_injectable_kwarg: MyClass = None):
             ...
 
