@@ -100,21 +100,38 @@ def autowired(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
                          " class type")
 
             if issue is None:
-                try:
-                    cls()
-                except Exception as e:
-                    issue = ("Injectable arguments must be able to be"
-                             " instantiated through a default constructor"
-                             " but if attempted to be instantiated the"
-                             " {cls}'s constructor will raise: {exception}"
-                             .format(cls=cls.__name__, exception=e))
+                cls_spec = inspect.getfullargspec(cls)
+                required_args = (len(cls_spec.args)
+                                 - (len(cls_spec.defaults)
+                                    if cls_spec.defaults is not None
+                                    else 0))
+                if required_args != 0 and cls_spec.args[0] in ('self', 'cls'):
+                    required_args -= 1
+                required_kwargs = (len(cls_spec.kwonlyargs)
+                                   - (len(cls_spec.kwonlydefaults)
+                                      if cls_spec.kwonlydefaults is not None
+                                      else 0))
+                if required_args == 0 and required_kwargs == 0:
+                    continue
 
-            if issue is not None:
-                raise TypeError(
-                    "Argument '{argument}' in function '{function}' cannot"
-                    " be autowired: {reason}"
-                    .format(argument=kwarg, function=func.__name__,
-                            reason=issue))
+                args_issue = (
+                    "{n} positional arguments".format(n=required_args)
+                    if required_args != 0 else "")
+                kwargs_issue = (
+                    (" and " if args_issue else "")
+                    + "{n} named arguments".format(n=required_kwargs)
+                ) if required_kwargs != 0 else ""
+                expectancy = args_issue + kwargs_issue
+                issue = ("Injectable dependencies must provide a default"
+                         " constructor with no required arguments but"
+                         " {cls} expects {expectancy}"
+                         .format(cls=cls.__name__, expectancy=expectancy))
+
+            raise TypeError(
+                "Argument '{argument}' in function '{function}' cannot"
+                " be autowired: {reason}"
+                .format(argument=kwarg, function=func.__name__,
+                        reason=issue))
 
         @wraps(func)
         def wrapper(*args, **kwargs):
