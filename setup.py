@@ -22,7 +22,7 @@ extras = {
 
 setup(
     name='injectable',
-    version='1.1.2',
+    version='2.0.0',
     packages=['tests', 'injectable'],
     url='https://github.com/allrod5/injectable',
     license='MIT',
@@ -37,4 +37,15 @@ setup(
     setup_requires=setup_deps,
     test_requires=test_deps,
     extras_require=extras,
+    classifiers=[
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3 :: Only',
+    ],
 )

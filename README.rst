@@ -11,8 +11,24 @@ Injectable
     :target: https://coveralls.io/github/allrod5/injectable?branch=master
     :scale: 100%
     :align: middle
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/injectable.svg
+    :target: https://github.com/allrod5/injectable/blob/master/.travis.yml
+    :scale: 100%
+    :align: middle
+.. |pypi| image:: https://img.shields.io/pypi/v/injectable.svg
+    :target: https://pypi.python.org/pypi/injectable
+    :scale: 100%
+    :align: middle
+.. |dependencies| image:: https://img.shields.io/librariesio/github/allrod5/injectable.svg
+    :target: https://github.com/allrod5/injectable/blob/master/setup.py
+    :scale: 100%
+    :align: middle
+.. |license| image:: https://img.shields.io/github/license/allrod5/injectable.svg
+    :target: https://github.com/allrod5/injectable/blob/master/LICENSE
+    :scale: 100%
+    :align: middle
 
-|build| |coverage|
+|build| |coverage| |pyversions| |pypi| |dependencies| |license|
 
 Injectable provides an **@autowired** decorator to enable easy and clean dependency injection:
 
