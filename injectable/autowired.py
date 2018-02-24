@@ -100,7 +100,10 @@ def autowired(injectable_kwargs: Iterable[str] = None, *, lazy: bool = False):
                          " class type")
 
             if issue is None:
-                cls_spec = inspect.getfullargspec(cls)
+                try:
+                    cls_spec = inspect.getfullargspec(cls)
+                except TypeError:
+                    continue
                 required_args = (len(cls_spec.args)
                                  - (len(cls_spec.defaults)
                                     if cls_spec.defaults is not None

@@ -22,7 +22,7 @@ extras = {
 
 setup(
     name='injectable',
-    version='1.1.1',
+    version='1.1.2',
     packages=['tests', 'injectable'],
     url='https://github.com/allrod5/injectable',
     license='MIT',
