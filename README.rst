@@ -3,11 +3,11 @@
 Injectable
 ==========
 
-.. |build| image:: https://travis-ci.org/allrod5/injectable.svg?branch=master
+.. |build| image:: https://img.shields.io/travis/allrod5/injectable.svg
     :target: https://travis-ci.org/allrod5/injectable
     :scale: 100%
     :align: middle
-.. |coverage| image:: https://coveralls.io/repos/github/allrod5/injectable/badge.svg?branch=master
+.. |coverage| image:: https://img.shields.io/coveralls/github/allrod5/injectable.svg
     :target: https://coveralls.io/github/allrod5/injectable?branch=master
     :scale: 100%
     :align: middle
