@@ -27,8 +27,12 @@ Injectable
     :target: https://github.com/allrod5/injectable/blob/master/LICENSE
     :scale: 100%
     :align: middle
+.. |downloads| image:: https://pepy.tech/badge/injectable
+    :target: https://pepy.tech/project/injectable
+    :scale: 100%
+    :align: middle
 
-|build| |coverage| |pyversions| |pypi| |dependencies| |license|
+|build| |coverage| |pyversions| |pypi| |dependencies| |license| |downloads|
 
 Injectable provides an **@autowired** decorator to enable easy and clean dependency injection:
 
