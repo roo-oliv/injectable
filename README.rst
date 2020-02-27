@@ -1,222 +1,155 @@
 .. _injectable:
+.. role:: python(code)
+   :language: python
 
-Injectable
-==========
+Injectable: Dependency Injection for Humans™
+============================================
 
-.. |build| image:: https://img.shields.io/travis/allrod5/injectable.svg
-    :target: https://travis-ci.org/allrod5/injectable
-    :scale: 100%
-    :align: middle
-.. |coverage| image:: https://img.shields.io/coveralls/github/allrod5/injectable.svg
-    :target: https://coveralls.io/github/allrod5/injectable?branch=master
-    :scale: 100%
-    :align: middle
-.. |pyversions| image:: https://img.shields.io/pypi/pyversions/injectable.svg
-    :target: https://github.com/allrod5/injectable/blob/master/.travis.yml
-    :scale: 100%
-    :align: middle
-.. |pypi| image:: https://img.shields.io/pypi/v/injectable.svg
-    :target: https://pypi.python.org/pypi/injectable
-    :scale: 100%
-    :align: middle
-.. |dependencies| image:: https://img.shields.io/librariesio/github/allrod5/injectable.svg
-    :target: https://github.com/allrod5/injectable/blob/master/setup.py
-    :scale: 100%
-    :align: middle
-.. |license| image:: https://img.shields.io/github/license/allrod5/injectable.svg
+.. start-badges
+
+.. list-table::
+    :stub-columns: 1
+
+    * - license
+      - |license|
+    * - docs
+      - |docs|
+    * - tests
+      - |build| |requires| |coveralls|
+    * - package
+      - |version| |wheel| |supported-versions| |supported-implementations| |platforms| |downloads|
+.. |docs| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=plastic
+    :target: https://injectable.readthedocs.io/en/latest/
+    :alt: Documentation
+
+.. |build| image:: https://github.com/allrod5/injectable/workflows/build/badge.svg
+    :alt: Build Status
+    :target: https://github.com/allrod5/injectable/actions
+
+.. |requires| image:: https://requires.io/github/allrod5/injectable/requirements.svg?branch=master
+    :alt: Requirements Status
+    :target: https://requires.io/github/allrod5/injectable/requirements/?branch=master
+
+.. |coveralls| image:: https://coveralls.io/repos/allrod5/injectable/badge.svg?branch=master&service=github
+    :alt: Coverage Status
+    :target: https://coveralls.io/r/allrod5/injectable
+
+.. |version| image:: https://img.shields.io/pypi/v/injectable.svg
+    :alt: PyPI Package latest release
+    :target: https://pypi.org/project/injectable
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/injectable.svg
+    :alt: PyPI Wheel
+    :target: https://pypi.org/project/injectable
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/injectable.svg
+    :alt: Supported versions
+    :target: https://pypi.org/project/injectable
+
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/injectable.svg
+    :alt: Supported implementations
+    :target: https://pypi.org/project/injectable
+
+.. |license| image:: https://img.shields.io/github/license/allrod5/injectable
+    :alt: GitHub license
     :target: https://github.com/allrod5/injectable/blob/master/LICENSE
-    :scale: 100%
-    :align: middle
-.. |downloads| image:: https://pepy.tech/badge/injectable
-    :target: https://pepy.tech/project/injectable
-    :scale: 100%
-    :align: middle
 
-|build| |coverage| |pyversions| |pypi| |dependencies| |license| |downloads|
+.. |platforms| image:: https://img.shields.io/badge/platforms-windows%20%7C%20macos%20%7C%20linux-lightgrey
+    :alt: Supported Platforms
+    :target: https://github.com/allrod5/injectable/blob/master/.github/workflows/build.yml#L11
 
-Injectable provides an **@autowired** decorator to enable easy and clean dependency injection:
+.. |downloads| image:: https://pepy.tech/badge/injectable/month
+    :alt: Downloads per Month
+    :target: https://pepy.tech/project/injectable/month
 
-* *Zero setup*: start using it is as simple as decorating the function
 
-* *Autowiring*: injection is transparent to the function
+.. end-badges
 
-* *Zero boilerplate*: get to function-relevant code right away
+**Injectable** is an elegant and simple Dependency Injection framework built with Heart
+and designed for Humans.
 
-* *Support for lazy injection*: circular dependencies are no longer a problem
+.. list-table::
+    :header-rows: 0
 
-* *Manually supply dependencies with ease*: using mocked dependencies for testing is easy
+    * - .. code:: python
 
-**Turn this:**
+            from injectable import Autowired, autowired
+            from typing import List
+            from models import Database
+            from messaging import Broker
 
-.. code:: python
+            class Service:
+                @autowired
+                def __init__(
+                    self,
+                    database: Autowired(Database),
+                    message_brokers: Autowired(List[Broker]),
+                ):
+                    pending = database.retrieve_pending_messages()
+                    for broker in message_brokers:
+                        broker.send_pending(pending)
 
-    def __init__(self, *, model: Model = None, service: Service = None):
-        if model is None:
-            model = Model()
+        .. code:: python
 
-        if service is None:
-            service = Service()
+            from abc import ABC
 
-        self.model = model
-        self.service = service
-        # actual code
+            class Broker(ABC):
+                def send_pending(messages):
+                    ...
 
-**Into this:**
+      - .. code:: python
 
-.. code:: python
+            from injectable import injectable
 
-    @autowired
-    def __init__(self, *, model: Model, service: Service):
-        self.model = model
-        self.service = service
-        # actual code
-
-**And this:**
-
-.. code:: python
-
-    class Example:
-        def __init__(self, *, lazy_service: Service = None):
-            self._service = lazy_service
-
-        @property
-        def service(self) -> Service:
-            if self._service is None:
-                self._service = Service()
-
-            return self._service
-
-        # actual code
-
-**Into this:**
-
-.. code:: python
-
-    class Example:
-        @autowired(lazy=True)
-        def __init__(self, *, lazy_service: Service):
-            self.service = service
-
-        # actual code
-
-.. _install:
-
-Install
--------
-
-.. code:: bash
-
-    pip install injectable
-
-.. _usage:
-
-Usage
------
-
-Just annotate a function with *@autowired*:
-
-.. code:: python
-
-    from injectable import autowired
-
-    class Printer:
-        def print_something(self):
-            print("Something")
-
-    @autowired
-    def foo(*, printer: Printer):
-        printer.print_something()
-
-    foo()
-    # Something
-
-.. _how-works:
-
-How does this work?
-~~~~~~~~~~~~~~~~~~~
-
-**@autowired** decorator uses type annotations to decide whether or not
-to inject the dependency. Some conditions may be observed:
-
-* Only Keyword-Only arguments can be autowired:
-    .. code:: python
-
-        @autowired
-        def foo(not_injectable: MyClass, not_injectable_either: MyClass = None,
-                *, injectable_kwarg: MyClass):
-            ...
-
-* If a default value is provided, the argument will **not** be autowired:
-    .. code:: python
-
-        @autowired
-        def foo(*, injectable_kwarg: MyClass, not_injectable_kwarg: MyClass = None):
-            ...
-
-* The class must have a default constructor without arguments:
-    .. code:: python
-
-        class OkForInjection:
-            def __init__(self, optional_arg=42):
+            @injectable
+            class Database:
                 ...
 
-        class NotSuitableForInjection:
-            def __init__(self, mandatory_arg):
+        .. code:: python
+
+            from messaging import Broker
+            from injectable import injectable
+
+            @injectable
+            class KafkaProducer(Broker):
                 ...
 
-    Attempting to use a not suitable class for injection will result in a
-    ``TypeError`` raised during initialization of the annotated function.
+        .. code:: python
 
-.. _lazy-init:
+            from messaging import Broker
+            from injectable import injectable
 
-Lazy initialize dependencies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            @injectable
+            class SQSProducer(Broker):
+                ...
 
-There are a number of reasons why one may want to lazy initialize dependencies.
-Common use cases for this are circular dependencies and forward declarations.
+Features you'll love ❤️
+-----------------------
 
-**@autowired** decorator takes optional parameter ``lazy`` which when set to ``True``
-will force lazy initialization of all injectable dependencies:
+* **Autowiring**: injection is transparent to the function. Just decorate the function
+  with :python:`@autowired` and annotate parameters with :python:`Autowired`, that's it.
 
-.. code:: python
+* **Automatic dependency discovery**: just call :python:`InjectionContainer.load()` at the
+  root of your project or pass the root path as an argument. All classes decorated with
+  :python:`@injectable` will be automatically discovered and ready for injection.
 
-    @autowired(lazy=True)
-    def foo(*, a: CircularDependantClass, b: 'ForwardDeclaredClass'):
-        ...
+* **Qualifier overloading**: declare as many injectables as you like for a single
+  qualifier or extending the same base class. You can inject all of them just by
+  specifying a :python:`typing.List` to :python:`Autowired`: :python:`deps: Autowired(List["qualifier"])`.
 
-It is also possible to keep eager initialization as default and specify lazy
-initialization per dependency by using :function:`injectable.lazy` in the annotated
-type:
+* **Transparent lazy initialization**: passing the argument :python:`lazy=True` for
+  :python:`Autowired` will make your dependency to be initialized only when actually used, all
+  in a transparent fashion.
 
-.. code:: python
+* **Singletons**: decorate your class with :python:`@injectable(singleton=True)` and only a
+  single instance will be initialized and shared for injection.
 
-    @autowired
-    def foo(*, a: MustEagerInit, b: lazy(MustLazyInit)):
-        ...
+* **Namespaces**: specify different namespaces for injectables as in
+  :python:`@injectable(namespace="foo")` and then just use them when annotating your
+  parameters as in :python:`dep: Autowired(..., namespace="foo")`.
 
-.. _specify-injectables:
+* **Linters friendly**: :python:`Autowired` is carefully designed to comply with static linter
+  analysis such as PyCharm's to preserve the parameter original type hint.
 
-Cherry picking arguments for autowiring
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If no parameters are passed into **@autowired** decorator then it will consider every
-keyword-only argument that does not have a default value to be an injectable
-argument. This can be undesired because situations like this can happen:
-
-.. code:: python
-
-    @autowired
-    def foo(*, injectable_dependency: MyClass, not_injectable: ClassWithoutNoArgsContructor):
-        ...
-
-    # This will raise a TypeError as parameter `not_injectable` cannot be autowired
-
-This is solved by naming which arguments shall be autowired:
-
-.. code:: python
-
-    @autowired(['injectable_dependency'])
-    def foo(*, injectable_dependency: MyClass, not_injectable: ClassWithoutNoArgsContructor):
-        ...
-
-    # This will run just fine and only `injectable_dependecy` will be autowired
+These are just a few cool and carefully built features for you. Check out our `docs
+<https://injectable.readthedocs.io/en/latest/>`_!

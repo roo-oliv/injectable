@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Injectable: Dependency Injection for Humans™ &#8212; injectable 3.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Contents" href="index.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="index.html">injectable-3.0.0</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="injectable-dependency-injection-for-humans">
+<span id="injectable"></span><h1>Injectable: Dependency Injection for Humans™<a class="headerlink" href="#injectable-dependency-injection-for-humans" title="Permalink to this headline">¶</a></h1>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><th class="stub"><p>license</p></th>
+<td><p><a class="reference external" href="https://github.com/allrod5/injectable/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/allrod5/injectable" /></a></p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>docs</p></th>
+<td><p><a class="reference external" href="https://injectable.readthedocs.io/en/latest/"><img alt="Documentation" src="https://readthedocs.org/projects/pip/badge/?version=latest&amp;style=plastic" /></a></p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>tests</p></th>
+<td><p><a class="reference external" href="https://github.com/allrod5/injectable/actions"><img alt="Build Status" src="https://github.com/allrod5/injectable/workflows/build/badge.svg" /></a> <a class="reference external" href="https://requires.io/github/allrod5/injectable/requirements/?branch=master"><img alt="Requirements Status" src="https://requires.io/github/allrod5/injectable/requirements.svg?branch=master" /></a> <a class="reference external" href="https://coveralls.io/r/allrod5/injectable"><img alt="Coverage Status" src="https://coveralls.io/repos/allrod5/injectable/badge.svg?branch=master&amp;service=github" /></a></p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>package</p></th>
+<td><p><a class="reference external" href="https://pypi.org/project/injectable"><img alt="PyPI Package latest release" src="https://img.shields.io/pypi/v/injectable.svg" /></a> <a class="reference external" href="https://pypi.org/project/injectable"><img alt="PyPI Wheel" src="https://img.shields.io/pypi/wheel/injectable.svg" /></a> <a class="reference external" href="https://pypi.org/project/injectable"><img alt="Supported versions" src="https://img.shields.io/pypi/pyversions/injectable.svg" /></a> <a class="reference external" href="https://pypi.org/project/injectable"><img alt="Supported implementations" src="https://img.shields.io/pypi/implementation/injectable.svg" /></a> <a class="reference external" href="https://github.com/allrod5/injectable/blob/master/.github/workflows/build.yml#L11"><img alt="Supported Platforms" src="https://img.shields.io/badge/platforms-windows%20%7C%20macos%20%7C%20linux-lightgrey" /></a> <a class="reference external" href="https://pepy.tech/project/injectable/month"><img alt="Downloads per Month" src="https://pepy.tech/badge/injectable/month" /></a></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Injectable</strong> is an elegant and simple Dependency Injection framework built with Heart
+and designed for Humans.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">messaging</span> <span class="kn">import</span> <span class="n">Broker</span>
+
+<span class="k">class</span> <span class="nc">Service</span><span class="p">:</span>
+    <span class="nd">@autowired</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">database</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">Database</span><span class="p">),</span>
+        <span class="n">message_brokers</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Broker</span><span class="p">]),</span>
+    <span class="p">):</span>
+        <span class="n">pending</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">retrieve_pending_messages</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">broker</span> <span class="ow">in</span> <span class="n">message_brokers</span><span class="p">:</span>
+            <span class="n">broker</span><span class="o">.</span><span class="n">send_pending</span><span class="p">(</span><span class="n">pending</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="k">class</span> <span class="nc">Broker</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">send_pending</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">Database</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">messaging</span> <span class="kn">import</span> <span class="n">Broker</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">KafkaProducer</span><span class="p">(</span><span class="n">Broker</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">messaging</span> <span class="kn">import</span> <span class="n">Broker</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">SQSProducer</span><span class="p">(</span><span class="n">Broker</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="features-you-ll-love">
+<h2>Features you’ll love ❤️<a class="headerlink" href="#features-you-ll-love" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Autowiring</strong>: injection is transparent to the function. Just decorate the function
+with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;autowired</span></span></code> and annotate parameters with <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code>, that’s it.</p></li>
+<li><p><strong>Automatic dependency discovery</strong>: just call <code class="code python docutils literal notranslate"><span class="name"><span class="pre">InjectionContainer</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">load</span></span><span class="punctuation"><span class="pre">()</span></span></code> at the
+root of your project or pass the root path as an argument. All classes decorated with
+<code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span></code> will be automatically discovered and ready for injection.</p></li>
+<li><p><strong>Qualifier overloading</strong>: declare as many injectables as you like for a single
+qualifier or extending the same base class. You can inject all of them just by
+specifying a <code class="code python docutils literal notranslate"><span class="name"><span class="pre">typing</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">List</span></span></code> to <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code>: <code class="code python docutils literal notranslate"><span class="name"><span class="pre">deps</span></span><span class="punctuation"><span class="pre">:</span></span> <span class="name"><span class="pre">Autowired</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">List</span></span><span class="punctuation"><span class="pre">[</span></span><span class="literal string double"><span class="pre">“qualifier”</span></span><span class="punctuation"><span class="pre">])</span></span></code>.</p></li>
+<li><p><strong>Transparent lazy initialization</strong>: passing the argument <code class="code python docutils literal notranslate"><span class="name"><span class="pre">lazy</span></span><span class="operator"><span class="pre">=</span></span><span class="keyword constant"><span class="pre">True</span></span></code> for
+<code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code> will make your dependency to be initialized only when actually used, all
+in a transparent fashion.</p></li>
+<li><p><strong>Singletons</strong>: decorate your class with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">singleton</span></span><span class="operator"><span class="pre">=</span></span><span class="keyword constant"><span class="pre">True</span></span><span class="punctuation"><span class="pre">)</span></span></code> and only a
+single instance will be initialized and shared for injection.</p></li>
+<li><p><strong>Namespaces</strong>: specify different namespaces for injectables as in
+<code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">namespace</span></span><span class="operator"><span class="pre">=</span></span><span class="literal string double"><span class="pre">”foo”</span></span><span class="punctuation"><span class="pre">)</span></span></code> and then just use them when annotating your
+parameters as in <code class="code python docutils literal notranslate"><span class="name"><span class="pre">dep</span></span><span class="punctuation"><span class="pre">:</span></span> <span class="name"><span class="pre">Autowired</span></span><span class="punctuation"><span class="pre">(</span></span><span class="operator"><span class="pre">…</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="name"><span class="pre">namespace</span></span><span class="operator"><span class="pre">=</span></span><span class="literal string double"><span class="pre">”foo”</span></span><span class="punctuation"><span class="pre">)</span></span></code>.</p></li>
+<li><p><strong>Linters friendly</strong>: <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code> is carefully designed to comply with static linter
+analysis such as PyCharm’s to preserve the parameter original type hint.</p></li>
+</ul>
+<p>These are just a few cool and carefully built features for you. Check out our <a class="reference external" href="https://injectable.readthedocs.io/en/latest/">docs</a>!</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Injectable: Dependency Injection for Humans™</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#features-you-ll-love">Features you’ll love ❤️</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/readme.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Contents"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Apr 12, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+    </div>
+  </body>
+</html>

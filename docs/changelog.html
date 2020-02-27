@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Changelog &#8212; injectable 3.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Authors" href="authors.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="index.html">injectable-3.0.0</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.0.0 (2020-04-17)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Drop support for autowiring without previous initialization of the InjectionContainer</p></li>
+<li><p>Refactor <cite>&#64;autowired</cite> decorator for working with the <cite>Autowired</cite> type annotation</p></li>
+<li><p>Added <cite>&#64;injectable</cite> decorator for registering injectables to the InjectionContainer</p></li>
+<li><p>Support for qualifiers, groups and namespaces</p></li>
+<li><p>Added <cite>Autowired</cite> type annotation for marking parameters for autowiring</p></li>
+<li><p>Added <cite>inject</cite> and <cite>inject_multiple</cite> as service locators</p></li>
+<li><p>Added InjectionContainer for registering injectables</p></li>
+<li><p>Official support for Python 3.7 and 3.8</p></li>
+<li><p>Official support for Ubuntu, Windows and MacOS</p></li>
+<li><p>Drop Python 3.4 and 3.5 official support</p></li>
+<li><p>General code refactoring</p></li>
+<li><p>Official documentation</p></li>
+<li><p>Added usage examples</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>2.0.0 (2018-02-24)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Drop Python 3.3 official support</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>1.1.2 (2018-02-24)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Support for dependencies of classes without signature</p></li>
+<li><p>Fix bug of builtin types not being accepted for injectable dependencies</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>1.1.1 (2018-02-23)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Statically infer dependency’s constructor suitability for injection instead of using</dt><dd><p>trial instantiation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Fix bug of raising <cite>TypeError</cite> when injectable fails on the trial dependency</dt><dd><p>instantiation which can happen when the dependency does provide a default
+constructor with no arguments but the running environment (possibly a test suite
+environment) will make the instantiation fail</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>1.1.0 (2018-02-10)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Enable the use of <cite>&#64;autowired</cite> decorator without parenthesis</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>1.0.1 (2018-02-10)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Fixes required dependency <cite>lazy_object_proxy</cite> not being installed when installing</dt><dd><p>injectable through pip</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2>1.0.0 (2018-02-06)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>First stable release</p></li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>0.2.0 (2018-02-06)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Support for lazy dependency initialization</p></li>
+<li><p>Support for type annotations with strings</p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2>0.1.1 (2018-02-05)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Python 3.3 and 3.4 support</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2>0.1.0 (2018-02-05)<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>First beta release</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">3.0.0 (2020-04-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.0.0 (2018-02-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.1.2 (2018-02-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.1.1 (2018-02-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.1.0 (2018-02-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.0.1 (2018-02-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">1.0.0 (2018-02-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">0.2.0 (2018-02-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">0.1.1 (2018-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">0.1.0 (2018-02-05)</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="authors.html" title="Authors"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Apr 12, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+    </div>
+  </body>
+</html>

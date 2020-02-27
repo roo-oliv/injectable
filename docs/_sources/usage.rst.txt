@@ -1,0 +1,7 @@
+.. currentmodule:: injectable
+
+=====
+Usage
+=====
+
+TODO

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>injectable.autowiring.autowired_decorator &#8212; injectable 3.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <script src="../../../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../../../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../../../index.html">injectable-3.0.0</a> &#187;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="../../../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for injectable.autowiring.autowired_decorator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">injectable.autowiring.autowired_type</span> <span class="kn">import</span> <span class="n">_Autowired</span>
+<span class="kn">from</span> <span class="nn">injectable.errors</span> <span class="kn">import</span> <span class="n">AutowiringError</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="autowired"><a class="viewcode-back" href="../../../reference/injectable.html#injectable.autowired">[docs]</a><span class="k">def</span> <span class="nf">autowired</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function decorator to setup dependency injection autowiring.</span>
+
+<span class="sd">    Only parameters annotated with :class:`Autowired &lt;injectable.Autowired&gt;` will be</span>
+<span class="sd">    autowired for injection.</span>
+
+<span class="sd">    If no parameter is annotated with :class:`Autowired &lt;injectable.Autowired&gt;` an</span>
+<span class="sd">    :class:`AutowiringError &lt;injectable.errors.AutowiringError&gt;` will be raised.</span>
+
+<span class="sd">    An :class:`AutowiringError &lt;injectable.errors.AutowiringError&gt;` will also be raised</span>
+<span class="sd">    if a parameter annotated with :class:`Autowired &lt;injectable.Autowired&gt;` is given a</span>
+<span class="sd">    default value or if a non Autowired-annotated positional parameter is placed after</span>
+<span class="sd">    an Autowired-annotated positional parameter.</span>
+
+<span class="sd">    Before attempting to call an autowired function make sure</span>
+<span class="sd">    :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;` was invoked.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">      This decorator can be applied to any function, not only an `__init__` method.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">      This decorator accepts no arguments and must be used without trailing parenthesis.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">      &gt;&gt;&gt; from injectable import Autowired, autowired</span>
+<span class="sd">      &gt;&gt;&gt; @autowired</span>
+<span class="sd">      &gt;&gt;&gt; def foo(dep: Autowired(...)):</span>
+<span class="sd">      ...     ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">autowired_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="n">_Autowired</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">autowired_parameters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="n">parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span><span class="p">,</span>
+                <span class="n">parameter</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="k">raise</span> <span class="n">AutowiringError</span><span class="p">(</span>
+                <span class="s2">&quot;Non-Autowired positional parameter follows Autowired parameter&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AutowiringError</span><span class="p">(</span><span class="s2">&quot;Default value assigned to Autowired parameter&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AutowiringError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Autowired parameter is of kind </span><span class="si">{</span><span class="n">parameter</span><span class="o">.</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">autowired_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">autowired_parameters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AutowiringError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No parameter is typed with &#39;Autowired&#39;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">bound_arguments</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">bind_partial</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">arguments</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">autowired_parameters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bound_arguments</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">dependency</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">inject</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dependency</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Apr 12, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+    </div>
+  </body>
+</html>

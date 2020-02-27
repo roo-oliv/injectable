@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>injectable &#8212; injectable 3.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <script src="../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing" href="../contributing.html" />
+    <link rel="prev" title="Reference" href="index.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../index.html">injectable-3.0.0</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="injectable">
+<h1>injectable<a class="headerlink" href="#injectable" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-injectable"></span><dl class="py class">
+<dt id="injectable.InjectionContainer">
+<em class="property">class </em><code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">InjectionContainer</code><a class="reference internal" href="../_modules/injectable/container/injection_container.html#InjectionContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.InjectionContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>InjectionContainer globally manages injection namespaces and the respective
+injectables registries.</p>
+<p>Invoking <a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a> is the only necessary action before injecting dependencies.
+Attempting to call an autowired function before invoking <a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a> will raise an
+<code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionContainerNotLoadedError</span></code>.</p>
+<p>This class is not meant to be instantiated and will raise an error if instantiation
+is attempted.</p>
+<dl class="py method">
+<dt id="injectable.InjectionContainer.load">
+<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">search_path: parameters_validation.parameter_validation_decorator.parameter_validation.&lt;locals&gt;.func_partial.&lt;locals&gt;.validation_partial = None</em>, <em class="sig-param">*</em>, <em class="sig-param">default_namespace: parameters_validation.parameter_validation_decorator.parameter_validation.&lt;locals&gt;.func_partial.&lt;locals&gt;.validation_partial = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/container/injection_container.html#InjectionContainer.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.InjectionContainer.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads injectables under the search path to the <a class="reference internal" href="#injectable.InjectionContainer" title="injectable.InjectionContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionContainer</span></code></a>
+under the designated namespaces.</p>
+<p>This method will not scan any module more than once regardless of being
+called successively. Multiple invocations to different search paths will
+add found injectables to the <a class="reference internal" href="#injectable.InjectionContainer" title="injectable.InjectionContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionContainer</span></code></a> without clearing
+previously found ones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_path</strong> – (optional) path under which to search for injectables. Can
+be either a relative or absolute path. Defaults to the caller’s file
+directory.</p></li>
+<li><p><strong>default_namespace</strong> – (optional) designated namespace for registering
+injectables which does not explicitly request to be addressed in a
+specific namespace. Defaults to ‘_GLOBAL’.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">InjectionContainer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">InjectionContainer</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="injectable.autowired">
+<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">autowired</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">T</span></em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="../_modules/injectable/autowiring/autowired_decorator.html#autowired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.autowired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function decorator to setup dependency injection autowiring.</p>
+<p>Only parameters annotated with <a class="reference internal" href="#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> will be
+autowired for injection.</p>
+<p>If no parameter is annotated with <a class="reference internal" href="#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> an
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AutowiringError</span></code> will be raised.</p>
+<p>An <code class="xref py py-class docutils literal notranslate"><span class="pre">AutowiringError</span></code> will also be raised
+if a parameter annotated with <a class="reference internal" href="#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> is given a
+default value or if a non Autowired-annotated positional parameter is placed after
+an Autowired-annotated positional parameter.</p>
+<p>Before attempting to call an autowired function make sure
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a> was invoked.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This decorator can be applied to any function, not only an <cite>__init__</cite> method.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This decorator accepts no arguments and must be used without trailing parenthesis.</p>
+</div>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@autowired</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">dep</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="injectable.Autowired">
+<em class="property">class </em><code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">Autowired</code><a class="reference internal" href="../_modules/injectable/autowiring/autowired_type.html#Autowired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.Autowired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Autowired type annotation marks a parameter to be autowired for injection.</p>
+<p>Autowired parameters must be last in declaration if there are others which aren’t
+autowired. Also, autowired parameters must not be given default values.</p>
+<p>This type annotation does not performs the function autowiring by itself. The
+function must be decorated with <a class="reference internal" href="#injectable.autowired" title="injectable.autowired"><code class="xref py py-meth docutils literal notranslate"><span class="pre">&#64;autowired</span></code></a> for
+autowiring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dependency</strong> – class, base class or qualifier of the dependency to be used
+for lookup among the registered injectables.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which to look for the dependency.
+Defaults to the default namespace specified in
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a></p></li>
+<li><p><strong>group</strong> – (optional) group to filter out other injectables outside of this
+group. Defaults to None.</p></li>
+<li><p><strong>exclude_groups</strong> – (optional) list of groups to be excluded. Defaults to
+None.</p></li>
+<li><p><strong>lazy</strong> – (optional) when True will return an instance which will
+automatically initialize itself when first used but not before that.
+Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@autowired</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;qualifier&quot;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="injectable.injectable">
+<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">injectable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cls</span><span class="p">:</span> <span class="n">T</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">qualifier</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">primary</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">group</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">singleton</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="../_modules/injectable/injection/injectable_decorator.html#injectable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.injectable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class decorator to mark it as an injectable dependency.</p>
+<p>This decorator accepts customization parameters but can be invoked without the
+parenthesis when no parameter will be specified.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All files using this decorator will be executed when
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a> is
+invoked.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – (cannot be explicitly passed) the decorated class. This will be
+automatically passed to the decorator by Python magic.</p></li>
+<li><p><strong>qualifier</strong> – (optional) string qualifier for the injectable to be registered
+with. Defaults to None.</p></li>
+<li><p><strong>primary</strong> – (optional) marks the injectable as primary for resolution in
+ambiguous cases. Defaults to False.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which the injectable will be registered.
+Defaults to the default namespace specified in
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a>.</p></li>
+<li><p><strong>group</strong> – (optional) group to be assigned to the injectable. Defaults to None.</p></li>
+<li><p><strong>singleton</strong> – (optional) when True the injectable will be a singleton, i.e. only
+one instance of it will be created and shared globally. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@injectable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="injectable.inject">
+<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">inject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>T<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">group</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_groups</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="../_modules/injectable/injection/inject.html#inject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.inject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Injects the requested dependency by instantiating a new instance of it or a
+singleton instance if specified by the injectable. Returns an instance of the
+requested dependency.</p>
+<p>One can use this method directly for injecting dependencies though this is not
+recommended. Use the <a class="reference internal" href="#injectable.autowired" title="injectable.autowired"><code class="xref py py-meth docutils literal notranslate"><span class="pre">&#64;autowired</span></code></a> decorator and the
+<a class="reference internal" href="#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> type annotation for dependency injection
+to be automatically wired to a function’s call instead.</p>
+<p>Raises <code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionContainerNotLoadedError</span></code> when invoked before
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a> is called.</p>
+<p>Raises
+<code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionError</span></code>
+when unable to resolve the requested dependency. This can be due to a variety of
+reasons: the requested dependency wasn’t loaded into the container; the namespace
+isn’t correct; the group isn’t correct; there are multiple injectables for the
+dependency and none or multiple are marked as primary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dependency</strong> – class, base class or qualifier of the dependency to be used for
+lookup among the registered injectables.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which to look for the dependency. Defaults
+to the default namespace specified in
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a></p></li>
+<li><p><strong>group</strong> – (optional) group to filter out other injectables outside of this
+group. Defaults to None.</p></li>
+<li><p><strong>exclude_groups</strong> – (optional) list of groups to be excluded. Defaults to None.</p></li>
+<li><p><strong>lazy</strong> – (optional) when True will return an instance which will automatically
+initialize itself when first used but not before that. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">foo</span> <span class="kn">import</span> <span class="n">Foo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">inject</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Bar</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foo</span><span class="p">:</span> <span class="n">Foo</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="n">foo</span> <span class="ow">or</span> <span class="n">inject</span><span class="p">(</span><span class="n">Foo</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="injectable.inject_multiple">
+<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">inject_multiple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Type<span class="p">[</span>T<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">group</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_groups</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>T<span class="p">]</span><a class="reference internal" href="../_modules/injectable/injection/inject.html#inject_multiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.inject_multiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Injects all injectables that resolves to the specified dependency. Returns a list of
+instances matching the requested dependency.</p>
+<p>One can use this method directly for injecting dependencies though this is not
+recommended. Use the <a class="reference internal" href="#injectable.autowired" title="injectable.autowired"><code class="xref py py-meth docutils literal notranslate"><span class="pre">&#64;autowired</span></code></a> decorator and the
+<a class="reference internal" href="#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> type annotation for dependency injection
+to be automatically wired to a function’s call instead.</p>
+<p>Raises <code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionContainerNotLoadedError</span></code> when invoked before
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a> is called.</p>
+<p>Raises
+<code class="xref py py-class docutils literal notranslate"><span class="pre">InjectionError</span></code>
+when unable to resolve the requested dependency. This can be due to a variety of
+reasons: there is no injectable loaded into the container that matches the
+dependency; the namespace isn’t correct; the group specifications aren’t correct.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dependency</strong> – class, base class or qualifier of the dependency to be used for
+lookup among the registered injectables.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which to look for the dependency. Defaults
+to the default namespace specified in
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a></p></li>
+<li><p><strong>group</strong> – (optional) group to filter out other injectables outside of this
+group. Defaults to None.</p></li>
+<li><p><strong>exclude_groups</strong> – (optional) list of groups to be excluded. Defaults to None.</p></li>
+<li><p><strong>lazy</strong> – (optional) when True will returned instances will automatically
+initialize themselves when first used but not before that. Defaults to
+False.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">com</span> <span class="kn">import</span> <span class="n">AbstractService</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">inject_multiple</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">services</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">AbstractService</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">services</span> <span class="o">=</span> <span class="n">services</span> <span class="ow">or</span> <span class="n">inject_multiple</span><span class="p">(</span><span class="n">AbstractService</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">injectable</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/injectable.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../contributing.html" title="Contributing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Reference"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Apr 12, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+    </div>
+  </body>
+</html>

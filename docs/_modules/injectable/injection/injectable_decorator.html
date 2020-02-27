@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>injectable.injection.injectable_decorator &#8212; injectable 3.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <script src="../../../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../../../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../../../index.html">injectable-3.0.0</a> &#187;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="../../../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for injectable.injection.injectable_decorator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span> <span class="nn">injectable.container.injection_container</span> <span class="kn">import</span> <span class="n">InjectionContainer</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="injectable"><a class="viewcode-back" href="../../../reference/injectable.html#injectable.injectable">[docs]</a><span class="k">def</span> <span class="nf">injectable</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">:</span> <span class="n">T</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">qualifier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">primary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">singleton</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class decorator to mark it as an injectable dependency.</span>
+
+<span class="sd">    This decorator accepts customization parameters but can be invoked without the</span>
+<span class="sd">    parenthesis when no parameter will be specified.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        All files using this decorator will be executed when</span>
+<span class="sd">        :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;` is</span>
+<span class="sd">        invoked.</span>
+
+<span class="sd">    :param cls: (cannot be explicitly passed) the decorated class. This will be</span>
+<span class="sd">            automatically passed to the decorator by Python magic.</span>
+<span class="sd">    :param qualifier: (optional) string qualifier for the injectable to be registered</span>
+<span class="sd">            with. Defaults to None.</span>
+<span class="sd">    :param primary: (optional) marks the injectable as primary for resolution in</span>
+<span class="sd">            ambiguous cases. Defaults to False.</span>
+<span class="sd">    :param namespace: (optional) namespace in which the injectable will be registered.</span>
+<span class="sd">            Defaults to the default namespace specified in</span>
+<span class="sd">            :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;`.</span>
+<span class="sd">    :param group: (optional) group to be assigned to the injectable. Defaults to None.</span>
+<span class="sd">    :param singleton: (optional) when True the injectable will be a singleton, i.e. only</span>
+<span class="sd">            one instance of it will be created and shared globally. Defaults to False.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">      &gt;&gt;&gt; from injectable import injectable</span>
+<span class="sd">      &gt;&gt;&gt;</span>
+<span class="sd">      &gt;&gt;&gt; @injectable</span>
+<span class="sd">      &gt;&gt;&gt; class Foo:</span>
+<span class="sd">      ...     ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">klass</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">klass</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">LOADING_MODULE</span><span class="p">:</span>
+            <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">_register_injectable</span><span class="p">(</span>
+                <span class="n">klass</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">,</span> <span class="n">primary</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">singleton</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">klass</span>
+
+    <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">decorator</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Apr 12, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+    </div>
+  </body>
+</html>
