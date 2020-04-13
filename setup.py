@@ -1,7 +1,7 @@
 from os.path import join, dirname
 import re
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(*names, **kwargs):
@@ -24,8 +24,22 @@ with open("requirements.dev.txt") as f:
 
 setup(
     name="injectable",
-    version="3.0.0",
-    packages=["injectable"],
+    version="3.0.1",
+    packages=find_packages(
+        exclude=(
+            "tests",
+            "examples",
+            "docs",
+            ".eggs",
+            ".github",
+            ".pytest_cache",
+            ".tox",
+            "build",
+            "dist",
+            "htmlcov",
+            "injectable.egg-info",
+        )
+    ),
     url="https://github.com/allrod5/injectable",
     license="MIT",
     author="Rodrigo Martins de Oliveira",
