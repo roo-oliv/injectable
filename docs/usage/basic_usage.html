@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Basic Usage Example &#8212; injectable 3.0.1 documentation</title>
+    <title>Basic Usage Example &#8212; injectable 3.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.0.1</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.1.0</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -77,27 +77,25 @@ independent instance of other injections.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span> <span class="o">=</span> <span class="n">dependable_service</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SimpleService.counter: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;DependableService.simple_service.counter:&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SimpleService.add_one() ...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 0</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 0</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">add_one</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SimpleService.counter: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;DependableService.simple_service.counter:&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DependableService.add_two() ...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 1</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 0</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">add_two</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SimpleService.counter: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;DependableService.simple_service.counter:&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 1</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dependable_service</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 2</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -170,6 +168,7 @@ independent instance of other injections.</p>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
 </ul>
 </li>

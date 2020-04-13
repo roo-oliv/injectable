@@ -1,7 +1,7 @@
 import inspect
 import os
 from importlib.util import module_from_spec, spec_from_file_location
-from typing import Dict, Optional
+from typing import Dict, Optional, Callable
 from typing import Set
 
 from parameters_validation import non_blank
@@ -85,6 +85,21 @@ class InjectionContainer:
         namespace_entry.register_injectable(injectable, klass, qualifier)
 
     @classmethod
+    def _register_factory(
+        cls,
+        factory: non_null(Callable),
+        dependency: non_null(type),
+        qualifier: non_blank(str) = None,
+        primary: bool = False,
+        namespace: non_blank(str) = None,
+        group: non_blank(str) = None,
+        singleton: bool = False,
+    ):
+        injectable = Injectable(factory, primary, group, singleton)
+        namespace_entry = cls._get_namespace_entry(namespace or cls.DEFAULT_NAMESPACE)
+        namespace_entry.register_injectable(injectable, dependency, qualifier)
+
+    @classmethod
     def _get_namespace_entry(cls, namespace: str) -> Namespace:
         if namespace not in cls.CONTEXT:
             cls.CONTEXT[namespace] = Namespace()
@@ -124,7 +139,16 @@ class InjectionContainer:
     def _contains_injectables(cls, file_entry: os.DirEntry) -> bool:
         with open(file_entry) as file:
             source = file.read()
-        return any(usage in source for usage in ["@injectable", "injectable("])
+        # TODO: Evaluate the use of ast.parse for this
+        return any(
+            usage in source
+            for usage in [
+                "@injectable",
+                "injectable(",
+                "@injectable_factory",
+                "injectable_factory(",
+            ]
+        )
 
     @classmethod
     def _register_injectables(cls, file: os.DirEntry):

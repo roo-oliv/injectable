@@ -7,3 +7,4 @@ black==19.10b0
 flake8==3.7.9
 sphinx==3.0.1
 sphinx_py3doc_enhanced_theme==2.4.0
+bumpversion==0.5.3

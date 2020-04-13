@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.container.injection_container &#8212; injectable 3.0.1 documentation</title>
+    <title>injectable.container.injection_container &#8212; injectable 3.1.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.0.1</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.1.0</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -49,7 +49,7 @@
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">module_from_spec</span><span class="p">,</span> <span class="n">spec_from_file_location</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
 
 <span class="kn">from</span> <span class="nn">parameters_validation</span> <span class="kn">import</span> <span class="n">non_blank</span>
@@ -133,6 +133,21 @@
         <span class="n">namespace_entry</span><span class="o">.</span><span class="n">register_injectable</span><span class="p">(</span><span class="n">injectable</span><span class="p">,</span> <span class="n">klass</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_register_factory</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">factory</span><span class="p">:</span> <span class="n">non_null</span><span class="p">(</span><span class="n">Callable</span><span class="p">),</span>
+        <span class="n">dependency</span><span class="p">:</span> <span class="n">non_null</span><span class="p">(</span><span class="nb">type</span><span class="p">),</span>
+        <span class="n">qualifier</span><span class="p">:</span> <span class="n">non_blank</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">primary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">non_blank</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="n">non_blank</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">singleton</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">injectable</span> <span class="o">=</span> <span class="n">Injectable</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">primary</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">singleton</span><span class="p">)</span>
+        <span class="n">namespace_entry</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_namespace_entry</span><span class="p">(</span><span class="n">namespace</span> <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DEFAULT_NAMESPACE</span><span class="p">)</span>
+        <span class="n">namespace_entry</span><span class="o">.</span><span class="n">register_injectable</span><span class="p">(</span><span class="n">injectable</span><span class="p">,</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_namespace_entry</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Namespace</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">namespace</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">[</span><span class="n">namespace</span><span class="p">]</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">()</span>
@@ -172,7 +187,16 @@
     <span class="k">def</span> <span class="nf">_contains_injectables</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_entry</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">DirEntry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_entry</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">usage</span> <span class="ow">in</span> <span class="n">source</span> <span class="k">for</span> <span class="n">usage</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;@injectable&quot;</span><span class="p">,</span> <span class="s2">&quot;injectable(&quot;</span><span class="p">])</span>
+        <span class="c1"># TODO: Evaluate the use of ast.parse for this</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">usage</span> <span class="ow">in</span> <span class="n">source</span>
+            <span class="k">for</span> <span class="n">usage</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="s2">&quot;@injectable&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;injectable(&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;@injectable_factory&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;injectable_factory(&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_register_injectables</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">DirEntry</span><span class="p">):</span>

@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Reference &#8212; injectable 3.0.1 documentation</title>
+    <title>Reference &#8212; injectable 3.1.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="index.html">injectable-3.0.1</a> &#187;</li> 
+        <li><a href="index.html">injectable-3.1.0</a> &#187;</li> 
       </ul>
     </div>
     
@@ -151,6 +151,54 @@ Defaults to False.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@autowired</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;qualifier&quot;</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="injectable.injectable_factory">
+<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">injectable_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">T</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">qualifier</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">primary</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">group</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">singleton</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="_modules/injectable/injection/injectable_factory_decorator.html#injectable_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.injectable_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function decorator to mark it as a injectable factory for the dependency.</p>
+<p>At least one of <code class="docutils literal notranslate"><span class="pre">dependency</span></code> or <code class="docutils literal notranslate"><span class="pre">qualifier</span></code> parameters need to be defined. An
+<code class="xref py py-class docutils literal notranslate"><span class="pre">InjectableLoadError</span></code> will be raised
+if none are defined.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This decorator shall be the first decorator of the function since only the
+received function will be registered as an injectable factory</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All files using this decorator will be executed when
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a> is
+invoked.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dependency</strong> – (optional) the dependency class for which the factory will be
+registered to. Defaults to None.</p></li>
+<li><p><strong>qualifier</strong> – (optional) string qualifier for whoch the factory will be
+registered to. Defaults to None.</p></li>
+<li><p><strong>primary</strong> – (optional) marks the facotry as primary for the dependency
+resolution in ambiguous cases. Defaults to False.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which the factory will be registered.
+Defaults to the default namespace specified in
+<a class="reference internal" href="#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a>.</p></li>
+<li><p><strong>group</strong> – (optional) group to be assigned to the factory. Defaults to None.</p></li>
+<li><p><strong>singleton</strong> – (optional) when True the factory will be used to instantiate a
+singleton, i.e. only one call to the factory will be made and the created
+instance will be shared globally. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">foo</span> <span class="kn">import</span> <span class="n">Foo</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@injectable_factory</span><span class="p">(</span><span class="n">Foo</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">foo_factory</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Foo</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">Foo</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

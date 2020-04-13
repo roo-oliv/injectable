@@ -24,6 +24,8 @@ class QualifierOverloading(Example):
 
     def run(self):
         self.send_message(message="Hello!", recipient="World")
+        # Sending Email to World: Hello!
+        # Sending SMS to World: Hello!
 
 
 if __name__ == "__main__":

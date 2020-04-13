@@ -10,15 +10,19 @@ class Namespace:
         self.qualifier_registry: Dict[str, List[Injectable]] = {}
 
     def register_injectable(
-        self, injectable: Injectable, klass: type, qualifier: Optional[str] = None,
+        self,
+        injectable: Injectable,
+        klass: Optional[type] = None,
+        qualifier: Optional[str] = None,
     ):
-        self._register_to_class(klass, injectable)
         if qualifier:
             self._register_to_qualifier(qualifier, injectable)
-        for base_class in klass.__bases__:
-            if inspect.isbuiltin(base_class):
-                continue
-            self.register_injectable(injectable, base_class)
+        if klass:
+            self._register_to_class(klass, injectable)
+            for base_class in klass.__bases__:
+                if inspect.isbuiltin(base_class):
+                    continue
+                self.register_injectable(injectable, base_class)
 
     def _register_to_class(
         self, klass: type, injectable: Injectable,

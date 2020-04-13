@@ -16,7 +16,10 @@ class CyclicDependency(Example):
 
     def run(self):
         print(self.service_a.message_b)
+        # ServiceB.message
+
         print(self.service_b.message_a)
+        # ServiceA.message
 
 
 if __name__ == "__main__":

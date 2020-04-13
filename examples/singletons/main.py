@@ -24,8 +24,11 @@ class Singletons(Example):
     def run(self):
         self.composite_singleton.counter = 10
         print(self.simple_singleton.counter)
+        # 10
+
         self.simple_singleton.counter -= 5
         print(self.composite_singleton.counter)
+        # 5
 
 
 if __name__ == "__main__":

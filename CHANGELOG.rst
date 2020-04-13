@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.1.0 (2020-04-13)
+------------------
+
+* Added `@injectable_factory` decorator for declaring injectable factory methods
+* Include the console output in the examples
+
 3.0.1 (2020-04-13)
 ------------------
 
@@ -10,11 +16,11 @@ Changelog
 ------------------
 
 * Drop support for autowiring without previous initialization of the InjectionContainer
-* Refactor `@autowired` decorator for working with the `Autowired` type annotation
-* Added `@injectable` decorator for registering injectables to the InjectionContainer
+* Refactor ``@autowired`` decorator for working with the ``Autowired`` type annotation
+* Added ``@injectable`` decorator for registering injectables to the InjectionContainer
 * Support for qualifiers, groups and namespaces
-* Added `Autowired` type annotation for marking parameters for autowiring
-* Added `inject` and `inject_multiple` as service locators
+* Added ``Autowired`` type annotation for marking parameters for autowiring
+* Added ``inject`` and ``inject_multiple`` as service locators
 * Added InjectionContainer for registering injectables
 * Official support for Python 3.7 and 3.8
 * Official support for Ubuntu, Windows and MacOS
@@ -39,7 +45,7 @@ Changelog
 
 * Statically infer dependency's constructor suitability for injection instead of using
     trial instantiation
-* Fix bug of raising `TypeError` when injectable fails on the trial dependency
+* Fix bug of raising ``TypeError`` when injectable fails on the trial dependency
     instantiation which can happen when the dependency does provide a default
     constructor with no arguments but the running environment (possibly a test suite
     environment) will make the instantiation fail
@@ -47,12 +53,12 @@ Changelog
 1.1.0 (2018-02-10)
 ------------------
 
-* Enable the use of `@autowired` decorator without parenthesis
+* Enable the use of ``@autowired`` decorator without parenthesis
 
 1.0.1 (2018-02-10)
 ------------------
 
-* Fixes required dependency `lazy_object_proxy` not being installed when installing
+* Fixes required dependency ``lazy_object_proxy`` not being installed when installing
     injectable through pip
 
 1.0.0 (2018-02-06)

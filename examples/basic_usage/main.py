@@ -30,27 +30,25 @@ class BasicUsage(Example):
         self.dependable_service = dependable_service
 
     def run(self):
-        print(f"SimpleService.counter: {self.simple_service.counter}")
-        print(
-            f"DependableService.simple_service.counter:"
-            f" {self.dependable_service.simple_service.counter}"
-        )
-        print()
-        print(f"SimpleService.add_one() ...")
+        print(self.simple_service.counter)
+        # 0
+
+        print(self.dependable_service.simple_service.counter)
+        # 0
+
         self.simple_service.add_one()
-        print(f"SimpleService.counter: {self.simple_service.counter}")
-        print(
-            f"DependableService.simple_service.counter:"
-            f" {self.dependable_service.simple_service.counter}"
-        )
-        print()
-        print(f"DependableService.add_two() ...")
+        print(self.simple_service.counter)
+        # 1
+
+        print(self.dependable_service.simple_service.counter)
+        # 0
+
         self.dependable_service.add_two()
-        print(f"SimpleService.counter: {self.simple_service.counter}")
-        print(
-            f"DependableService.simple_service.counter:"
-            f" {self.dependable_service.simple_service.counter}"
-        )
+        print(self.simple_service.counter)
+        # 1
+
+        print(self.dependable_service.simple_service.counter)
+        # 2
 
 
 if __name__ == "__main__":

@@ -21,7 +21,10 @@ class DependenciesPrecedence(Example):
 
     def run(self):
         print(self.sum_service.combine(7, 7))
+        # 14
+
         print(self.multiply_service.combine(7, 7))
+        # 49
 
 
 if __name__ == "__main__":

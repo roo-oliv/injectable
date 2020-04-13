@@ -21,7 +21,10 @@ class MultipleNamespaces(Example):
         self.even_counter.add()
         self.odd_counter.add()
         print(self.even_counter.counter)
+        # 2
+
         print(self.odd_counter.counter)
+        # 3
 
 
 if __name__ == "__main__":

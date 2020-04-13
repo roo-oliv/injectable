@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Cyclic Dependency Example &#8212; injectable 3.0.1 documentation</title>
+    <title>Cyclic Dependency Example &#8212; injectable 3.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.0.1</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.1.0</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,10 @@ with circular references.</p>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_a</span><span class="o">.</span><span class="n">message_b</span><span class="p">)</span>
+        <span class="c1"># ServiceB.message</span>
+
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_b</span><span class="o">.</span><span class="n">message_a</span><span class="p">)</span>
+        <span class="c1"># ServiceA.message</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -143,6 +146,7 @@ with circular references.</p>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Cyclic Dependency Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
 </ul>
 </li>

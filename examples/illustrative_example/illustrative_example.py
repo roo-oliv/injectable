@@ -21,6 +21,7 @@ class IllustrativeExample(Example):
 
     def run(self):
         print(self.dep.foo)
+        # foo
 
 
 if __name__ == "__main__":

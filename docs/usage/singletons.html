@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Singletons Example &#8212; injectable 3.0.1 documentation</title>
+    <title>Singletons Example &#8212; injectable 3.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Illustrative Example" href="illustrative_example.html" />
+    <link rel="next" title="Factory Example" href="factory.html" />
     <link rel="prev" title="Multiple Namespaces Example" href="multiple_namespaces.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.0.1</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.1.0</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -74,8 +74,11 @@ behaviour.</p>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">composite_singleton</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 10</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span><span class="o">.</span><span class="n">counter</span> <span class="o">-=</span> <span class="mi">5</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composite_singleton</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="c1"># 5</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -150,6 +153,7 @@ behaviour.</p>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Singletons Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
 </ul>
 </li>
@@ -180,7 +184,7 @@ behaviour.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="illustrative_example.html" title="Illustrative Example"
+          <a href="factory.html" title="Factory Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="multiple_namespaces.html" title="Multiple Namespaces Example"

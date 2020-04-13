@@ -13,4 +13,5 @@ Usage Examples
     cyclic_dependency
     multiple_namespaces
     singletons
+    factory
     illustrative_example
