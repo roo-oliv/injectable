@@ -1,3 +1,8 @@
+"""
+In this example you'll learn how the injectable framework can make it easier to deal
+with circular references.
+"""
+# sphinx-start
 from examples import Example
 from injectable import injectable, InjectionContainer, Autowired, autowired
 

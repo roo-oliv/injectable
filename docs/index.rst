@@ -7,8 +7,8 @@ Contents
 
    readme
    installation
-   usage
-   reference/index
+   usage/index
+   reference
    contributing
    authors
    changelog

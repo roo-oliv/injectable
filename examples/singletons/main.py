@@ -1,3 +1,8 @@
+"""
+In this example you'll see how we define dependencies as singletons and demonstrate its
+behaviour.
+"""
+# sphinx-start
 from examples import Example
 from examples.singletons.services.composite_singleton import CompositeSingleton
 from examples.singletons.services.simple_singleton import SimpleSingleton

@@ -1,3 +1,8 @@
+"""
+This is an illustrative example of basic usage of the injectable framework in a single
+Python file.
+"""
+# sphinx-start
 from examples import Example
 from injectable import injectable, InjectionContainer, autowired, Autowired
 

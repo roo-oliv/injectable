@@ -39,7 +39,10 @@ import sphinx_py3doc_enhanced_theme
 
 html_theme = "sphinx_py3doc_enhanced_theme"
 html_theme_path = [sphinx_py3doc_enhanced_theme.get_html_theme_path()]
-html_theme_options = {"githuburl": "https://github.com/allrod5/injectable/"}
+html_theme_options = {
+    "githuburl": "https://github.com/allrod5/injectable/",
+    "body_max_width": "90%",
+}
 
 html_use_smartypants = True
 html_last_updated_fmt = "%b %d, %Y"

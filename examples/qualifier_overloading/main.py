@@ -1,3 +1,8 @@
+"""
+In this example you'll learn about overloading qualifiers and take advantage of that
+to inject multiple dependencies as a list of instances.
+"""
+# sphinx-start
 from typing import List
 
 from examples import Example

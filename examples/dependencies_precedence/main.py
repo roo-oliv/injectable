@@ -1,3 +1,8 @@
+"""
+In this example you'll see the use of declaring an injectable as primary and the use
+of explicitly declared qualifiers.
+"""
+# sphinx-start
 from examples import Example
 from examples.dependencies_precedence.services.abstract_service import AbstractService
 from injectable import injectable, InjectionContainer, autowired, Autowired

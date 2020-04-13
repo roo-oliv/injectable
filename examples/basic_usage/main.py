@@ -1,11 +1,17 @@
 """
-This example demonstrates basic usage of injectables:
- * Injecting a dependency
- * Injecting a dependency which in turns injects some other dependency on it's own
- * Whenever the autowired function is called new instances of the autowired dependencies
-        are injected unless for autowired dependencies marked as singletons. See more at
-        the `singletons` example)
+In this example you'll grasp the basic ideas behind the framework.
+
+We will be injecting dependencies into our ``BasicUsage`` class's ``__init__`` method
+using the ``@autowired`` decorator and the ``Autowired`` type annotation.
+
+We declare classes ``SimpleService`` and ``DependableService`` as injectables with the
+``@injectable`` decorator and we also inject the ``SimpleService`` into the
+``DependableService``.
+
+In ``BasicUsage::run`` we illustrate how each injected ``SimpleService`` is a completely
+independent instance of other injections.
 """
+# sphinx-start
 from examples import Example
 from examples.basic_usage.services.dependable_service import DependableService
 from examples.basic_usage.services.simple_service import SimpleService

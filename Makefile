@@ -50,7 +50,7 @@ package:
 
 .PHONY: docs
 docs:
-	make html
+	make html -B
 	cp -a build/html/. docs
 
 CURRENT_VERSION = 3.0.0

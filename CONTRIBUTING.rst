@@ -14,8 +14,12 @@ Write unit tests for the code you wrote and add an use case example test if appl
 Keep in mind that a clear, well organized and readable code is better than a magical,
 tricky and hard-to-follow code.
 
-Keep your code [PEP 8](https://www.python.org/dev/peps/pep-0008/) compliant.
+Run ``make black`` to auto-format your code to this project's style guidelines and
+run ``make checks`` to ensure there are no linter issues.
 
-While documentation in the form of docstrings are encouraged, code comments are
+While documentation in the form of docstrings are encouraged, code comments are often
 discouraged. If your code is so cryptic that you need a comment to clarify it, then
 there may be a better way of writing it so the code speaks for itself in a clear way.
+
+Nevertheless, open a Pull Request and it will receive feedback and be reviewed
+thoroughly.

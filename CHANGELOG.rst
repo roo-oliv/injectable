@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.0 (2020-04-17)
+3.0.0 (2020-04-12)
 ------------------
 
 * Drop support for autowiring without previous initialization of the InjectionContainer

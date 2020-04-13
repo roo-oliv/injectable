@@ -1,3 +1,7 @@
+"""
+In this example you'll see how we can use multiple namespaces for dependency injection.
+"""
+# sphinx-start
 from examples import Example
 from injectable import Autowired, autowired, injectable, InjectionContainer
 
