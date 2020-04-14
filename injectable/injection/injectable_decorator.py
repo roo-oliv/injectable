@@ -1,6 +1,8 @@
+import inspect
 from typing import TypeVar
 
 from injectable.container.injection_container import InjectionContainer
+from injectable.utils import get_caller_filepath
 
 T = TypeVar("T")
 
@@ -43,15 +45,16 @@ def injectable(
       >>> from injectable import injectable
       >>>
       >>> @injectable
-      >>> class Foo:
+      ... class Foo:
       ...     ...
     """
 
-    def decorator(klass: T) -> T:
-        if klass.__module__ == InjectionContainer.LOADING_MODULE:
+    def decorator(klass: T, direct_call: bool = False) -> T:
+        steps_back = 3 if direct_call else 2
+        if get_caller_filepath(steps_back) == InjectionContainer.LOADING_FILEPATH:
             InjectionContainer._register_injectable(
                 klass, qualifier, primary, namespace, group, singleton
             )
         return klass
 
-    return decorator(cls) if cls is not None else decorator
+    return decorator(cls, True) if cls is not None else decorator

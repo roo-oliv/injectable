@@ -2,6 +2,7 @@ from typing import TypeVar, Callable
 
 from injectable.container.injection_container import InjectionContainer
 from injectable.errors.injectable_load_error import InjectableLoadError
+from injectable.utils import get_caller_filepath
 
 T = TypeVar("T")
 
@@ -59,7 +60,7 @@ def injectable_factory(
         raise InjectableLoadError("No dependency class nor a qualifier were specified")
 
     def decorator(fn: Callable[..., T]) -> Callable[..., T]:
-        if fn.__module__ == InjectionContainer.LOADING_MODULE:
+        if get_caller_filepath() == InjectionContainer.LOADING_FILEPATH:
             InjectionContainer._register_factory(
                 fn, dependency, qualifier, primary, namespace, group, singleton
             )

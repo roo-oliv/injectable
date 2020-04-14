@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.1.1 (2020-04-13)
+------------------
+
+* Fix bug of scanning the same module more than once when InjectionContainer.load() is
+    called multiple times with different relative search paths.
+
 3.1.0 (2020-04-13)
 ------------------
 

@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Changelog &#8212; injectable 3.1.0 documentation</title>
+    <title>Changelog &#8212; injectable 3.1.1 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -29,7 +29,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="index.html">injectable-3.1.0</a> &#187;</li> 
+        <li><a href="index.html">injectable-3.1.1</a> &#187;</li> 
       </ul>
     </div>
     
@@ -48,20 +48,30 @@
   <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.1.0 (2020-04-13)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>3.1.1 (2020-04-13)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Fix bug of scanning the same module more than once when InjectionContainer.load() is</dt><dd><p>called multiple times with different relative search paths.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>3.1.0 (2020-04-13)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added <cite>&#64;injectable_factory</cite> decorator for declaring injectable factory methods</p></li>
 <li><p>Include the console output in the examples</p></li>
 </ul>
 </div>
-<div class="section" id="id2">
-<h2>3.0.1 (2020-04-13)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>3.0.1 (2020-04-13)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fix package content missing</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>3.0.0 (2020-04-12)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>3.0.0 (2020-04-12)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Drop support for autowiring without previous initialization of the InjectionContainer</p></li>
 <li><p>Refactor <code class="docutils literal notranslate"><span class="pre">&#64;autowired</span></code> decorator for working with the <code class="docutils literal notranslate"><span class="pre">Autowired</span></code> type annotation</p></li>
@@ -78,21 +88,21 @@
 <li><p>Added usage examples</p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h2>2.0.0 (2018-02-24)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>2.0.0 (2018-02-24)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Drop Python 3.3 official support</p></li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h2>1.1.2 (2018-02-24)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>1.1.2 (2018-02-24)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Support for dependencies of classes without signature</p></li>
 <li><p>Fix bug of builtin types not being accepted for injectable dependencies</p></li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h2>1.1.1 (2018-02-23)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>1.1.1 (2018-02-23)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Statically infer dependency’s constructor suitability for injection instead of using</dt><dd><p>trial instantiation</p>
@@ -108,14 +118,14 @@ environment) will make the instantiation fail</p>
 </li>
 </ul>
 </div>
-<div class="section" id="id7">
-<h2>1.1.0 (2018-02-10)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2>1.1.0 (2018-02-10)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Enable the use of <code class="docutils literal notranslate"><span class="pre">&#64;autowired</span></code> decorator without parenthesis</p></li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h2>1.0.1 (2018-02-10)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>1.0.1 (2018-02-10)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Fixes required dependency <code class="docutils literal notranslate"><span class="pre">lazy_object_proxy</span></code> not being installed when installing</dt><dd><p>injectable through pip</p>
@@ -124,27 +134,27 @@ environment) will make the instantiation fail</p>
 </li>
 </ul>
 </div>
-<div class="section" id="id9">
-<h2>1.0.0 (2018-02-06)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id10">
+<h2>1.0.0 (2018-02-06)<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>First stable release</p></li>
 </ul>
 </div>
-<div class="section" id="id10">
-<h2>0.2.0 (2018-02-06)<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h2>0.2.0 (2018-02-06)<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Support for lazy dependency initialization</p></li>
 <li><p>Support for type annotations with strings</p></li>
 </ul>
 </div>
-<div class="section" id="id11">
-<h2>0.1.1 (2018-02-05)<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id12">
+<h2>0.1.1 (2018-02-05)<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Python 3.3 and 3.4 support</p></li>
 </ul>
 </div>
-<div class="section" id="id12">
-<h2>0.1.0 (2018-02-05)<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id13">
+<h2>0.1.0 (2018-02-05)<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>First beta release</p></li>
 </ul>
@@ -178,18 +188,19 @@ environment) will make the instantiation fail</p>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">3.1.0 (2020-04-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">3.0.1 (2020-04-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">3.0.0 (2020-04-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">2.0.0 (2018-02-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">1.1.2 (2018-02-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">1.1.1 (2018-02-23)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">1.1.0 (2018-02-10)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">1.0.1 (2018-02-10)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">1.0.0 (2018-02-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">0.2.0 (2018-02-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">0.1.1 (2018-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id12">0.1.0 (2018-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">3.1.1 (2020-04-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.1.0 (2020-04-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">3.0.1 (2020-04-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">3.0.0 (2020-04-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">2.0.0 (2018-02-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.1.2 (2018-02-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">1.1.1 (2018-02-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">1.1.0 (2018-02-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">1.0.1 (2018-02-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">1.0.0 (2018-02-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">0.2.0 (2018-02-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">0.1.1 (2018-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">0.1.0 (2018-02-05)</a></li>
 </ul>
 </li>
 </ul>

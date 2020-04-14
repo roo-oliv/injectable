@@ -93,7 +93,7 @@ class Autowired:
 
       >>> from injectable import Autowired, autowired
       >>> @autowired
-      >>> def foo(arg: Autowired("qualifier")):
+      ... def foo(arg: Autowired("qualifier")):
       ...     ...
     """
 

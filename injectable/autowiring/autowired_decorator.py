@@ -36,7 +36,7 @@ def autowired(func: T) -> T:
 
       >>> from injectable import Autowired, autowired
       >>> @autowired
-      >>> def foo(dep: Autowired(...)):
+      ... def foo(dep: Autowired(...)):
       ...     ...
     """
     signature = inspect.signature(func)

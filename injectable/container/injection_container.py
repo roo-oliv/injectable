@@ -10,6 +10,7 @@ from pycollect import PythonFileCollector, find_module_name
 
 from injectable.container.injectable import Injectable
 from injectable.container.namespace import Namespace
+from injectable.utils import get_caller_filepath
 
 
 class InjectionContainer:
@@ -26,8 +27,8 @@ class InjectionContainer:
     is attempted.
     """
 
-    LOADING_MODULE: Optional[str] = None
-    LOADED_MODULES: Set[str] = set()
+    LOADING_FILEPATH: Optional[str] = None
+    LOADED_FILEPATHS: Set[str] = set()
     CONTEXT: Dict[str, Namespace] = {}
     DEFAULT_NAMESPACE: str
 
@@ -45,7 +46,7 @@ class InjectionContainer:
         Loads injectables under the search path to the :class:`InjectionContainer`
         under the designated namespaces.
 
-        This method will not scan any module more than once regardless of being
+        This method will not scan any file more than once regardless of being
         called successively. Multiple invocations to different search paths will
         add found injectables to the :class:`InjectionContainer` without clearing
         previously found ones.
@@ -65,9 +66,10 @@ class InjectionContainer:
         cls.DEFAULT_NAMESPACE = default_namespace or "_GLOBAL"
         cls.CONTEXT[default_namespace] = Namespace()
         if search_path is None:
-            search_path = cls._get_caller_module_path()
+            search_path = os.path.dirname(get_caller_filepath())
         elif not os.path.isabs(search_path):
-            search_path = os.path.join(cls._get_caller_module_path(), search_path)
+            caller_path = os.path.dirname(get_caller_filepath())
+            search_path = os.path.abspath(os.path.join(caller_path, search_path))
         cls._link_dependencies(search_path)
 
     @classmethod
@@ -105,30 +107,18 @@ class InjectionContainer:
             cls.CONTEXT[namespace] = Namespace()
         return cls.CONTEXT[namespace]
 
-    @staticmethod
-    def _get_caller_module_path():
-        # with `stack_steps = 1` the path returned will be from the caller of
-        # InjectionContainerLoader::_get_caller_filepath, this is set to `2` to get
-        # the path from the caller of this function's caller.
-        stack_steps = 2
-        frame_info = inspect.stack()[stack_steps]
-        filepath = frame_info.filename
-        del frame_info
-        return os.path.dirname(os.path.abspath(filepath))
-
     @classmethod
     def _link_dependencies(cls, search_path: str):
         files = cls._collect_python_files(search_path)
         for file in files:
             if not cls._contains_injectables(file):
                 continue
-            module = find_module_name(file)
-            if module in cls.LOADED_MODULES:
+            if file.path in cls.LOADED_FILEPATHS:
                 continue
-            cls.LOADING_MODULE = module
+            cls.LOADING_FILEPATH = file.path
             cls._register_injectables(file)
-            cls.LOADED_MODULES.add(module)
-            cls.LOADING_MODULE = None
+            cls.LOADED_FILEPATHS.add(file.path)
+            cls.LOADING_FILEPATH = None
 
     @classmethod
     def _collect_python_files(cls, search_path) -> Set[os.DirEntry]:
