@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.injection.inject &#8212; injectable 3.1.4 documentation</title>
+    <title>injectable.injection.inject &#8212; injectable 3.2.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.1.4</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.2.0</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -48,6 +48,7 @@
   <h1>Source code for injectable.injection.inject</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span>
 
+<span class="kn">from</span> <span class="nn">injectable.errors</span> <span class="kn">import</span> <span class="n">InjectionError</span>
 <span class="kn">from</span> <span class="nn">injectable.injection.utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_namespace_injectables</span><span class="p">,</span>
     <span class="n">filter_by_group</span><span class="p">,</span>
@@ -64,6 +65,7 @@
     <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_groups</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">lazy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">optional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Injects the requested dependency by instantiating a new instance of it or a</span>
@@ -84,7 +86,11 @@
 <span class="sd">    when unable to resolve the requested dependency. This can be due to a variety of</span>
 <span class="sd">    reasons: the requested dependency wasn&#39;t loaded into the container; the namespace</span>
 <span class="sd">    isn&#39;t correct; the group isn&#39;t correct; there are multiple injectables for the</span>
-<span class="sd">    dependency and none or multiple are marked as primary.</span>
+<span class="sd">    dependency and none or multiple are marked as primary. When parameter ``optional``</span>
+<span class="sd">    is ``True`` no error will be raised when no injectable that matches requested</span>
+<span class="sd">    qualifier/class and group is found in the specified namespace though in ambiguous</span>
+<span class="sd">    cases that resolving a primary injectable is impossible an error will still be</span>
+<span class="sd">    raised.</span>
 
 <span class="sd">    :param dependency: class, base class or qualifier of the dependency to be used for</span>
 <span class="sd">            lookup among the registered injectables.</span>
@@ -96,6 +102,12 @@
 <span class="sd">    :param exclude_groups: (optional) list of groups to be excluded. Defaults to None.</span>
 <span class="sd">    :param lazy: (optional) when True will return an instance which will automatically</span>
 <span class="sd">            initialize itself when first used but not before that. Defaults to False.</span>
+<span class="sd">    :param optional: (optional) when True this function returns None if no injectable</span>
+<span class="sd">            matches the qualifier/class and group inside the specified namespace instead</span>
+<span class="sd">            of raising an :class:`InjectionError &lt;injectable.errors.InjectionError&gt;`.</span>
+<span class="sd">            Ambiguous cases where resolving a primary injectable is impossible will</span>
+<span class="sd">            still raise :class:`InjectionError &lt;injectable.errors.InjectionError&gt;`.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Usage::</span>
 
@@ -107,6 +119,10 @@
 <span class="sd">      ...         self.foo = foo or inject(Foo)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">matches</span><span class="p">,</span> <span class="n">lookup_key</span><span class="p">,</span> <span class="n">lookup_type</span> <span class="o">=</span> <span class="n">get_namespace_injectables</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exclude_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span>
             <span class="n">matches</span><span class="p">,</span>
@@ -115,6 +131,13 @@
             <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
             <span class="n">exclude_groups</span><span class="o">=</span><span class="n">exclude_groups</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39; matches group&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
     <span class="n">injectable</span> <span class="o">=</span> <span class="n">resolve_single_injectable</span><span class="p">(</span><span class="n">lookup_key</span><span class="p">,</span> <span class="n">lookup_type</span><span class="p">,</span> <span class="n">matches</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">injectable</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span></div>
 
@@ -126,6 +149,7 @@
     <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_groups</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">lazy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">optional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Injects all injectables that resolves to the specified dependency. Returns a list of</span>
@@ -145,6 +169,9 @@
 <span class="sd">    when unable to resolve the requested dependency. This can be due to a variety of</span>
 <span class="sd">    reasons: there is no injectable loaded into the container that matches the</span>
 <span class="sd">    dependency; the namespace isn&#39;t correct; the group specifications aren&#39;t correct.</span>
+<span class="sd">    When parameter ``optional`` is ``True`` no error will be raised when no injectable</span>
+<span class="sd">    that matches requested qualifier/class and group is found in the specified</span>
+<span class="sd">    namespace.</span>
 
 <span class="sd">    :param dependency: class, base class or qualifier of the dependency to be used for</span>
 <span class="sd">            lookup among the registered injectables.</span>
@@ -157,6 +184,9 @@
 <span class="sd">    :param lazy: (optional) when True will returned instances will automatically</span>
 <span class="sd">            initialize themselves when first used but not before that. Defaults to</span>
 <span class="sd">            False.</span>
+<span class="sd">    :param optional: (optional) when True this function returns an empty list if no</span>
+<span class="sd">            injectable matches the qualifier/class and group inside the specified</span>
+<span class="sd">            namespace. Defaults to False.</span>
 
 <span class="sd">    Usage::</span>
 
@@ -169,6 +199,10 @@
 <span class="sd">      ...         self.services = services or inject_multiple(AbstractService)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">matches</span><span class="p">,</span> <span class="n">lookup_key</span><span class="p">,</span> <span class="n">lookup_type</span> <span class="o">=</span> <span class="n">get_namespace_injectables</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exclude_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span>
             <span class="n">matches</span><span class="p">,</span>
@@ -177,6 +211,13 @@
             <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
             <span class="n">exclude_groups</span><span class="o">=</span><span class="n">exclude_groups</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39; matches group&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">inj</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span> <span class="k">for</span> <span class="n">inj</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span></div>
 </pre></div>
 

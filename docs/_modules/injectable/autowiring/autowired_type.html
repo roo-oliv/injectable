@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.autowiring.autowired_type &#8212; injectable 3.1.4 documentation</title>
+    <title>injectable.autowiring.autowired_type &#8212; injectable 3.2.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.1.4</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.2.0</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -50,7 +50,7 @@
 
 <span class="kn">import</span> <span class="nn">typing_inspect</span>
 
-<span class="kn">from</span> <span class="nn">injectable.autowiring.utils</span> <span class="kn">import</span> <span class="n">sanitize_if_forward_ref</span>
+<span class="kn">from</span> <span class="nn">injectable.autowiring.utils</span> <span class="kn">import</span> <span class="n">sanitize_if_forward_ref</span><span class="p">,</span> <span class="n">is_none_type</span>
 <span class="kn">from</span> <span class="nn">injectable.injection.inject</span> <span class="kn">import</span> <span class="n">inject</span><span class="p">,</span> <span class="n">inject_multiple</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
@@ -67,7 +67,22 @@
         <span class="n">lazy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">type_origin</span> <span class="o">=</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_origin</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+        <span class="n">optional</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">multiple</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">type_origin</span> <span class="ow">is</span> <span class="n">Union</span><span class="p">:</span>
+            <span class="n">subscripted_types</span> <span class="o">=</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type not defined for Autowired Union&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_none_type</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Autowired Union can only be used to indicate&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; optional autowiring in the forms &#39;Union[T, None]&#39; or&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; &#39;Optional[T]&#39;&quot;</span>
+                <span class="p">)</span>
+            <span class="n">dependency</span> <span class="o">=</span> <span class="n">sanitize_if_forward_ref</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">type_origin</span> <span class="o">=</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_origin</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+            <span class="n">optional</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="n">type_origin</span> <span class="ow">in</span> <span class="p">[</span>
             <span class="nb">list</span><span class="p">,</span>
@@ -82,9 +97,7 @@
         <span class="p">]:</span>
             <span class="n">subscripted_types</span> <span class="o">=</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Type not defined for Autowired </span><span class="si">{</span><span class="n">type_origin</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type not defined for Autowired </span><span class="si">{</span><span class="n">type_origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Only one type should be defined for Autowired </span><span class="si">{</span><span class="n">type_origin</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -92,6 +105,7 @@
             <span class="n">dependency</span> <span class="o">=</span> <span class="n">sanitize_if_forward_ref</span><span class="p">(</span><span class="n">subscripted_types</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">multiple</span> <span class="o">=</span> <span class="kc">True</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">optional</span> <span class="o">=</span> <span class="n">optional</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multiple</span> <span class="o">=</span> <span class="n">multiple</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span> <span class="o">=</span> <span class="n">dependency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
@@ -107,6 +121,7 @@
                 <span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span>
                 <span class="n">exclude_groups</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_groups</span><span class="p">,</span>
                 <span class="n">lazy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">,</span>
+                <span class="n">optional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optional</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">inject</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span><span class="p">,</span>
@@ -114,6 +129,7 @@
             <span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span>
             <span class="n">exclude_groups</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_groups</span><span class="p">,</span>
             <span class="n">lazy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optional</span><span class="p">,</span>
         <span class="p">)</span>
 
 
@@ -130,7 +146,11 @@
 
 
 <span class="sd">    :param dependency: class, base class or qualifier of the dependency to be used</span>
-<span class="sd">            for lookup among the registered injectables.</span>
+<span class="sd">            for lookup among the registered injectables. Can be wrapped in a typing</span>
+<span class="sd">            sequence, e.g. ``List[...]``, to inject a list containing all matching</span>
+<span class="sd">            injectables. Can be wrapped in a optional, e.g. ``Optional[...]``, to</span>
+<span class="sd">            inject None if no matches are found to inject. ``Optional[List[...]]`` is</span>
+<span class="sd">            valid and will inject an empty list if no matches are found to inject.</span>
 <span class="sd">    :param namespace: (optional) namespace in which to look for the dependency.</span>
 <span class="sd">            Defaults to the default namespace specified in</span>
 <span class="sd">            :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;`</span>
