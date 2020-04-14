@@ -1,16 +1,21 @@
 Changelog
 =========
 
+3.1.2 (2020-04-14)
+------------------
+
+* Remove unused ``inspect`` imports.
+
 3.1.1 (2020-04-13)
 ------------------
 
-* Fix bug of scanning the same module more than once when InjectionContainer.load() is
-    called multiple times with different relative search paths.
+* Fix bug of scanning the same module more than once when ``InjectionContainer.load()``
+    is called multiple times with different relative search paths.
 
 3.1.0 (2020-04-13)
 ------------------
 
-* Added `@injectable_factory` decorator for declaring injectable factory methods
+* Added ``@injectable_factory`` decorator for declaring injectable factory methods
 * Include the console output in the examples
 
 3.0.1 (2020-04-13)

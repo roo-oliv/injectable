@@ -1,4 +1,3 @@
-import inspect
 from typing import TypeVar
 
 from injectable.container.injection_container import InjectionContainer
