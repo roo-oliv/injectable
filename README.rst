@@ -15,7 +15,7 @@ Injectable: Dependency Injection for Humans™
     * - docs
       - |docs|
     * - tests
-      - |build| |requires| |coveralls|
+      - |build| |requires| |coveralls| |reliability| |security| |black| |flake8|
     * - package
       - |version| |wheel| |supported-versions| |supported-implementations| |platforms| |downloads|
 .. |docs| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=plastic
@@ -33,6 +33,22 @@ Injectable: Dependency Injection for Humans™
 .. |coveralls| image:: https://coveralls.io/repos/allrod5/injectable/badge.svg?branch=master&service=github
     :alt: Coverage Status
     :target: https://coveralls.io/r/allrod5/injectable
+
+.. |reliability| image:: https://sonarcloud.io/api/project_badges/measure?project=allrod5_injectable&metric=reliability_rating
+    :alt: Reliability Rating
+    :target: https://sonarcloud.io/dashboard?id=allrod5_injectable
+
+.. |security| image:: https://sonarcloud.io/api/project_badges/measure?project=allrod5_injectable&metric=security_rating
+    :alt: Security Rating
+    :target: https://sonarcloud.io/dashboard?id=allrod5_injectable
+
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :alt: Code Style
+    :target: https://github.com/psf/black
+
+.. |flake8| image:: https://img.shields.io/badge/standards-flake8-blue
+    :alt: Standards
+    :target: https://flake8.pycqa.org/en/latest/
 
 .. |version| image:: https://img.shields.io/pypi/v/injectable.svg
     :alt: PyPI Package latest release
