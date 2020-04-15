@@ -1,8 +1,8 @@
-from itertools import chain
 from typing import Union, TypeVar, Sequence, List, Tuple, Iterable, Collection, Set
 
 import typing_inspect
 
+from injectable.autowiring.utils import sanitize_if_forward_ref
 from injectable.injection.inject import inject, inject_multiple
 
 T = TypeVar("T")
@@ -19,6 +19,8 @@ class _Autowired:
         lazy: bool = False,
     ):
         type_origin = typing_inspect.get_origin(dependency)
+        multiple = False
+
         if type_origin in [
             list,
             tuple,
@@ -30,11 +32,17 @@ class _Autowired:
             Iterable,
             Collection,
         ]:
-            dependency = typing_inspect.get_args(dependency)
-            if len(dependency) == 0:
+            subscripted_types = typing_inspect.get_args(dependency)
+            if len(subscripted_types) == 0:
+                raise TypeError(f"Type not defined for Autowired {type_origin}")
+            if len(subscripted_types) > 1:
                 raise TypeError(
-                    f"Type not defined for Autowired {type_origin.__qualname__}"
+                    f"Only one type should be defined for Autowired {type_origin}"
                 )
+            dependency = sanitize_if_forward_ref(subscripted_types[0])
+            multiple = True
+
+        self.multiple = multiple
         self.dependency = dependency
         self.namespace = namespace
         self.group = group
@@ -42,18 +50,13 @@ class _Autowired:
         self.lazy = lazy
 
     def inject(self) -> T:
-        if type(self.dependency) is tuple:
-            return list(
-                chain.from_iterable(
-                    inject_multiple(
-                        dep,
-                        namespace=self.namespace,
-                        group=self.group,
-                        exclude_groups=self.exclude_groups,
-                        lazy=self.lazy,
-                    )
-                    for dep in self.dependency
-                )
+        if self.multiple:
+            return inject_multiple(
+                self.dependency,
+                namespace=self.namespace,
+                group=self.group,
+                exclude_groups=self.exclude_groups,
+                lazy=self.lazy,
             )
         return inject(
             self.dependency,

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.4 (2020-04-15)
+------------------
+
+* Fix ``Autowired(List[...])`` not working with qualifiers
+
 3.1.3 (2020-04-15)
 ------------------
 
