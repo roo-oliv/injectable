@@ -44,13 +44,13 @@ setup(
     license="MIT",
     author="Rodrigo Martins de Oliveira",
     author_email="oliveira.rodrigo.m@gmail.com",
-    description="Clean dependency injection and lazy initialization support",
+    description="Dependency Injection for Humans™",
     long_description=f"{readme}\n{changelog}",
     keywords=(
         "injection inject injectable injectables autowiring autowire autowired"
         " dependency dependency-injection DI SOLID lazy lazy-initialization"
         " circular circular-dependency cyclic cyclic-dependency"
-        " inversion-of-control ioc container spring fixture"
+        " inversion-of-control ioc container spring guice fixture"
     ),
     python_requires=">=3.6",
     install_requires=requirements,
