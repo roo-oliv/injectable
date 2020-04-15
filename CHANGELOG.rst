@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.3 (2020-04-15)
+------------------
+
+* Fix Windows injectables not being loaded.
+
 3.1.2 (2020-04-14)
 ------------------
 
