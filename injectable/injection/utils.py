@@ -28,9 +28,6 @@ def get_namespace_injectables(
         lookup_type = "class"
 
     injectables = registry.get(lookup_key)
-    if injectables is None:
-        raise InjectionError(f"No injectable matches {lookup_type} '{lookup_key}'")
-
     return injectables, lookup_key, lookup_type
 
 
@@ -48,10 +45,6 @@ def filter_by_group(
         for inj in matches
         if (group is None or inj.group == group) and inj.group not in exclude
     ]
-    if len(matches) == 0:
-        raise InjectionError(
-            f"No injectable for {lookup_type} '{lookup_key}' matches group '{group}'"
-        )
     return matches
 
 

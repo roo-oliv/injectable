@@ -13,3 +13,7 @@ def sanitize_if_forward_ref(subscripted_type: type) -> Union[type, str]:
     if isinstance(subscripted_type, ForwardRef):
         return subscripted_type.__forward_arg__
     return subscripted_type
+
+
+def is_none_type(tp):
+    return tp is type(None)  # noqa: E721

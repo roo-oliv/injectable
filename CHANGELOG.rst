@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.0 (2020-04-15)
+------------------
+
+* Support for optional injection in declarative fashion: ``Autowired(Optional[...])``
+
 3.1.4 (2020-04-15)
 ------------------
 
