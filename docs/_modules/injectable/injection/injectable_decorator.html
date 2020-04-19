@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.injection.injectable_decorator &#8212; injectable 3.2.0 documentation</title>
+    <title>injectable.injection.injectable_decorator &#8212; injectable 3.2.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.2.0</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.2.1</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -98,9 +98,10 @@
 
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">klass</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">direct_call</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
         <span class="n">steps_back</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">direct_call</span> <span class="k">else</span> <span class="mi">2</span>
-        <span class="k">if</span> <span class="n">get_caller_filepath</span><span class="p">(</span><span class="n">steps_back</span><span class="p">)</span> <span class="o">==</span> <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span><span class="p">:</span>
+        <span class="n">caller_filepath</span> <span class="o">=</span> <span class="n">get_caller_filepath</span><span class="p">(</span><span class="n">steps_back</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">caller_filepath</span> <span class="o">==</span> <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span><span class="p">:</span>
             <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">_register_injectable</span><span class="p">(</span>
-                <span class="n">klass</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">,</span> <span class="n">primary</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">singleton</span>
+                <span class="n">klass</span><span class="p">,</span> <span class="n">caller_filepath</span><span class="p">,</span> <span class="n">qualifier</span><span class="p">,</span> <span class="n">primary</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">singleton</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">klass</span>
 
@@ -153,7 +154,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Apr 15, 2020.
+      Last updated on Apr 19, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
     </div>
   </body>

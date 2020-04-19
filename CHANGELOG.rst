@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.2.1 (2020-04-19)
+------------------
+
+* ``InjectionContainer::load`` is more resilient against duplicated injectables
+    registering
+
 3.2.0 (2020-04-15)
 ------------------
 

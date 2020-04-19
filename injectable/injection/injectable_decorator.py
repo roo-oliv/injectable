@@ -50,9 +50,10 @@ def injectable(
 
     def decorator(klass: T, direct_call: bool = False) -> T:
         steps_back = 3 if direct_call else 2
-        if get_caller_filepath(steps_back) == InjectionContainer.LOADING_FILEPATH:
+        caller_filepath = get_caller_filepath(steps_back)
+        if caller_filepath == InjectionContainer.LOADING_FILEPATH:
             InjectionContainer._register_injectable(
-                klass, qualifier, primary, namespace, group, singleton
+                klass, caller_filepath, qualifier, primary, namespace, group, singleton
             )
         return klass
 

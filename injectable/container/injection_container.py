@@ -28,7 +28,7 @@ class InjectionContainer:
 
     LOADING_FILEPATH: Optional[str] = None
     LOADED_FILEPATHS: Set[str] = set()
-    CONTEXT: Dict[str, Namespace] = {}
+    NAMESPACES: Dict[str, Namespace] = {}
     DEFAULT_NAMESPACE: str
 
     def __new__(cls):
@@ -63,7 +63,7 @@ class InjectionContainer:
           >>> InjectionContainer.load()
         """
         cls.DEFAULT_NAMESPACE = default_namespace or "_GLOBAL"
-        cls.CONTEXT[default_namespace] = Namespace()
+        cls.NAMESPACES[default_namespace] = Namespace()
         if search_path is None:
             search_path = os.path.dirname(get_caller_filepath())
         elif not os.path.isabs(search_path):
@@ -75,13 +75,15 @@ class InjectionContainer:
     def _register_injectable(
         cls,
         klass: non_null(type),
+        filepath: non_blank(str),
         qualifier: non_blank(str) = None,
         primary: bool = False,
         namespace: non_blank(str) = None,
         group: non_blank(str) = None,
         singleton: bool = False,
     ):
-        injectable = Injectable(klass, primary, group, singleton)
+        unique_id = f"{klass.__qualname__}@{filepath}"
+        injectable = Injectable(klass, unique_id, primary, group, singleton)
         namespace_entry = cls._get_namespace_entry(namespace or cls.DEFAULT_NAMESPACE)
         namespace_entry.register_injectable(injectable, klass, qualifier)
 
@@ -89,22 +91,24 @@ class InjectionContainer:
     def _register_factory(
         cls,
         factory: non_null(Callable),
-        dependency: non_null(type),
+        filepath: non_blank(str),
+        dependency: Optional[type],
         qualifier: non_blank(str) = None,
         primary: bool = False,
         namespace: non_blank(str) = None,
         group: non_blank(str) = None,
         singleton: bool = False,
     ):
-        injectable = Injectable(factory, primary, group, singleton)
+        unique_id = f"{factory.__qualname__}@{filepath}"
+        injectable = Injectable(factory, unique_id, primary, group, singleton)
         namespace_entry = cls._get_namespace_entry(namespace or cls.DEFAULT_NAMESPACE)
         namespace_entry.register_injectable(injectable, dependency, qualifier)
 
     @classmethod
     def _get_namespace_entry(cls, namespace: str) -> Namespace:
-        if namespace not in cls.CONTEXT:
-            cls.CONTEXT[namespace] = Namespace()
-        return cls.CONTEXT[namespace]
+        if namespace not in cls.NAMESPACES:
+            cls.NAMESPACES[namespace] = Namespace()
+        return cls.NAMESPACES[namespace]
 
     @classmethod
     def _link_dependencies(cls, search_path: str):
