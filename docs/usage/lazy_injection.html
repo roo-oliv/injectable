@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Illustrative Example &#8212; injectable 3.2.1 documentation</title>
+    <title>Lazy Injection Example &#8212; injectable 3.2.1 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Reference" href="../reference.html" />
-    <link rel="prev" title="Factory Example" href="factory.html" />
+    <link rel="next" title="Optional Injection Example" href="optional_injection.html" />
+    <link rel="prev" title="Qualifier Overloading Example" href="qualifier_overloading.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
     <meta name="viewport" content="width=device-width,initial-scale=0.8">
@@ -47,37 +47,53 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.illustrative_example.illustrative_example">
-<span id="illustrative-example"></span><h1>Illustrative Example<a class="headerlink" href="#module-examples.illustrative_example.illustrative_example" title="Permalink to this headline">¶</a></h1>
-<p>This is an illustrative example of basic usage of the injectable framework in a single
-Python file.</p>
+  <div class="section" id="module-examples.lazy_injection.main">
+<span id="lazy-injection-example"></span><h1>Lazy Injection Example<a class="headerlink" href="#module-examples.lazy_injection.main" title="Permalink to this headline">¶</a></h1>
+<p>In this example you’ll see how to declare an injection as lazy.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">illustrative_example.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
-<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">InjectionContainer</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span>
-
-
-<span class="nd">@injectable</span>
-<span class="k">class</span> <span class="nc">Dep</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span>
+<span class="kn">from</span> <span class="nn">examples.lazy_injection.lazy_service</span> <span class="kn">import</span> <span class="n">LazyService</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">InjectionContainer</span>
 
 
 <span class="nd">@injectable</span>  <span class="c1"># make examples also injectable for testing</span>
-<span class="k">class</span> <span class="nc">IllustrativeExample</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">LazyInjection</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
     <span class="nd">@autowired</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dep</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">Dep</span><span class="p">)):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dep</span> <span class="o">=</span> <span class="n">dep</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lazy_service</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">LazyService</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy_service</span> <span class="o">=</span> <span class="n">lazy_service</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finished injecting&quot;</span><span class="p">)</span>
+        <span class="c1"># finished injecting</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dep</span><span class="o">.</span><span class="n">foo</span><span class="p">)</span>
-        <span class="c1"># foo</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;running&quot;</span><span class="p">)</span>
+        <span class="c1"># running</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy_service</span><span class="o">.</span><span class="n">something</span><span class="p">()</span>
+        <span class="c1"># LazyService::__init__ called</span>
+        <span class="c1"># LazyService::something called</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-    <span class="n">example</span> <span class="o">=</span> <span class="n">IllustrativeExample</span><span class="p">()</span>
+    <span class="n">example</span> <span class="o">=</span> <span class="n">LazyInjection</span><span class="p">()</span>
     <span class="n">example</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">lazy_service.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">LazyService</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LazyService::__init__ called&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LazyService::something called&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -109,13 +125,13 @@ Python file.</p>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Illustrative Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
@@ -127,7 +143,7 @@ Python file.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/usage/illustrative_example.rst.txt"
+      <li><a href="../_sources/usage/lazy_injection.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -145,10 +161,10 @@ Python file.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../reference.html" title="Reference"
+          <a href="optional_injection.html" title="Optional Injection Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="factory.html" title="Factory Example"
+          <a href="qualifier_overloading.html" title="Qualifier Overloading Example"
              accesskey="P">previous</a> |</li>
       </ul>
     </div>

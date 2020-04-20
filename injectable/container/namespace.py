@@ -1,13 +1,13 @@
 import inspect
-from typing import Dict, List, Optional
+from typing import Dict, Optional, Set
 
 from injectable.container.injectable import Injectable
 
 
 class Namespace:
     def __init__(self):
-        self.class_registry: Dict[str, List[Injectable]] = {}
-        self.qualifier_registry: Dict[str, List[Injectable]] = {}
+        self.class_registry: Dict[str, Set[Injectable]] = {}
+        self.qualifier_registry: Dict[str, Set[Injectable]] = {}
 
     def register_injectable(
         self,
@@ -29,12 +29,12 @@ class Namespace:
     ):
         qualified_name = klass.__qualname__
         if qualified_name not in self.class_registry:
-            self.class_registry[qualified_name] = []
-        self.class_registry[qualified_name].append(injectable)
+            self.class_registry[qualified_name] = set()
+        self.class_registry[qualified_name].add(injectable)
 
     def _register_to_qualifier(
         self, qualifier: str, injectable: Injectable,
     ):
         if qualifier not in self.qualifier_registry:
-            self.qualifier_registry[qualifier] = []
-        self.qualifier_registry[qualifier].append(injectable)
+            self.qualifier_registry[qualifier] = set()
+        self.qualifier_registry[qualifier].add(injectable)

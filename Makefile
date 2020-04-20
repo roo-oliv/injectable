@@ -53,7 +53,7 @@ docs:
 	make html -B
 	cp -a build/html/. docs
 
-CURRENT_VERSION = 3.2.0
+CURRENT_VERSION = 3.2.1
 
 .PHONY: bump-patch-version
 bump-patch-version:

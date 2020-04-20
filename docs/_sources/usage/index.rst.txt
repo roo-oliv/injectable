@@ -10,6 +10,7 @@ Usage Examples
     basic_usage
     dependencies_precedence
     qualifier_overloading
+    lazy_injection
     optional_injection
     cyclic_dependency
     multiple_namespaces

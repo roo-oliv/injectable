@@ -1,4 +1,4 @@
-from typing import List, Tuple, Sequence
+from typing import Tuple, Sequence, Set
 
 from injectable.container.injection_container import InjectionContainer
 from injectable.container.injectable import Injectable
@@ -10,12 +10,12 @@ from injectable.errors import (
 
 def get_namespace_injectables(
     dependency: Injectable, namespace: str
-) -> Tuple[List[Injectable], str, str]:
-    if len(InjectionContainer.CONTEXT) == 0:
+) -> Tuple[Set[Injectable], str, str]:
+    if len(InjectionContainer.NAMESPACES) == 0:
         raise InjectionContainerNotLoadedError(
             "InjectionContainer::load was not invoked"
         )
-    injection_namespace = InjectionContainer.CONTEXT[
+    injection_namespace = InjectionContainer.NAMESPACES[
         namespace or InjectionContainer.DEFAULT_NAMESPACE
     ]
     if isinstance(dependency, str):
@@ -32,25 +32,21 @@ def get_namespace_injectables(
 
 
 def filter_by_group(
-    matches: Sequence[Injectable],
-    *,
-    lookup_key: str,
-    lookup_type: str,
-    group: str = None,
-    exclude_groups: Sequence[str] = None,
-) -> List[Injectable]:
+    matches: Set[Injectable], group: str = None, exclude_groups: Sequence[str] = None,
+) -> Set[Injectable]:
     exclude = exclude_groups or []
-    matches = [
+    matches = {
         inj
         for inj in matches
         if (group is None or inj.group == group) and inj.group not in exclude
-    ]
+    }
     return matches
 
 
 def resolve_single_injectable(lookup_key, lookup_type, matches) -> Injectable:
     if len(matches) == 1:
-        injectable = matches[0]
+        for injectable in matches:
+            break
     else:
         primary_matches = [inj for inj in matches if inj.primary]
         if len(primary_matches) == 0:

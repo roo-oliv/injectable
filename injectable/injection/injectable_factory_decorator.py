@@ -60,9 +60,17 @@ def injectable_factory(
         raise InjectableLoadError("No dependency class nor a qualifier were specified")
 
     def decorator(fn: Callable[..., T]) -> Callable[..., T]:
-        if get_caller_filepath() == InjectionContainer.LOADING_FILEPATH:
+        caller_filepath = get_caller_filepath()
+        if caller_filepath == InjectionContainer.LOADING_FILEPATH:
             InjectionContainer._register_factory(
-                fn, dependency, qualifier, primary, namespace, group, singleton
+                fn,
+                caller_filepath,
+                dependency,
+                qualifier,
+                primary,
+                namespace,
+                group,
+                singleton,
             )
         return fn
 

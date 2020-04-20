@@ -76,13 +76,7 @@ def inject(
             raise InjectionError(f"No injectable matches {lookup_type} '{lookup_key}'")
         return None
     if group is not None or exclude_groups is not None:
-        matches = filter_by_group(
-            matches,
-            lookup_key=lookup_key,
-            lookup_type=lookup_type,
-            group=group,
-            exclude_groups=exclude_groups,
-        )
+        matches = filter_by_group(matches, group, exclude_groups,)
         if not matches:
             if not optional:
                 raise InjectionError(
@@ -156,13 +150,7 @@ def inject_multiple(
             raise InjectionError(f"No injectable matches {lookup_type} '{lookup_key}'")
         return []
     if group is not None or exclude_groups is not None:
-        matches = filter_by_group(
-            matches,
-            lookup_key=lookup_key,
-            lookup_type=lookup_type,
-            group=group,
-            exclude_groups=exclude_groups,
-        )
+        matches = filter_by_group(matches, group, exclude_groups,)
         if not matches:
             if not optional:
                 raise InjectionError(
