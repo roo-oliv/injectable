@@ -50,7 +50,7 @@ setup(
         "injection inject injectable injectables autowiring autowire autowired"
         " dependency dependency-injection DI SOLID lazy lazy-initialization"
         " circular circular-dependency cyclic cyclic-dependency"
-        " inversion-of-control ioc container spring guice fixture"
+        " inversion-of-control ioc container spring guice fixture for-humans humans"
     ),
     python_requires=">=3.6",
     install_requires=requirements,
@@ -60,11 +60,19 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS",
+        "Operating System :: POSIX",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: Implementation :: CPython"
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Typing :: Typed",
     ],
 )
