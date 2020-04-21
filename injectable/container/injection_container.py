@@ -3,8 +3,6 @@ from importlib.util import module_from_spec, spec_from_file_location
 from typing import Dict, Optional, Callable
 from typing import Set
 
-from parameters_validation import non_blank
-from parameters_validation import non_null
 from pycollect import PythonFileCollector, find_module_name
 
 from injectable.container.injectable import Injectable
@@ -36,10 +34,7 @@ class InjectionContainer:
 
     @classmethod
     def load(
-        cls,
-        search_path: non_blank(str) = None,
-        *,
-        default_namespace: non_blank(str) = None,
+        cls, search_path: str = None, *, default_namespace: str = None,
     ):
         """
         Loads injectables under the search path to the :class:`InjectionContainer`
@@ -60,6 +55,7 @@ class InjectionContainer:
         Usage::
 
           >>> from injectable import InjectionContainer
+          >>>
           >>> InjectionContainer.load()
         """
         cls.DEFAULT_NAMESPACE = default_namespace or "_GLOBAL"
@@ -74,12 +70,12 @@ class InjectionContainer:
     @classmethod
     def _register_injectable(
         cls,
-        klass: non_null(type),
-        filepath: non_blank(str),
-        qualifier: non_blank(str) = None,
+        klass: type,
+        filepath: str,
+        qualifier: str = None,
         primary: bool = False,
-        namespace: non_blank(str) = None,
-        group: non_blank(str) = None,
+        namespace: str = None,
+        group: str = None,
         singleton: bool = False,
     ):
         unique_id = f"{klass.__qualname__}@{filepath}"
@@ -90,13 +86,13 @@ class InjectionContainer:
     @classmethod
     def _register_factory(
         cls,
-        factory: non_null(Callable),
-        filepath: non_blank(str),
+        factory: Callable,
+        filepath: str,
         dependency: Optional[type],
-        qualifier: non_blank(str) = None,
+        qualifier: str = None,
         primary: bool = False,
-        namespace: non_blank(str) = None,
-        group: non_blank(str) = None,
+        namespace: str = None,
+        group: str = None,
         singleton: bool = False,
     ):
         unique_id = f"{factory.__qualname__}@{filepath}"

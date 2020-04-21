@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>injectable.testing &#8212; injectable 3.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <script src="../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing" href="../contributing.html" />
+    <link rel="prev" title="injectable.errors" href="injectable_errors.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../index.html">injectable-3.3.0</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Reference</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="injectable-testing">
+<h1>injectable.testing<a class="headerlink" href="#injectable-testing" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-injectable.testing"></span><p>Testing utilities to ease mocking injectables.</p>
+<p>A usage example is available in the <a class="reference internal" href="../usage/testing_example.html#testing-example"><span class="std std-ref">Testing Example</span></a> subsection of the
+<a class="reference internal" href="../usage/index.html#usage-examples"><span class="std std-ref">Usage Examples</span></a> section.</p>
+<dl class="py function">
+<dt id="injectable.testing.clear_injectables">
+<code class="sig-prename descclassname">injectable.testing.</code><code class="sig-name descname">clear_injectables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>type<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Set<span class="p">[</span>injectable.container.injectable.Injectable<span class="p">]</span><a class="reference internal" href="../_modules/injectable/testing/clear_injectables.html#clear_injectables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.testing.clear_injectables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to clear all injectables registered for the dependency in a given
+namespace. Returns a set containing all cleared injectables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dependency</strong> – class or qualifier of the dependency.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which the injectable will be registered.
+Defaults to the default namespace specified in
+<a class="reference internal" href="injectable.html#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable.testing</span> <span class="kn">import</span> <span class="n">clear_injectables</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clear_injectables</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="injectable.testing.register_injectables">
+<code class="sig-prename descclassname">injectable.testing.</code><code class="sig-name descname">register_injectables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">injectables</span><span class="p">:</span> <span class="n">Collection<span class="p">[</span>injectable.container.injectable.Injectable<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">klass</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>type<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">qualifier</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">propagate</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/testing/register_injectables.html#register_injectables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.testing.register_injectables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to manually register injectables in a given namespace for the
+provided class and/or qualifier.</p>
+<p>At least one of <code class="docutils literal notranslate"><span class="pre">klass</span></code> or <code class="docutils literal notranslate"><span class="pre">qualifier</span></code> parameters need to be defined. Otherwise
+a <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> will be raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>injectables</strong> – a collection of injectables to register.</p></li>
+<li><p><strong>klass</strong> – (optional) the class for which the injectables will be registered.
+This parameter is optional as long as <code class="docutils literal notranslate"><span class="pre">qualifier</span></code> is provided. Injectables
+registering won’t be propagated to base classes unless otherwise specified
+by the <code class="docutils literal notranslate"><span class="pre">propagate</span></code> parameter. Defaults to None.</p></li>
+<li><p><strong>qualifier</strong> – (optional) the qualifier for which the injectables will be
+registered. This parameter is optional as long as <code class="docutils literal notranslate"><span class="pre">klass</span></code> is provided.
+Defaults to None.</p></li>
+<li><p><strong>namespace</strong> – (optional) namespace in which the injectable will be registered.
+Defaults to the default namespace specified in
+<a class="reference internal" href="injectable.html#injectable.InjectionContainer.load" title="injectable.InjectionContainer.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">InjectionContainer::load</span></code></a>.</p></li>
+<li><p><strong>propagate</strong> – (optional) When True injectables registering will be propagated
+to base classes of <code class="docutils literal notranslate"><span class="pre">klass</span></code> recursively. Setting this parameter to True
+and not specifying the parameter <code class="docutils literal notranslate"><span class="pre">klass</span></code> will raise a <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code>.
+Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Injectable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable.testing</span> <span class="kn">import</span> <span class="n">register_injectables</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">injectable</span> <span class="o">=</span> <span class="n">Injectable</span><span class="p">(</span><span class="n">constructor</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_injectables</span><span class="p">({</span><span class="n">injectable</span><span class="p">},</span> <span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="injectable.html">injectable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_errors.html">injectable.errors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">injectable.testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/injectable_testing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../contributing.html" title="Contributing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="injectable_errors.html" title="injectable.errors"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Apr 20, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+    </div>
+  </body>
+</html>

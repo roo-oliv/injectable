@@ -35,6 +35,7 @@ def autowired(func: T) -> T:
     Usage::
 
       >>> from injectable import Autowired, autowired
+      >>>
       >>> @autowired
       ... def foo(dep: Autowired(...)):
       ...     ...

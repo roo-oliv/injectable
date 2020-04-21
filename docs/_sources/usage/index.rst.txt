@@ -1,4 +1,5 @@
 .. currentmodule:: injectable
+.. _usage_examples:
 
 ==============
 Usage Examples
@@ -17,3 +18,4 @@ Usage Examples
     singletons
     factory
     illustrative_example
+    testing_example
