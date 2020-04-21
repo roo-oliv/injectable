@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.0 (2020-04-20)
+------------------
+
+* Include the ``injectable.testing`` utilities to ease mocking injectables.
+
 3.2.1 (2020-04-19)
 ------------------
 

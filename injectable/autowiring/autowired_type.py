@@ -15,7 +15,7 @@ class _Autowired:
         *,
         namespace: str = None,
         group: str = None,
-        exclude_groups: Sequence[str] = None,
+        exclude_groups: Collection[str] = None,
         lazy: bool = False,
     ):
         type_origin = typing_inspect.get_origin(dependency)
@@ -117,6 +117,7 @@ class Autowired:
     Usage::
 
       >>> from injectable import Autowired, autowired
+      >>>
       >>> @autowired
       ... def foo(arg: Autowired("qualifier")):
       ...     ...
@@ -129,7 +130,7 @@ class Autowired:
         *,
         namespace: str = None,
         group: str = None,
-        exclude_groups: Sequence[str] = None,
+        exclude_groups: Collection[str] = None,
         lazy: bool = False,
     ) -> T:
         return _Autowired(

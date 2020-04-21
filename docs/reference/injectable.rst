@@ -1,5 +1,5 @@
-Reference
-=========
+injectable
+==========
 
 .. testsetup::
 
