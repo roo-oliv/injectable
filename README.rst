@@ -145,9 +145,9 @@ Features you'll love ❤️
 * **Autowiring**: injection is transparent to the function. Just decorate the function
   with :python:`@autowired` and annotate parameters with :python:`Autowired`, that's it.
 
-* **Automatic dependency discovery**: just call :python:`InjectionContainer.load()` at the
-  root of your project or pass the root path as an argument. All classes decorated with
-  :python:`@injectable` will be automatically discovered and ready for injection.
+* **Automatic dependency discovery**: just call :python:`load_injection_container()` at
+  the root of your project or pass the root path as an argument. All classes decorated
+  with :python:`@injectable` will be automatically discovered and ready for injection.
 
 * **Qualifier overloading**: declare as many injectables as you like for a single
   qualifier or extending the same base class. You can inject all of them just by
