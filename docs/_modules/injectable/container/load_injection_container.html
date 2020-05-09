@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>injectable.container.load_injection_container &#8212; injectable 3.4.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <script src="../../../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../../../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../../../index.html">injectable-3.4.0</a> &#187;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="../../../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for injectable.container.load_injection_container</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">injectable.container.injection_container</span> <span class="kn">import</span> <span class="n">InjectionContainer</span>
+<span class="kn">from</span> <span class="nn">injectable.common_utils</span> <span class="kn">import</span> <span class="n">get_caller_filepath</span>
+<span class="kn">from</span> <span class="nn">injectable.constants</span> <span class="kn">import</span> <span class="n">DEFAULT_NAMESPACE</span>
+
+
+<div class="viewcode-block" id="load_injection_container"><a class="viewcode-back" href="../../../reference/injectable.html#injectable.load_injection_container">[docs]</a><span class="k">def</span> <span class="nf">load_injection_container</span><span class="p">(</span>
+    <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads injectables under the search path to a shared injection container under the</span>
+<span class="sd">    designated namespaces.</span>
+
+<span class="sd">    :param search_path: (optional) path under which to search for injectables. Can</span>
+<span class="sd">            be either a relative or absolute path. Defaults to the caller&#39;s file</span>
+<span class="sd">            directory.</span>
+<span class="sd">    :param default_namespace: (optional) designated namespace for registering</span>
+<span class="sd">            injectables which does not explicitly request to be addressed in a</span>
+<span class="sd">            specific namespace. Defaults to</span>
+<span class="sd">            :const:`injectable.constants.DEFAULT_NAMESPACE`.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">      &gt;&gt;&gt; from injectable import load_injection_container</span>
+<span class="sd">      &gt;&gt;&gt; load_injection_container()</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This method will not scan any file already scanned by previous calls to it.</span>
+<span class="sd">        Multiple invocations to different search paths will add found injectables into</span>
+<span class="sd">        the injection container without clearing previously loaded ones but never</span>
+<span class="sd">        loading a same injectable more than once.</span>
+
+<span class="sd">    .. versionadded:: 3.4.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">search_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">search_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">get_caller_filepath</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">search_path</span><span class="p">):</span>
+        <span class="n">caller_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">get_caller_filepath</span><span class="p">())</span>
+        <span class="n">search_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">caller_path</span><span class="p">,</span> <span class="n">search_path</span><span class="p">))</span>
+    <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">load_dependencies_from</span><span class="p">(</span>
+        <span class="n">search_path</span><span class="p">,</span> <span class="n">default_namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on May 09, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

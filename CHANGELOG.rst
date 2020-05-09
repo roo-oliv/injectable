@@ -1,6 +1,15 @@
 Changelog
 =========
 
+3.4.0 (2020-04-26)
+------------------
+
+* Deprecate ``InjectionContainer::load`` in favor of ``load_injection_container``.
+* Change default namespace name from ``"_GLOBAL"`` to ``"DEFAULT_NAMESPACE"``.
+* Fix minor quirks with Python 3.7 and 3.8.
+* Add tons of unit tests.
+* Add ``reset_injection_container`` utility to ``injectable.testing``
+
 3.3.0 (2020-04-20)
 ------------------
 

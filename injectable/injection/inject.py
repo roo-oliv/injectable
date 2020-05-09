@@ -1,10 +1,13 @@
 from typing import TypeVar, Union, Type, List, Sequence
 
+from injectable.common_utils import get_dependency_name
 from injectable.errors import InjectionError
-from injectable.injection.utils import (
+from injectable.constants import DEFAULT_NAMESPACE
+from injectable.injection.injection_utils import (
     get_namespace_injectables,
     filter_by_group,
     resolve_single_injectable,
+    get_dependency_registry_type,
 )
 
 T = TypeVar("T")
@@ -29,9 +32,9 @@ def inject(
     :class:`Autowired <injectable.Autowired>` type annotation for dependency injection
     to be automatically wired to a function's call instead.
 
-    Raises :class:`InjectionContainerNotLoadedError
-    <injectable.errors.InjectionContainerNotLoadedError>` when invoked before
-    :meth:`InjectionContainer::load <injectable.InjectionContainer.load>` is called.
+    Will log a warning indicating that the injection container is empty when invoked
+    before :meth:`load_injection_container <injectable.load_injection_container>` is
+    called.
 
     Raises
     :class:`InjectionError <injectable.errors.InjectionError>`
@@ -47,8 +50,7 @@ def inject(
     :param dependency: class, base class or qualifier of the dependency to be used for
             lookup among the registered injectables.
     :param namespace: (optional) namespace in which to look for the dependency. Defaults
-            to the default namespace specified in
-            :meth:`InjectionContainer::load <injectable.InjectionContainer.load>`
+            to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to filter out other injectables outside of this
             group. Defaults to None.
     :param exclude_groups: (optional) list of groups to be excluded. Defaults to None.
@@ -70,21 +72,27 @@ def inject(
       ...     def __init__(self, foo: Foo = None):
       ...         self.foo = foo or inject(Foo)
     """
-    matches, lookup_key, lookup_type = get_namespace_injectables(dependency, namespace)
+    dependency_name = get_dependency_name(dependency)
+    registry_type = get_dependency_registry_type(dependency)
+    matches = get_namespace_injectables(
+        dependency_name, registry_type, namespace or DEFAULT_NAMESPACE
+    )
     if not matches:
         if not optional:
-            raise InjectionError(f"No injectable matches {lookup_type} '{lookup_key}'")
+            raise InjectionError(
+                f"No injectable matches {registry_type.value} '{dependency_name}'"
+            )
         return None
     if group is not None or exclude_groups is not None:
-        matches = filter_by_group(matches, group, exclude_groups,)
+        matches = filter_by_group(matches, group, exclude_groups)
         if not matches:
             if not optional:
                 raise InjectionError(
-                    f"No injectable for {lookup_type} '{lookup_key}' matches group"
-                    f" '{group}'"
+                    f"No injectable for {registry_type.value} '{dependency_name}'"
+                    f" matches group '{group}'"
                 )
             return None
-    injectable = resolve_single_injectable(lookup_key, lookup_type, matches)
+    injectable = resolve_single_injectable(dependency_name, registry_type, matches)
     return injectable.get_instance(lazy=lazy)
 
 
@@ -106,9 +114,8 @@ def inject_multiple(
     :class:`Autowired <injectable.Autowired>` type annotation for dependency injection
     to be automatically wired to a function's call instead.
 
-    Raises :class:`InjectionContainerNotLoadedError
-    <injectable.errors.InjectionContainerNotLoadedError>` when invoked before
-    :meth:`InjectionContainer::load <injectable.InjectionContainer.load>` is called.
+    Logs a warning indicating that the injection container is empty when invoked before
+    :meth:`load_injection_container <injectable.load_injection_container>` is called.
 
     Raises
     :class:`InjectionError <injectable.errors.InjectionError>`
@@ -122,8 +129,7 @@ def inject_multiple(
     :param dependency: class, base class or qualifier of the dependency to be used for
             lookup among the registered injectables.
     :param namespace: (optional) namespace in which to look for the dependency. Defaults
-            to the default namespace specified in
-            :meth:`InjectionContainer::load <injectable.InjectionContainer.load>`
+            to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to filter out other injectables outside of this
             group. Defaults to None.
     :param exclude_groups: (optional) list of groups to be excluded. Defaults to None.
@@ -144,18 +150,24 @@ def inject_multiple(
       ...     def __init__(self, services: Sequence[AbstractService] = None):
       ...         self.services = services or inject_multiple(AbstractService)
     """
-    matches, lookup_key, lookup_type = get_namespace_injectables(dependency, namespace)
+    dependency_name = get_dependency_name(dependency)
+    registry_type = get_dependency_registry_type(dependency)
+    matches = get_namespace_injectables(
+        dependency_name, registry_type, namespace or DEFAULT_NAMESPACE
+    )
     if not matches:
         if not optional:
-            raise InjectionError(f"No injectable matches {lookup_type} '{lookup_key}'")
+            raise InjectionError(
+                f"No injectable matches {registry_type.value} '{dependency_name}'"
+            )
         return []
     if group is not None or exclude_groups is not None:
         matches = filter_by_group(matches, group, exclude_groups,)
         if not matches:
             if not optional:
                 raise InjectionError(
-                    f"No injectable for {lookup_type} '{lookup_key}' matches group"
-                    f" '{group}'"
+                    f"No injectable for {registry_type.value} '{dependency_name}'"
+                    f" matches group '{group}'"
                 )
             return []
     return [inj.get_instance(lazy=lazy) for inj in matches]

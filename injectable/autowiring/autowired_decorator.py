@@ -24,7 +24,7 @@ def autowired(func: T) -> T:
     an Autowired-annotated positional parameter.
 
     Before attempting to call an autowired function make sure
-    :meth:`InjectionContainer::load <injectable.InjectionContainer.load>` was invoked.
+    :meth:`load_injection_container <injectable.load_injection_container>` was invoked.
 
     .. note::
       This decorator can be applied to any function, not only an `__init__` method.
@@ -54,7 +54,7 @@ def autowired(func: T) -> T:
             )
         if parameter.default is not parameter.empty:
             raise AutowiringError("Default value assigned to Autowired parameter")
-        if parameter.kind is parameter.VAR_POSITIONAL:
+        if parameter.kind in (parameter.VAR_POSITIONAL, parameter.VAR_KEYWORD):
             raise AutowiringError(f"Autowired parameter is of kind {parameter.kind}")
         autowired_parameters.append(parameter)
 

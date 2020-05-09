@@ -15,7 +15,7 @@ independent instance of other injections.
 from examples import Example
 from examples.basic_usage.services.dependable_service import DependableService
 from examples.basic_usage.services.simple_service import SimpleService
-from injectable import autowired, Autowired, injectable, InjectionContainer
+from injectable import autowired, Autowired, injectable, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -52,6 +52,6 @@ class BasicUsage(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = BasicUsage()
     example.run()

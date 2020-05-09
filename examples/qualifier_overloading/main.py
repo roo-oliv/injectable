@@ -7,7 +7,7 @@ from typing import List
 
 from examples import Example
 from examples.qualifier_overloading.services.sender_service import SenderService
-from injectable import injectable, InjectionContainer, autowired, Autowired
+from injectable import injectable, autowired, Autowired, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -29,6 +29,6 @@ class QualifierOverloading(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = QualifierOverloading()
     example.run()

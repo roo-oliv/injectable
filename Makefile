@@ -41,6 +41,25 @@ tests:  ## run tests with pytest
 	python -m pytest --cov=injectable --cov-report term --cov-report html:htmlcov \
 	--cov-report xml:coverage.xml tests
 
+.PHONY: unit-tests
+unit-tests:  ## run unit tests with pytest
+	python setup.py develop
+	python -m pytest --cov=injectable --cov-report term --cov-report \
+	html:tests/unit/htmlcov --cov-report xml:tests/unit/coverage.xml tests/unit
+
+.PHONY: fixes-tests
+fixes-tests:  ## run fixes tests with pytest
+	python setup.py develop
+	python -m pytest --cov=injectable --cov-report term --cov-report \
+	html:tests/fixes/htmlcov --cov-report xml:tests/fixes/coverage.xml tests/fixes
+
+.PHONY: examples-tests
+examples-tests:  ## run examples tests with pytest
+	python setup.py develop
+	python -m pytest --cov=injectable --cov-report term --cov-report \
+	html:tests/examples/htmlcov --cov-report xml:tests/examples/coverage.xml \
+	tests/examples
+
 .PHONY: checks
 checks: black-check flake-check  ## perform code standards and style checks
 
@@ -53,7 +72,7 @@ docs:
 	make html -B
 	cp -a build/html/. docs
 
-CURRENT_VERSION = 3.3.0
+CURRENT_VERSION = 3.4.0
 
 .PHONY: bump-patch-version
 bump-patch-version:

@@ -4,7 +4,7 @@ In this example you'll see how to declare an injection as lazy.
 # sphinx-start
 from examples import Example
 from examples.lazy_injection.lazy_service import LazyService
-from injectable import autowired, Autowired, injectable, InjectionContainer
+from injectable import autowired, Autowired, injectable, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -26,6 +26,6 @@ class LazyInjection(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = LazyInjection()
     example.run()

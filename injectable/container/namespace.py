@@ -1,8 +1,7 @@
-import inspect
 from typing import Dict, Optional, Set
 
 from injectable.container.injectable import Injectable
-from injectable.utils import get_dependency_name
+from injectable.common_utils import get_dependency_name
 
 
 class Namespace:
@@ -24,8 +23,6 @@ class Namespace:
             if not propagate:
                 return
             for base_class in klass.__bases__:
-                if inspect.isbuiltin(base_class):
-                    continue
                 self.register_injectable(injectable, base_class, propagate=propagate)
 
     def _register_to_class(

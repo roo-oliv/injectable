@@ -5,7 +5,12 @@ of explicitly declared qualifiers.
 # sphinx-start
 from examples import Example
 from examples.dependencies_precedence.services.abstract_service import AbstractService
-from injectable import injectable, InjectionContainer, autowired, Autowired
+from injectable import (
+    injectable,
+    autowired,
+    Autowired,
+    load_injection_container,
+)
 
 
 @injectable  # make examples also injectable for testing
@@ -28,6 +33,6 @@ class DependenciesPrecedence(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = DependenciesPrecedence()
     example.run()
