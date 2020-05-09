@@ -4,7 +4,7 @@ with circular references.
 """
 # sphinx-start
 from examples import Example
-from injectable import injectable, InjectionContainer, Autowired, autowired
+from injectable import injectable, Autowired, autowired, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -23,6 +23,6 @@ class CyclicDependency(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = CyclicDependency()
     example.run()

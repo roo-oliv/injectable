@@ -1,7 +1,7 @@
 from typing import TypeVar
 
 from injectable.container.injection_container import InjectionContainer
-from injectable.utils import get_caller_filepath
+from injectable.common_utils import get_caller_filepath
 
 T = TypeVar("T")
 
@@ -23,7 +23,7 @@ def injectable(
 
     .. note::
         All files using this decorator will be executed when
-        :meth:`InjectionContainer::load <injectable.InjectionContainer.load>` is
+        :meth:`load_injection_container <injectable.load_injection_container>` is
         invoked.
 
     :param cls: (cannot be explicitly passed) the decorated class. This will be
@@ -33,8 +33,7 @@ def injectable(
     :param primary: (optional) marks the injectable as primary for resolution in
             ambiguous cases. Defaults to False.
     :param namespace: (optional) namespace in which the injectable will be registered.
-            Defaults to the default namespace specified in
-            :meth:`InjectionContainer::load <injectable.InjectionContainer.load>`.
+            Defaults to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to be assigned to the injectable. Defaults to None.
     :param singleton: (optional) when True the injectable will be a singleton, i.e. only
             one instance of it will be created and shared globally. Defaults to False.

@@ -4,7 +4,7 @@ Python file.
 """
 # sphinx-start
 from examples import Example
-from injectable import injectable, InjectionContainer, autowired, Autowired
+from injectable import injectable, autowired, Autowired, load_injection_container
 
 
 @injectable
@@ -25,6 +25,6 @@ class IllustrativeExample(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = IllustrativeExample()
     example.run()

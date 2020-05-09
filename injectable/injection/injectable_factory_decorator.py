@@ -2,7 +2,7 @@ from typing import TypeVar, Callable
 
 from injectable.container.injection_container import InjectionContainer
 from injectable.errors.injectable_load_error import InjectableLoadError
-from injectable.utils import get_caller_filepath
+from injectable.common_utils import get_caller_filepath
 
 T = TypeVar("T")
 
@@ -29,18 +29,17 @@ def injectable_factory(
 
     .. note::
         All files using this decorator will be executed when
-        :meth:`InjectionContainer::load <injectable.InjectionContainer.load>` is
+        :meth:`load_injection_container <injectable.load_injection_container>` is
         invoked.
 
     :param dependency: (optional) the dependency class for which the factory will be
             registered to. Defaults to None.
-    :param qualifier: (optional) string qualifier for whoch the factory will be
+    :param qualifier: (optional) string qualifier for which the factory will be
             registered to. Defaults to None.
-    :param primary: (optional) marks the facotry as primary for the dependency
+    :param primary: (optional) marks the factory as primary for the dependency
             resolution in ambiguous cases. Defaults to False.
     :param namespace: (optional) namespace in which the factory will be registered.
-            Defaults to the default namespace specified in
-            :meth:`InjectionContainer::load <injectable.InjectionContainer.load>`.
+            Defaults to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to be assigned to the factory. Defaults to None.
     :param singleton: (optional) when True the factory will be used to instantiate a
             singleton, i.e. only one call to the factory will be made and the created

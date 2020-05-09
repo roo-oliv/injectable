@@ -3,7 +3,7 @@ In this example you'll see how we can use multiple namespaces for dependency inj
 """
 # sphinx-start
 from examples import Example
-from injectable import Autowired, autowired, injectable, InjectionContainer
+from injectable import Autowired, autowired, injectable, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -28,6 +28,6 @@ class MultipleNamespaces(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = MultipleNamespaces()
     example.run()

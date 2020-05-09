@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.autowiring.autowired_decorator &#8212; injectable 3.3.0 documentation</title>
+    <title>injectable.autowiring.autowired_decorator &#8212; injectable 3.4.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.3.0</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.0</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -72,7 +72,7 @@
 <span class="sd">    an Autowired-annotated positional parameter.</span>
 
 <span class="sd">    Before attempting to call an autowired function make sure</span>
-<span class="sd">    :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;` was invoked.</span>
+<span class="sd">    :meth:`load_injection_container &lt;injectable.load_injection_container&gt;` was invoked.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">      This decorator can be applied to any function, not only an `__init__` method.</span>
@@ -102,7 +102,7 @@
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AutowiringError</span><span class="p">(</span><span class="s2">&quot;Default value assigned to Autowired parameter&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span><span class="p">,</span> <span class="n">parameter</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">AutowiringError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Autowired parameter is of kind </span><span class="si">{</span><span class="n">parameter</span><span class="o">.</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">autowired_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
 
@@ -173,8 +173,8 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Apr 20, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+      Last updated on May 09, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

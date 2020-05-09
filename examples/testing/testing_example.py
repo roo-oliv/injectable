@@ -8,7 +8,13 @@ a dependency for tests.
 from unittest.mock import Mock
 
 from examples import Example
-from injectable import injectable, autowired, Autowired, InjectionContainer, Injectable
+from injectable import (
+    injectable,
+    autowired,
+    Autowired,
+    Injectable,
+    load_injection_container,
+)
 from injectable.testing import clear_injectables, register_injectables
 
 
@@ -36,6 +42,6 @@ class TestingExample(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = TestingExample()
     example.run()

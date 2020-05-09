@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.injection.injectable_factory_decorator &#8212; injectable 3.3.0 documentation</title>
+    <title>injectable.injection.injectable_factory_decorator &#8212; injectable 3.4.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.3.0</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.0</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -50,7 +50,7 @@
 
 <span class="kn">from</span> <span class="nn">injectable.container.injection_container</span> <span class="kn">import</span> <span class="n">InjectionContainer</span>
 <span class="kn">from</span> <span class="nn">injectable.errors.injectable_load_error</span> <span class="kn">import</span> <span class="n">InjectableLoadError</span>
-<span class="kn">from</span> <span class="nn">injectable.utils</span> <span class="kn">import</span> <span class="n">get_caller_filepath</span>
+<span class="kn">from</span> <span class="nn">injectable.common_utils</span> <span class="kn">import</span> <span class="n">get_caller_filepath</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
@@ -77,18 +77,17 @@
 
 <span class="sd">    .. note::</span>
 <span class="sd">        All files using this decorator will be executed when</span>
-<span class="sd">        :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;` is</span>
+<span class="sd">        :meth:`load_injection_container &lt;injectable.load_injection_container&gt;` is</span>
 <span class="sd">        invoked.</span>
 
 <span class="sd">    :param dependency: (optional) the dependency class for which the factory will be</span>
 <span class="sd">            registered to. Defaults to None.</span>
-<span class="sd">    :param qualifier: (optional) string qualifier for whoch the factory will be</span>
+<span class="sd">    :param qualifier: (optional) string qualifier for which the factory will be</span>
 <span class="sd">            registered to. Defaults to None.</span>
-<span class="sd">    :param primary: (optional) marks the facotry as primary for the dependency</span>
+<span class="sd">    :param primary: (optional) marks the factory as primary for the dependency</span>
 <span class="sd">            resolution in ambiguous cases. Defaults to False.</span>
 <span class="sd">    :param namespace: (optional) namespace in which the factory will be registered.</span>
-<span class="sd">            Defaults to the default namespace specified in</span>
-<span class="sd">            :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;`.</span>
+<span class="sd">            Defaults to :const:`injectable.constants.DEFAULT_NAMESPACE`.</span>
 <span class="sd">    :param group: (optional) group to be assigned to the factory. Defaults to None.</span>
 <span class="sd">    :param singleton: (optional) when True the factory will be used to instantiate a</span>
 <span class="sd">            singleton, i.e. only one call to the factory will be made and the created</span>
@@ -171,8 +170,8 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Apr 20, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+      Last updated on May 09, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

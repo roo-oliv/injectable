@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.injection.inject &#8212; injectable 3.3.0 documentation</title>
+    <title>injectable.injection.inject &#8212; injectable 3.4.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.3.0</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.0</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -48,11 +48,14 @@
   <h1>Source code for injectable.injection.inject</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span>
 
+<span class="kn">from</span> <span class="nn">injectable.common_utils</span> <span class="kn">import</span> <span class="n">get_dependency_name</span>
 <span class="kn">from</span> <span class="nn">injectable.errors</span> <span class="kn">import</span> <span class="n">InjectionError</span>
-<span class="kn">from</span> <span class="nn">injectable.injection.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">injectable.constants</span> <span class="kn">import</span> <span class="n">DEFAULT_NAMESPACE</span>
+<span class="kn">from</span> <span class="nn">injectable.injection.injection_utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_namespace_injectables</span><span class="p">,</span>
     <span class="n">filter_by_group</span><span class="p">,</span>
     <span class="n">resolve_single_injectable</span><span class="p">,</span>
+    <span class="n">get_dependency_registry_type</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
@@ -77,9 +80,9 @@
 <span class="sd">    :class:`Autowired &lt;injectable.Autowired&gt;` type annotation for dependency injection</span>
 <span class="sd">    to be automatically wired to a function&#39;s call instead.</span>
 
-<span class="sd">    Raises :class:`InjectionContainerNotLoadedError</span>
-<span class="sd">    &lt;injectable.errors.InjectionContainerNotLoadedError&gt;` when invoked before</span>
-<span class="sd">    :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;` is called.</span>
+<span class="sd">    Will log a warning indicating that the injection container is empty when invoked</span>
+<span class="sd">    before :meth:`load_injection_container &lt;injectable.load_injection_container&gt;` is</span>
+<span class="sd">    called.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    :class:`InjectionError &lt;injectable.errors.InjectionError&gt;`</span>
@@ -95,8 +98,7 @@
 <span class="sd">    :param dependency: class, base class or qualifier of the dependency to be used for</span>
 <span class="sd">            lookup among the registered injectables.</span>
 <span class="sd">    :param namespace: (optional) namespace in which to look for the dependency. Defaults</span>
-<span class="sd">            to the default namespace specified in</span>
-<span class="sd">            :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;`</span>
+<span class="sd">            to :const:`injectable.constants.DEFAULT_NAMESPACE`.</span>
 <span class="sd">    :param group: (optional) group to filter out other injectables outside of this</span>
 <span class="sd">            group. Defaults to None.</span>
 <span class="sd">    :param exclude_groups: (optional) list of groups to be excluded. Defaults to None.</span>
@@ -118,21 +120,27 @@
 <span class="sd">      ...     def __init__(self, foo: Foo = None):</span>
 <span class="sd">      ...         self.foo = foo or inject(Foo)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">matches</span><span class="p">,</span> <span class="n">lookup_key</span><span class="p">,</span> <span class="n">lookup_type</span> <span class="o">=</span> <span class="n">get_namespace_injectables</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+    <span class="n">dependency_name</span> <span class="o">=</span> <span class="n">get_dependency_name</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+    <span class="n">registry_type</span> <span class="o">=</span> <span class="n">get_dependency_registry_type</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">get_namespace_injectables</span><span class="p">(</span>
+        <span class="n">dependency_name</span><span class="p">,</span> <span class="n">registry_type</span><span class="p">,</span> <span class="n">namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exclude_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">exclude_groups</span><span class="p">,)</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">exclude_groups</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39; matches group&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; matches group &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">injectable</span> <span class="o">=</span> <span class="n">resolve_single_injectable</span><span class="p">(</span><span class="n">lookup_key</span><span class="p">,</span> <span class="n">lookup_type</span><span class="p">,</span> <span class="n">matches</span><span class="p">)</span>
+    <span class="n">injectable</span> <span class="o">=</span> <span class="n">resolve_single_injectable</span><span class="p">(</span><span class="n">dependency_name</span><span class="p">,</span> <span class="n">registry_type</span><span class="p">,</span> <span class="n">matches</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">injectable</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span></div>
 
 
@@ -154,9 +162,8 @@
 <span class="sd">    :class:`Autowired &lt;injectable.Autowired&gt;` type annotation for dependency injection</span>
 <span class="sd">    to be automatically wired to a function&#39;s call instead.</span>
 
-<span class="sd">    Raises :class:`InjectionContainerNotLoadedError</span>
-<span class="sd">    &lt;injectable.errors.InjectionContainerNotLoadedError&gt;` when invoked before</span>
-<span class="sd">    :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;` is called.</span>
+<span class="sd">    Logs a warning indicating that the injection container is empty when invoked before</span>
+<span class="sd">    :meth:`load_injection_container &lt;injectable.load_injection_container&gt;` is called.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    :class:`InjectionError &lt;injectable.errors.InjectionError&gt;`</span>
@@ -170,8 +177,7 @@
 <span class="sd">    :param dependency: class, base class or qualifier of the dependency to be used for</span>
 <span class="sd">            lookup among the registered injectables.</span>
 <span class="sd">    :param namespace: (optional) namespace in which to look for the dependency. Defaults</span>
-<span class="sd">            to the default namespace specified in</span>
-<span class="sd">            :meth:`InjectionContainer::load &lt;injectable.InjectionContainer.load&gt;`</span>
+<span class="sd">            to :const:`injectable.constants.DEFAULT_NAMESPACE`.</span>
 <span class="sd">    :param group: (optional) group to filter out other injectables outside of this</span>
 <span class="sd">            group. Defaults to None.</span>
 <span class="sd">    :param exclude_groups: (optional) list of groups to be excluded. Defaults to None.</span>
@@ -192,18 +198,24 @@
 <span class="sd">      ...     def __init__(self, services: Sequence[AbstractService] = None):</span>
 <span class="sd">      ...         self.services = services or inject_multiple(AbstractService)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">matches</span><span class="p">,</span> <span class="n">lookup_key</span><span class="p">,</span> <span class="n">lookup_type</span> <span class="o">=</span> <span class="n">get_namespace_injectables</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+    <span class="n">dependency_name</span> <span class="o">=</span> <span class="n">get_dependency_name</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+    <span class="n">registry_type</span> <span class="o">=</span> <span class="n">get_dependency_registry_type</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">get_namespace_injectables</span><span class="p">(</span>
+        <span class="n">dependency_name</span><span class="p">,</span> <span class="n">registry_type</span><span class="p">,</span> <span class="n">namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exclude_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">exclude_groups</span><span class="p">,)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">lookup_type</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">lookup_key</span><span class="si">}</span><span class="s2">&#39; matches group&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; matches group &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">inj</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span> <span class="k">for</span> <span class="n">inj</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span></div>
@@ -255,8 +267,8 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Apr 20, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
+      Last updated on May 09, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

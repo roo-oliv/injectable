@@ -6,8 +6,7 @@ behaviour.
 from examples import Example
 from examples.singletons.services.composite_singleton import CompositeSingleton
 from examples.singletons.services.simple_singleton import SimpleSingleton
-from injectable import injectable, Autowired, autowired
-from injectable.container.injection_container import InjectionContainer
+from injectable import injectable, Autowired, autowired, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -32,6 +31,6 @@ class Singletons(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = Singletons()
     example.run()

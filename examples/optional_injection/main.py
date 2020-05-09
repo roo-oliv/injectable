@@ -6,7 +6,7 @@ In this example you'll see how to declare an injection as optional using
 from typing import Optional, List
 
 from examples import Example
-from injectable import autowired, Autowired, injectable, InjectionContainer
+from injectable import autowired, Autowired, injectable, load_injection_container
 
 
 @injectable  # make examples also injectable for testing
@@ -29,6 +29,6 @@ class OptionalInjection(Example):
 
 
 if __name__ == "__main__":
-    InjectionContainer.load()
+    load_injection_container()
     example = OptionalInjection()
     example.run()

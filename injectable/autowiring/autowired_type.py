@@ -1,8 +1,12 @@
-from typing import Union, TypeVar, Sequence, List, Tuple, Iterable, Collection, Set
+from typing import Union, TypeVar, Sequence
 
 import typing_inspect
 
-from injectable.autowiring.utils import sanitize_if_forward_ref, is_none_type
+from injectable.autowiring.autowiring_utils import (
+    sanitize_if_forward_ref,
+    is_sequence,
+    is_raw_sequence,
+)
 from injectable.injection.inject import inject, inject_multiple
 
 T = TypeVar("T")
@@ -15,51 +19,48 @@ class _Autowired:
         *,
         namespace: str = None,
         group: str = None,
-        exclude_groups: Collection[str] = None,
+        exclude_groups: Sequence[str] = None,
         lazy: bool = False,
     ):
-        type_origin = typing_inspect.get_origin(dependency)
         optional = False
         multiple = False
 
-        if type_origin is Union:
-            subscripted_types = typing_inspect.get_args(dependency, evaluate=True)
-            if len(subscripted_types) == 0:
-                raise TypeError(f"Type not defined for Autowired Union")
-            if len(subscripted_types) != 2 or not is_none_type(subscripted_types[1]):
-                raise TypeError(
-                    f"Autowired Union can only be used to indicate"
-                    f" optional autowiring in the forms 'Union[T, None]' or"
-                    f" 'Optional[T]'"
-                )
-            dependency = sanitize_if_forward_ref(subscripted_types[0])
-            type_origin = typing_inspect.get_origin(dependency)
+        if typing_inspect.is_optional_type(dependency):
+            dependency = typing_inspect.get_args(dependency, evaluate=True)[0]
             optional = True
+        elif typing_inspect.is_union_type(dependency):
+            raise TypeError(
+                f"Autowired Union can only be used to indicate"
+                f" optional autowiring in the forms 'Union[T, None]' or"
+                f" 'Optional[T]'"
+            )
 
-        if type_origin in [
-            list,
-            tuple,
-            set,
-            List,
-            Tuple,
-            Sequence,
-            Set,
-            Iterable,
-            Collection,
-        ]:
-            subscripted_types = typing_inspect.get_args(dependency)
-            if len(subscripted_types) == 0:
-                raise TypeError(f"Type not defined for Autowired {type_origin}")
-            if len(subscripted_types) > 1:
+        if is_sequence(typing_inspect.get_origin(dependency) or dependency):
+            subscripted_types = typing_inspect.get_args(dependency, evaluate=True)
+            if subscripted_types == typing_inspect.get_args(Sequence):
+                raise TypeError(f"Type not defined for Autowired list")
+            subscripted_type = subscripted_types[0]
+            if typing_inspect.is_optional_type(subscripted_type):
                 raise TypeError(
-                    f"Only one type should be defined for Autowired {type_origin}"
+                    f"List of Optional is invalid for autowiring. Use"
+                    f" 'Autowired(Optional[List[...]])' instead."
                 )
-            dependency = sanitize_if_forward_ref(subscripted_types[0])
+            elif typing_inspect.is_union_type(subscripted_type):
+                raise TypeError(f"Only one type should be defined for Autowired list")
+            dependency = subscripted_type
+            multiple = True
+        elif is_raw_sequence(dependency):
+            if len(dependency) != 1:
+                raise TypeError(
+                    f"Only one type should be defined for Autowired"
+                    f" {dependency.__class__.__qualname__}"
+                )
+            dependency = dependency[0]
             multiple = True
 
         self.optional = optional
         self.multiple = multiple
-        self.dependency = dependency
+        self.dependency = sanitize_if_forward_ref(dependency)
         self.namespace = namespace
         self.group = group
         self.exclude_groups = exclude_groups
@@ -104,8 +105,7 @@ class Autowired:
             inject None if no matches are found to inject. ``Optional[List[...]]`` is
             valid and will inject an empty list if no matches are found to inject.
     :param namespace: (optional) namespace in which to look for the dependency.
-            Defaults to the default namespace specified in
-            :meth:`InjectionContainer::load <injectable.InjectionContainer.load>`
+            Defaults to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to filter out other injectables outside of this
             group. Defaults to None.
     :param exclude_groups: (optional) list of groups to be excluded. Defaults to
@@ -130,7 +130,7 @@ class Autowired:
         *,
         namespace: str = None,
         group: str = None,
-        exclude_groups: Collection[str] = None,
+        exclude_groups: Sequence[str] = None,
         lazy: bool = False,
     ) -> T:
         return _Autowired(

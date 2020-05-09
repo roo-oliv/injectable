@@ -13,7 +13,7 @@ class Injectable:
     Injectable is the low-level container class in which information regarding an
     injectable dependency is stored for registering in a namespace.
 
-    This class is not meant for direct usage. It should only be used in conjunction with
+    This class is not meant for direct usage. It should be used in conjunction with
     the :py:mod:`injectable.testing` module utilities for testing purposes only.
 
     :param constructor: callable to be used as constructor when injecting.
