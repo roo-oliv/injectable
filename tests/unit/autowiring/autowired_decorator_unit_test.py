@@ -164,3 +164,24 @@ class TestAutowiredDecorator:
         assert parameters["a"] is None
         assert parameters["b"] is AutowiredMockB.inject()
         assert parameters["c"] is None
+
+    def test__autowired__injects_named_autowired_args_when_named_args_defined_by_the_caller(self):
+        # given
+        AutowiredMockA = MagicMock(spec=_Autowired)
+        AutowiredMockB = MagicMock(spec=_Autowired)
+        AutowiredMockC = MagicMock(spec=_Autowired)
+
+        @autowired
+        def f(a: AutowiredMockA, b: AutowiredMockB, c: AutowiredMockC):
+            return {"a": a, "b": b, "c": c}
+
+        # when
+        parameters = f(None, b=None)
+
+        # then
+        assert AutowiredMockA.inject.called is False
+        assert AutowiredMockB.inject.called is False
+        assert AutowiredMockC.inject.called is True
+        assert parameters["a"] is None
+        assert parameters["b"] is None
+        assert parameters["c"] is AutowiredMockC.inject()
