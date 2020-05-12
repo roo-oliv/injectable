@@ -65,15 +65,14 @@ def autowired(func: T) -> T:
     def wrapper(*args, **kwargs):
         bound_arguments = signature.bind_partial(*args, **kwargs).arguments
         args = list(args)
-        caller_passed_kwargs = len(kwargs) > 0
         for parameter in autowired_parameters:
             if parameter.name in bound_arguments:
                 continue
             dependency = parameter.annotation.inject()
-            if caller_passed_kwargs or (parameter.kind is parameter.KEYWORD_ONLY):
-                kwargs[parameter.name] = dependency
-            else:
+            if parameter.kind is parameter.POSITIONAL_ONLY:
                 args.append(dependency)
+            else:
+                kwargs[parameter.name] = dependency
 
         return func(*args, **kwargs)
 

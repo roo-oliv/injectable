@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.autowiring.autowired_decorator &#8212; injectable 3.4.0 documentation</title>
+    <title>injectable.autowiring.autowired_decorator &#8212; injectable 3.4.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.0</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.1</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -117,10 +117,10 @@
             <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bound_arguments</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">dependency</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">inject</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dependency</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">parameter</span><span class="o">.</span><span class="n">POSITIONAL_ONLY</span><span class="p">:</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dependency</span>
 
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -173,8 +173,8 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 09, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Last updated on May 11, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.
     </div>
   </body>
 </html>

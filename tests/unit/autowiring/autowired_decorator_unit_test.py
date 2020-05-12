@@ -165,7 +165,7 @@ class TestAutowiredDecorator:
         assert parameters["b"] is AutowiredMockB.inject()
         assert parameters["c"] is None
 
-    def test__autowired__injects_named_autowired_args_when_named_args_defined_by_the_caller(self):
+    def test__autowired__with_named_args_defined_by_the_caller(self):
         # given
         AutowiredMockA = MagicMock(spec=_Autowired)
         AutowiredMockB = MagicMock(spec=_Autowired)
