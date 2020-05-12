@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.1 (2020-05-11)
+------------------
+
+* Fix the use of named args by the caller breaking autowired functions injection
+
 3.4.0 (2020-05-09)
 ------------------
 

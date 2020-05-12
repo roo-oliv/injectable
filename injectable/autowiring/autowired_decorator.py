@@ -69,10 +69,10 @@ def autowired(func: T) -> T:
             if parameter.name in bound_arguments:
                 continue
             dependency = parameter.annotation.inject()
-            if parameter.kind is parameter.KEYWORD_ONLY:
-                kwargs[parameter.name] = dependency
-            else:
+            if parameter.kind is parameter.POSITIONAL_ONLY:
                 args.append(dependency)
+            else:
+                kwargs[parameter.name] = dependency
 
         return func(*args, **kwargs)
 

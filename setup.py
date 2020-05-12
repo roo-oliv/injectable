@@ -24,7 +24,7 @@ with open("requirements.dev.txt") as f:
 
 setup(
     name="injectable",
-    version="3.4.0",
+    version="3.4.1",
     packages=find_packages(
         exclude=(
             "tests",
