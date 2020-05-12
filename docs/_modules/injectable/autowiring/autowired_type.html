@@ -78,29 +78,29 @@
             <span class="n">optional</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">is_union_type</span><span class="p">(</span><span class="n">dependency</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Autowired Union can only be used to indicate&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; optional autowiring in the forms &#39;Union[T, None]&#39; or&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; &#39;Optional[T]&#39;&quot;</span>
+                <span class="s2">&quot;Autowired Union can only be used to indicate&quot;</span>
+                <span class="s2">&quot; optional autowiring in the forms &#39;Union[T, None]&#39; or&quot;</span>
+                <span class="s2">&quot; &#39;Optional[T]&#39;&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">is_sequence</span><span class="p">(</span><span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_origin</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dependency</span><span class="p">):</span>
             <span class="n">subscripted_types</span> <span class="o">=</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">subscripted_types</span> <span class="o">==</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">Sequence</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type not defined for Autowired list&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Type not defined for Autowired list&quot;</span><span class="p">)</span>
             <span class="n">subscripted_type</span> <span class="o">=</span> <span class="n">subscripted_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">is_optional_type</span><span class="p">(</span><span class="n">subscripted_type</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;List of Optional is invalid for autowiring. Use&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; &#39;Autowired(Optional[List[...]])&#39; instead.&quot;</span>
+                    <span class="s2">&quot;List of Optional is invalid for autowiring. Use&quot;</span>
+                    <span class="s2">&quot; &#39;Autowired(Optional[List[...]])&#39; instead.&quot;</span>
                 <span class="p">)</span>
             <span class="k">elif</span> <span class="n">typing_inspect</span><span class="o">.</span><span class="n">is_union_type</span><span class="p">(</span><span class="n">subscripted_type</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only one type should be defined for Autowired list&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only one type should be defined for Autowired list&quot;</span><span class="p">)</span>
             <span class="n">dependency</span> <span class="o">=</span> <span class="n">subscripted_type</span>
             <span class="n">multiple</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">is_raw_sequence</span><span class="p">(</span><span class="n">dependency</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Only one type should be defined for Autowired&quot;</span>
+                    <span class="s2">&quot;Only one type should be defined for Autowired&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">dependency</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="n">dependency</span> <span class="o">=</span> <span class="n">dependency</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -237,7 +237,7 @@
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
       Last updated on May 11, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>

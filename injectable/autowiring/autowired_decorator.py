@@ -59,7 +59,7 @@ def autowired(func: T) -> T:
         autowired_parameters.append(parameter)
 
     if len(autowired_parameters) == 0:
-        raise AutowiringError(f"No parameter is typed with 'Autowired'")
+        raise AutowiringError("No parameter is typed with 'Autowired'")
 
     @wraps(func)
     def wrapper(*args, **kwargs):

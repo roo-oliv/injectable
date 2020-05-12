@@ -30,29 +30,29 @@ class _Autowired:
             optional = True
         elif typing_inspect.is_union_type(dependency):
             raise TypeError(
-                f"Autowired Union can only be used to indicate"
-                f" optional autowiring in the forms 'Union[T, None]' or"
-                f" 'Optional[T]'"
+                "Autowired Union can only be used to indicate"
+                " optional autowiring in the forms 'Union[T, None]' or"
+                " 'Optional[T]'"
             )
 
         if is_sequence(typing_inspect.get_origin(dependency) or dependency):
             subscripted_types = typing_inspect.get_args(dependency, evaluate=True)
             if subscripted_types == typing_inspect.get_args(Sequence):
-                raise TypeError(f"Type not defined for Autowired list")
+                raise TypeError("Type not defined for Autowired list")
             subscripted_type = subscripted_types[0]
             if typing_inspect.is_optional_type(subscripted_type):
                 raise TypeError(
-                    f"List of Optional is invalid for autowiring. Use"
-                    f" 'Autowired(Optional[List[...]])' instead."
+                    "List of Optional is invalid for autowiring. Use"
+                    " 'Autowired(Optional[List[...]])' instead."
                 )
             elif typing_inspect.is_union_type(subscripted_type):
-                raise TypeError(f"Only one type should be defined for Autowired list")
+                raise TypeError("Only one type should be defined for Autowired list")
             dependency = subscripted_type
             multiple = True
         elif is_raw_sequence(dependency):
             if len(dependency) != 1:
                 raise TypeError(
-                    f"Only one type should be defined for Autowired"
+                    "Only one type should be defined for Autowired"
                     f" {dependency.__class__.__qualname__}"
                 )
             dependency = dependency[0]
