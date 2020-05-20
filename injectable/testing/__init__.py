@@ -8,8 +8,13 @@ Testing utilities to ease mocking injectables.
 
 .. seealso::
 
-    The :ref:`testing_example` in the :ref:`usage_examples` section shows how to use
-    these utilities.
+    The :ref:`injectable_mocking_example` in the :ref:`usage_examples` section shows how
+    to use these utilities for mocking purposes.
+
+.. seealso::
+
+    The :ref:`injection_container_resetting_example` in the :ref:`usage_examples`
+    section shows how to use these utilities for clearing the injection container state.
 """
 from injectable.testing.clear_injectables_util import clear_injectables
 from injectable.testing.register_injectables_util import register_injectables

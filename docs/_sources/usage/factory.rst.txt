@@ -1,21 +1,17 @@
+.. _factory_example:
+
 ===============
 Factory Example
 ===============
 
-.. automodule:: examples.factory.main
+.. automodule:: examples.factory.factory_example
 
-.. literalinclude:: ../../examples/factory/main.py
-    :caption: main.py
+.. literalinclude:: ../../examples/factory/factory_example.py
+    :caption: factory_example.py
     :start-after: sphinx-start
 
 .. literalinclude:: ../../examples/factory/client_factory.py
     :caption: client_factory.py
 
-.. literalinclude:: ../../examples/factory/client_one.py
-    :caption: client_one.py
-
-.. literalinclude:: ../../examples/factory/client_two.py
-    :caption: client_two.py
-
-.. literalinclude:: ../../examples/factory/configuration_service.py
-    :caption: configuration_service.py
+.. literalinclude:: ../../examples/factory/external_client.py
+    :caption: external_client.py

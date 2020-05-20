@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Injectable Mocking For Tests Example &#8212; injectable 3.4.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <script src="../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Injection Container Resetting For Tests Example" href="injection_container_resetting_for_tests.html" />
+    <link rel="prev" title="Factory Example" href="factory.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../index.html">injectable-3.4.1</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-examples.injectable_mocking_for_tests.injectable_mocking_example">
+<span id="injectable-mocking-for-tests-example"></span><span id="injectable-mocking-example"></span><h1>Injectable Mocking For Tests Example<a class="headerlink" href="#module-examples.injectable_mocking_for_tests.injectable_mocking_example" title="Permalink to this headline">¶</a></h1>
+<p>This is an example of how one can use the testing utility functions
+<a class="reference internal" href="../reference/injectable_testing.html#injectable.testing.clear_injectables" title="injectable.testing.clear_injectables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">clear_injectables</span></code></a> and
+<a class="reference internal" href="../reference/injectable_testing.html#injectable.testing.register_injectables" title="injectable.testing.register_injectables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_injectables</span></code></a> for mocking
+a dependency for tests.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">injectable_mocking_example.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">Mock</span>
+
+<span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">injectable</span><span class="p">,</span>
+    <span class="n">autowired</span><span class="p">,</span>
+    <span class="n">Autowired</span><span class="p">,</span>
+    <span class="n">Injectable</span><span class="p">,</span>
+    <span class="n">load_injection_container</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">injectable.testing</span> <span class="kn">import</span> <span class="n">clear_injectables</span><span class="p">,</span> <span class="n">register_injectables</span>
+
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">RealDep</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">print</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RealDep&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@injectable</span>  <span class="c1"># make examples also injectable for testing</span>
+<span class="k">class</span> <span class="nc">InjectableMocking</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">clear_injectables</span><span class="p">(</span><span class="n">RealDep</span><span class="p">)</span>
+        <span class="n">mocked_dep</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">wraps</span><span class="o">=</span><span class="n">RealDep</span><span class="p">)</span>
+        <span class="n">mocked_dep</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MockedDep&quot;</span><span class="p">))</span>
+        <span class="n">mocked_injectable</span> <span class="o">=</span> <span class="n">Injectable</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">mocked_dep</span><span class="p">)</span>
+        <span class="n">register_injectables</span><span class="p">({</span><span class="n">mocked_injectable</span><span class="p">},</span> <span class="n">RealDep</span><span class="p">)</span>
+
+    <span class="nd">@autowired</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dep</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">RealDep</span><span class="p">)):</span>
+        <span class="n">dep</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+        <span class="c1"># MockedDep</span>
+        <span class="n">dep</span><span class="o">.</span><span class="n">print</span><span class="o">.</span><span class="n">assert_called</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">load_injection_container</span><span class="p">()</span>
+    <span class="n">example</span> <span class="o">=</span> <span class="n">InjectableMocking</span><span class="p">()</span>
+    <span class="n">example</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/usage/injectable_mocking_for_tests.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="injection_container_resetting_for_tests.html" title="Injection Container Resetting For Tests Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="factory.html" title="Factory Example"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on May 20, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

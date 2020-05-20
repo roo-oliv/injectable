@@ -1,9 +1,11 @@
+.. _optional_injection_example:
+
 ==========================
 Optional Injection Example
 ==========================
 
-.. automodule:: examples.optional_injection.main
+.. automodule:: examples.optional_injection.optional_injection_example
 
-.. literalinclude:: ../../examples/optional_injection/main.py
-    :caption: main.py
+.. literalinclude:: ../../examples/optional_injection/optional_injection_example.py
+    :caption: optional_injection_example.py
     :start-after: sphinx-start

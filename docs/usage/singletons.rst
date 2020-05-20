@@ -1,15 +1,14 @@
+.. _singleton_example:
+
 ==================
 Singletons Example
 ==================
 
-.. automodule:: examples.singletons.main
+.. automodule:: examples.singletons.singleton_example
 
-.. literalinclude:: ../../examples/singletons/main.py
-    :caption: main.py
+.. literalinclude:: ../../examples/singletons/singleton_example.py
+    :caption: singleton_example.py
     :start-after: sphinx-start
 
-.. literalinclude:: ../../examples/singletons/services/simple_singleton.py
-    :caption: simple_singleton.py
-
-.. literalinclude:: ../../examples/singletons/services/composite_singleton.py
-    :caption: composite_singleton.py
+.. literalinclude:: ../../examples/singletons/singleton_client.py
+    :caption: singleton_client.py

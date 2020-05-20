@@ -1,15 +1,17 @@
+.. _basic_usage_example:
+
 ===================
 Basic Usage Example
 ===================
 
-.. automodule:: examples.basic_usage.main
+.. automodule:: examples.basic_usage.basic_usage_example
 
-.. literalinclude:: ../../examples/basic_usage/main.py
-    :caption: main.py
+.. literalinclude:: ../../examples/basic_usage/basic_usage_example.py
+    :caption: basic_usage_example.py
     :start-after: sphinx-start
 
-.. literalinclude:: ../../examples/basic_usage/services/simple_service.py
-    :caption: simple_service.py
+.. literalinclude:: ../../examples/basic_usage/basic_service.py
+    :caption: basic_service.py
 
-.. literalinclude:: ../../examples/basic_usage/services/dependable_service.py
-    :caption: dependable_service.py
+.. literalinclude:: ../../examples/basic_usage/stateful_repository.py
+    :caption: stateful_repository.py

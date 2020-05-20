@@ -47,14 +47,33 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.dependencies_precedence.main">
-<span id="dependencies-precedence-example"></span><h1>Dependencies Precedence Example<a class="headerlink" href="#module-examples.dependencies_precedence.main" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-examples.dependencies_precedence.dependencies_precedence_example">
+<span id="id1"></span><span id="dependencies-precedence-example"></span><h1>Dependencies Precedence Example<a class="headerlink" href="#module-examples.dependencies_precedence.dependencies_precedence_example" title="Permalink to this headline">¶</a></h1>
 <p>In this example you’ll see the use of declaring an injectable as primary and the use
 of explicitly declared qualifiers.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<p>We declare an abstract base class <code class="docutils literal notranslate"><span class="pre">AbstractService</span></code> which exposes an abstract
+<code class="docutils literal notranslate"><span class="pre">combine</span></code> method. The classes <code class="docutils literal notranslate"><span class="pre">SumService</span></code> and <code class="docutils literal notranslate"><span class="pre">MultiplyService</span></code> both implement
+<code class="docutils literal notranslate"><span class="pre">AbstractService</span></code> and are declared as injectable though we specify different
+qualifiers for each and also declare <code class="docutils literal notranslate"><span class="pre">SumService</span></code> as primary.</p>
+<p>Now, when we inject an <code class="docutils literal notranslate"><span class="pre">AbstractService</span></code> into our <code class="docutils literal notranslate"><span class="pre">DependenciesPrecedence</span></code> example
+class we will get an instance of the <code class="docutils literal notranslate"><span class="pre">SumService</span></code> class since we declared it as
+primary. We inject a <code class="docutils literal notranslate"><span class="pre">MultipleService</span></code> instance as well by using the explicit
+qualifier attributed to it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">SumService</span></code> wasn’t declared as primary then injecting <code class="docutils literal notranslate"><span class="pre">AbstractService</span></code>
+would have failed and raised an error indicating there was ambiguity in resolving
+the specified dependency.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="qualifier_overloading.html#qualifier-overloading-example"><span class="std std-ref">Qualifier Overloading Example</span></a> shows how to get all instances which
+resolves a dependency instead of just the primary one.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">dependencies_precedence_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
-<span class="kn">from</span> <span class="nn">examples.dependencies_precedence.services.abstract_service</span> <span class="kn">import</span> <span class="n">AbstractService</span>
+<span class="kn">from</span> <span class="nn">examples.dependencies_precedence.abstract_service</span> <span class="kn">import</span> <span class="n">AbstractService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">injectable</span><span class="p">,</span>
     <span class="n">autowired</span><span class="p">,</span>
@@ -68,18 +87,18 @@ of explicitly declared qualifiers.</p>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">sum_service</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">AbstractService</span><span class="p">),</span>
-        <span class="n">multiply_service</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;multiply&quot;</span><span class="p">),</span>
+        <span class="n">abstract_service_1</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">AbstractService</span><span class="p">),</span>
+        <span class="n">abstract_service_2</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;multiply&quot;</span><span class="p">),</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sum_service</span> <span class="o">=</span> <span class="n">sum_service</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">multiply_service</span> <span class="o">=</span> <span class="n">multiply_service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abstract_service_1</span> <span class="o">=</span> <span class="n">abstract_service_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abstract_service_2</span> <span class="o">=</span> <span class="n">abstract_service_2</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sum_service</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-        <span class="c1"># 14</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abstract_service_1</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># 4 + 2 = 6</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multiply_service</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-        <span class="c1"># 49</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abstract_service_2</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># 4 * 2 = 8</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -89,8 +108,8 @@ of explicitly declared qualifiers.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">abstract_service.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">abstract_service.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
 
@@ -101,29 +120,29 @@ of explicitly declared qualifiers.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">sum_service.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.dependencies_precedence.services.abstract_service</span> <span class="kn">import</span> <span class="n">AbstractService</span>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">sum_service.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.dependencies_precedence.abstract_service</span> <span class="kn">import</span> <span class="n">AbstractService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
 <span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="n">primary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">SumService</span><span class="p">(</span><span class="n">AbstractService</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">multiply_service.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.dependencies_precedence.services.abstract_service</span> <span class="kn">import</span> <span class="n">AbstractService</span>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">multiply_service.py</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.dependencies_precedence.abstract_service</span> <span class="kn">import</span> <span class="n">AbstractService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
 <span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;multiply&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MultiplyService</span><span class="p">(</span><span class="n">AbstractService</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> * </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -152,17 +171,18 @@ of explicitly declared qualifiers.</p>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -202,7 +222,7 @@ of explicitly declared qualifiers.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Multiple Namespaces Example" href="multiple_namespaces.html" />
+    <link rel="next" title="Namespaces Example" href="namespaces.html" />
     <link rel="prev" title="Optional Injection Example" href="optional_injection.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
@@ -47,12 +47,23 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.cyclic_dependency.main">
-<span id="cyclic-dependency-example"></span><h1>Cyclic Dependency Example<a class="headerlink" href="#module-examples.cyclic_dependency.main" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-examples.cyclic_dependency.cyclic_dependency_example">
+<span id="id1"></span><span id="cyclic-dependency-example"></span><h1>Cyclic Dependency Example<a class="headerlink" href="#module-examples.cyclic_dependency.cyclic_dependency_example" title="Permalink to this headline">¶</a></h1>
 <p>In this example you’ll learn how the injectable framework can make it easier to deal
 with circular references.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<p>We use qualifiers to register ours cyclic-dependent services which will enable us to
+refer to these dependencies by their qualifier string when injecting the services into
+our <code class="docutils literal notranslate"><span class="pre">CyclicDependency</span></code> example class instead of having to import them and possibly
+falling into a cyclic import loop.</p>
+<p>For each of the services we inject the other one with a lazy modifier which will prevent
+us from falling into an instantiation loop as lazy dependencies are only instantiated
+when its attributes are accessed or its methods are invoked.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="lazy_injection.html#lazy-injection-example"><span class="std std-ref">Lazy Injection Example</span></a> details how lazy injection works.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">cyclic_dependency_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">load_injection_container</span>
 
@@ -65,11 +76,11 @@ with circular references.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">service_b</span> <span class="o">=</span> <span class="n">service_b</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_a</span><span class="o">.</span><span class="n">message_b</span><span class="p">)</span>
-        <span class="c1"># ServiceB.message</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_a</span><span class="o">.</span><span class="n">get_some_property_from_b</span><span class="p">)</span>
+        <span class="c1"># some property from B</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_b</span><span class="o">.</span><span class="n">message_a</span><span class="p">)</span>
-        <span class="c1"># ServiceA.message</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_b</span><span class="o">.</span><span class="n">get_some_property_from_a</span><span class="p">)</span>
+        <span class="c1"># some property from A</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -79,8 +90,8 @@ with circular references.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">service_a.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">service_a.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
 
 
@@ -89,29 +100,29 @@ with circular references.</p>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_b</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">service_b</span> <span class="o">=</span> <span class="n">service_b</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;ServiceA.message&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">some_property</span> <span class="o">=</span> <span class="s2">&quot;some property from A&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">message_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_b</span><span class="o">.</span><span class="n">message</span>
+    <span class="k">def</span> <span class="nf">get_some_property_from_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_b</span><span class="o">.</span><span class="n">some_property</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">service_b.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">service_b.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span>
 
 
 <span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ServiceB</span><span class="p">:</span>
     <span class="nd">@autowired</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_a</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_a</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">service_a</span> <span class="o">=</span> <span class="n">service_a</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;ServiceB.message&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">some_property</span> <span class="o">=</span> <span class="s2">&quot;some property from B&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">message_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_a</span><span class="o">.</span><span class="n">message</span>
+    <span class="k">def</span> <span class="nf">get_some_property_from_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_a</span><span class="o">.</span><span class="n">some_property</span>
 </pre></div>
 </div>
 </div>
@@ -140,17 +151,18 @@ with circular references.</p>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -180,7 +192,7 @@ with circular references.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="multiple_namespaces.html" title="Multiple Namespaces Example"
+          <a href="namespaces.html" title="Namespaces Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="optional_injection.html" title="Optional Injection Example"
@@ -190,7 +202,7 @@ with circular references.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
