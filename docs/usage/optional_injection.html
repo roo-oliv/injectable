@@ -47,12 +47,34 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.optional_injection.main">
-<span id="optional-injection-example"></span><h1>Optional Injection Example<a class="headerlink" href="#module-examples.optional_injection.main" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-examples.optional_injection.optional_injection_example">
+<span id="id1"></span><span id="optional-injection-example"></span><h1>Optional Injection Example<a class="headerlink" href="#module-examples.optional_injection.optional_injection_example" title="Permalink to this headline">¶</a></h1>
 <p>In this example you’ll see how to declare an injection as optional using
 <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.Optional</span></code>.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<p>When a dependency is not found for injection you’ll receive a <code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code>. This may
+not be what you want if it is expected and OK that in some situations the dependency
+simply won’t be present.</p>
+<p>In our <code class="docutils literal notranslate"><span class="pre">OptionalInjection</span></code> example class we optionally autowire the <code class="docutils literal notranslate"><span class="pre">some_service</span></code>
+argument with the <code class="docutils literal notranslate"><span class="pre">&quot;foo&quot;</span></code> qualifier and we optionally autowire the
+<code class="docutils literal notranslate"><span class="pre">bunch_of_services</span></code> argument with a list of all injectables that satisfy the <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code>
+qualifier.</p>
+<p>In this example, both qualifiers, <code class="docutils literal notranslate"><span class="pre">&quot;foo&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code>, aren’t declared by any
+injectable though as we declared both injections as optional, the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method
+won’t fail and instead will inject the value <code class="docutils literal notranslate"><span class="pre">None</span></code> to <code class="docutils literal notranslate"><span class="pre">some_service</span></code> and an empty
+list <code class="docutils literal notranslate"><span class="pre">[]</span></code> to <code class="docutils literal notranslate"><span class="pre">bunch_of_services</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.Optional</span></code> type shall be the outermost declared type, so
+<code class="docutils literal notranslate"><span class="pre">Autowired(Optional[List[...]])</span></code> will work while
+<code class="docutils literal notranslate"><span class="pre">Autowired(List[Optional[...]])</span></code> won’t.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="qualifier_overloading.html#qualifier-overloading-example"><span class="std std-ref">Qualifier Overloading Example</span></a> shows how to use <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.List</span></code> to
+get all instances which resolves a dependency instead of just the primary one.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">optional_injection_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
@@ -110,17 +132,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -160,7 +183,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

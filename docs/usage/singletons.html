@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Factory Example" href="factory.html" />
-    <link rel="prev" title="Multiple Namespaces Example" href="multiple_namespaces.html" />
+    <link rel="prev" title="Namespaces Example" href="namespaces.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
     <meta name="viewport" content="width=device-width,initial-scale=0.8">
@@ -47,15 +47,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.singletons.main">
-<span id="singletons-example"></span><h1>Singletons Example<a class="headerlink" href="#module-examples.singletons.main" title="Permalink to this headline">¶</a></h1>
-<p>In this example you’ll see how we define dependencies as singletons and demonstrate its
-behaviour.</p>
+  <div class="section" id="module-examples.singletons.singleton_example">
+<span id="singletons-example"></span><span id="singleton-example"></span><h1>Singletons Example<a class="headerlink" href="#module-examples.singletons.singleton_example" title="Permalink to this headline">¶</a></h1>
+<p>In this example you’ll see how we define dependencies as singletons and how they behave.</p>
+<p>A singleton injectable is instantiated only once and then this same instance is used
+whenever an injection is made.</p>
+<p>In our <code class="docutils literal notranslate"><span class="pre">Singleton</span></code> example class we inject two parameters, <code class="docutils literal notranslate"><span class="pre">client1</span></code> and <code class="docutils literal notranslate"><span class="pre">client2</span></code>
+both with the <code class="docutils literal notranslate"><span class="pre">SingletonClient</span></code> class, which in turn, was declared as singleton.</p>
+<p>When we run our example we can see that, as there is only one instance being shared
+between injections a change to its state is then reflected to every other place injected
+with it.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">singleton_example.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
-<span class="kn">from</span> <span class="nn">examples.singletons.services.composite_singleton</span> <span class="kn">import</span> <span class="n">CompositeSingleton</span>
-<span class="kn">from</span> <span class="nn">examples.singletons.services.simple_singleton</span> <span class="kn">import</span> <span class="n">SimpleSingleton</span>
+<span class="kn">from</span> <span class="nn">examples.singletons.singleton_client</span> <span class="kn">import</span> <span class="n">SingletonClient</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">load_injection_container</span>
 
 
@@ -64,20 +69,25 @@ behaviour.</p>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">composite_singleton</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">CompositeSingleton</span><span class="p">),</span>
-        <span class="n">simple_singleton</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">SimpleSingleton</span><span class="p">),</span>
+        <span class="n">client1</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">SingletonClient</span><span class="p">),</span>
+        <span class="n">client2</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">SingletonClient</span><span class="p">),</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">composite_singleton</span> <span class="o">=</span> <span class="n">composite_singleton</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span> <span class="o">=</span> <span class="n">simple_singleton</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client1</span> <span class="o">=</span> <span class="n">client1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client2</span> <span class="o">=</span> <span class="n">client2</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">composite_singleton</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">10</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
-        <span class="c1"># 10</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client1</span><span class="o">.</span><span class="n">connected</span><span class="p">)</span>
+        <span class="c1"># False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span><span class="o">.</span><span class="n">counter</span> <span class="o">-=</span> <span class="mi">5</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composite_singleton</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
-        <span class="c1"># 5</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client2</span><span class="o">.</span><span class="n">connected</span><span class="p">)</span>
+        <span class="c1"># False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client1</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client1</span><span class="o">.</span><span class="n">connected</span><span class="p">)</span>
+        <span class="c1"># True</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client2</span><span class="o">.</span><span class="n">connected</span><span class="p">)</span>
+        <span class="c1"># True</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -88,36 +98,17 @@ behaviour.</p>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">simple_singleton.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">singleton_client.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
 <span class="nd">@injectable</span><span class="p">(</span><span class="n">singleton</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">SimpleSingleton</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">SingletonClient</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
-</pre></div>
-</div>
-</div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">composite_singleton.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.singletons.services.simple_singleton</span> <span class="kn">import</span> <span class="n">SimpleSingleton</span>
-<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">False</span>
 
-
-<span class="nd">@injectable</span><span class="p">(</span><span class="n">singleton</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">CompositeSingleton</span><span class="p">:</span>
-    <span class="nd">@autowired</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simple_singleton</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">SimpleSingleton</span><span class="p">)):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span> <span class="o">=</span> <span class="n">simple_singleton</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span><span class="o">.</span><span class="n">counter</span>
-
-    <span class="nd">@counter</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">simple_singleton</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>
@@ -146,17 +137,18 @@ behaviour.</p>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -189,14 +181,14 @@ behaviour.</p>
           <a href="factory.html" title="Factory Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="multiple_namespaces.html" title="Multiple Namespaces Example"
+          <a href="namespaces.html" title="Namespaces Example"
              accesskey="P">previous</a> |</li>
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

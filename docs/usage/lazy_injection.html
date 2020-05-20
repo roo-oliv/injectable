@@ -47,13 +47,28 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.lazy_injection.main">
-<span id="lazy-injection-example"></span><h1>Lazy Injection Example<a class="headerlink" href="#module-examples.lazy_injection.main" title="Permalink to this headline">¶</a></h1>
-<p>In this example you’ll see how to declare an injection as lazy.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+  <div class="section" id="module-examples.lazy_injection.lazy_injection_example">
+<span id="id1"></span><span id="lazy-injection-example"></span><h1>Lazy Injection Example<a class="headerlink" href="#module-examples.lazy_injection.lazy_injection_example" title="Permalink to this headline">¶</a></h1>
+<p>In this example you’ll see how to declare an injection as lazy and how does it work.</p>
+<p>We declare classes <code class="docutils literal notranslate"><span class="pre">ServiceA</span></code> and <code class="docutils literal notranslate"><span class="pre">ServiceB</span></code> which both print when they are being
+instantiated and also when their method <code class="docutils literal notranslate"><span class="pre">something</span></code> is invoked.</p>
+<p>In our <code class="docutils literal notranslate"><span class="pre">LazyInjection</span></code> example class we inject the <code class="docutils literal notranslate"><span class="pre">ServiceA</span></code> lazily by
+specifying the parameter <code class="docutils literal notranslate"><span class="pre">lazy=True</span></code> to <a class="reference internal" href="../reference/injectable.html#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> and
+we also inject the <code class="docutils literal notranslate"><span class="pre">ServiceB</span></code> the default way (not lazy).</p>
+<p>You can see that at the <code class="docutils literal notranslate"><span class="pre">LazyInjection::__init__</span></code> method the <code class="docutils literal notranslate"><span class="pre">ServiceB::__init__</span></code>
+method is called right at injection time while we do not see the same for <code class="docutils literal notranslate"><span class="pre">ServiceA</span></code>.</p>
+<p>Now, in the <code class="docutils literal notranslate"><span class="pre">LazyInjection::run</span></code> method we can see that <code class="docutils literal notranslate"><span class="pre">ServiceA::__init__</span></code> is only
+called when actually needed, i.e., when we invoke <code class="docutils literal notranslate"><span class="pre">ServiceA::something</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="cyclic_dependency.html#cyclic-dependency-example"><span class="std std-ref">Cyclic Dependency Example</span></a> details how to leverage lazy injection to deal
+with circular references.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">lazy_injection_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
-<span class="kn">from</span> <span class="nn">examples.lazy_injection.lazy_service</span> <span class="kn">import</span> <span class="n">LazyService</span>
+<span class="kn">from</span> <span class="nn">examples.lazy_injection.service_a</span> <span class="kn">import</span> <span class="n">ServiceA</span>
+<span class="kn">from</span> <span class="nn">examples.lazy_injection.service_b</span> <span class="kn">import</span> <span class="n">ServiceB</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">load_injection_container</span>
 
 
@@ -61,18 +76,26 @@
 <span class="k">class</span> <span class="nc">LazyInjection</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">lazy_service</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">LazyService</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">service_a</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">ServiceA</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">service_b</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">ServiceB</span><span class="p">)</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lazy_service</span> <span class="o">=</span> <span class="n">lazy_service</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finished injecting&quot;</span><span class="p">)</span>
-        <span class="c1"># finished injecting</span>
+        <span class="c1"># ServiceB::__init__ called</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;example init started&quot;</span><span class="p">)</span>
+        <span class="c1"># example init started</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_a</span> <span class="o">=</span> <span class="n">service_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_b</span> <span class="o">=</span> <span class="n">service_b</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;example init finished&quot;</span><span class="p">)</span>
+        <span class="c1"># example init finished</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;running&quot;</span><span class="p">)</span>
         <span class="c1"># running</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lazy_service</span><span class="o">.</span><span class="n">something</span><span class="p">()</span>
-        <span class="c1"># LazyService::__init__ called</span>
-        <span class="c1"># LazyService::something called</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_a</span><span class="o">.</span><span class="n">something</span><span class="p">()</span>
+        <span class="c1"># ServiceA::__init__ called</span>
+        <span class="c1"># ServiceA::something called</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_b</span><span class="o">.</span><span class="n">something</span><span class="p">()</span>
+        <span class="c1"># ServiceB::something called</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -82,18 +105,33 @@
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">lazy_service.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">service_a.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
 <span class="nd">@injectable</span>
-<span class="k">class</span> <span class="nc">LazyService</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">ServiceA</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LazyService::__init__ called&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ServiceA::__init__ called&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LazyService::something called&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ServiceA::something called&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">service_b.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">ServiceB</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ServiceB::__init__ called&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ServiceB::something called&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -122,17 +160,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -172,7 +211,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

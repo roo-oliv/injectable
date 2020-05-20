@@ -17,7 +17,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Illustrative Example" href="illustrative_example.html" />
+    <link rel="next" title="Injectable Mocking For Tests Example" href="injectable_mocking_for_tests.html" />
     <link rel="prev" title="Singletons Example" href="singletons.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
@@ -47,13 +47,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.factory.main">
-<span id="factory-example"></span><h1>Factory Example<a class="headerlink" href="#module-examples.factory.main" title="Permalink to this headline">¶</a></h1>
-<p>In this example you’ll see how we can use a injectable_factory function for an
-injectable.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+  <div class="section" id="module-examples.factory.factory_example">
+<span id="id1"></span><span id="factory-example"></span><h1>Factory Example<a class="headerlink" href="#module-examples.factory.factory_example" title="Permalink to this headline">¶</a></h1>
+<p>In this example you’ll see how we can declare a function as a factory of injectable
+instances.</p>
+<p>A common use case for using factories is to wrap some class external to your code or
+which you cannot declare as injectable for some reason, we declare a <code class="docutils literal notranslate"><span class="pre">ExternalClient</span></code>
+class to represent such a case.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">client_factory</span></code> function is declared as a factory for the <code class="docutils literal notranslate"><span class="pre">ExternalClient</span></code>
+class through the <a class="reference internal" href="../reference/injectable.html#injectable.injectable_factory" title="injectable.injectable_factory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">&#64;injectable_factory</span></code></a> decorator
+and will deal with all the necessary logic to instantiate an <code class="docutils literal notranslate"><span class="pre">ExternalClient</span></code>.</p>
+<p>Now our <code class="docutils literal notranslate"><span class="pre">Factory</span></code> example class can be injected with an <code class="docutils literal notranslate"><span class="pre">ExternalClient</span></code> without
+having the responsibility of knowing how to actually instantiate it.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">factory_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
+<span class="kn">from</span> <span class="nn">examples.factory.external_client</span> <span class="kn">import</span> <span class="n">ExternalClient</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">load_injection_container</span>
 
 
@@ -61,13 +70,13 @@ injectable.</p>
 <span class="k">class</span> <span class="nc">Factory</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;client&quot;</span><span class="p">),</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">ExternalClient</span><span class="p">),</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">())</span>
-        <span class="c1"># ClientOne connected to https://client.endpoint/</span>
+        <span class="c1"># ExternalClient connected to https://dummy/endpoint</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -77,58 +86,31 @@ injectable.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">client_factory.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.factory.client_one</span> <span class="kn">import</span> <span class="n">ClientOne</span>
-<span class="kn">from</span> <span class="nn">examples.factory.client_two</span> <span class="kn">import</span> <span class="n">ClientTwo</span>
-<span class="kn">from</span> <span class="nn">examples.factory.configuration_service</span> <span class="kn">import</span> <span class="n">ConfigurationService</span>
-<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">client_factory.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">examples.factory.external_client</span> <span class="kn">import</span> <span class="n">ExternalClient</span>
 <span class="kn">from</span> <span class="nn">injectable.injection.injectable_factory_decorator</span> <span class="kn">import</span> <span class="n">injectable_factory</span>
 
 
-<span class="nd">@injectable_factory</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;client&quot;</span><span class="p">)</span>
-<span class="nd">@autowired</span>
-<span class="k">def</span> <span class="nf">client_factory</span><span class="p">(</span><span class="n">configuration_service</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">ConfigurationService</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">configuration_service</span><span class="o">.</span><span class="n">client_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ClientOne</span><span class="p">(</span><span class="n">configuration_service</span><span class="o">.</span><span class="n">client_endpoint</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">configuration_service</span><span class="o">.</span><span class="n">client_type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ClientTwo</span><span class="p">(</span><span class="n">configuration_service</span><span class="o">.</span><span class="n">client_endpoint</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown client_type: </span><span class="si">{</span><span class="n">configuration_service</span><span class="o">.</span><span class="n">client_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">client_one.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClientOne</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
-
-    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ClientOne connected to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nd">@injectable_factory</span><span class="p">(</span><span class="n">ExternalClient</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">client_factory</span><span class="p">():</span>
+    <span class="n">client_endpoint</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
+        <span class="s2">&quot;CLIENT_ENDPOINT_EXAMPLE_ENV_VAR&quot;</span><span class="p">,</span> <span class="s2">&quot;https://dummy/endpoint&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ExternalClient</span><span class="p">(</span><span class="n">client_endpoint</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">client_two.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClientTwo</span><span class="p">:</span>
+<div class="code-block-caption"><span class="caption-text">external_client.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExternalClient</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ClientTwo connected to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&quot;</span>
-</pre></div>
-</div>
-</div>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">configuration_service.py</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
-
-
-<span class="nd">@injectable</span>
-<span class="k">class</span> <span class="nc">ConfigurationService</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://client.endpoint/&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_type</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ExternalClient connected to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -157,17 +139,18 @@ injectable.</p>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -197,7 +180,7 @@ injectable.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="illustrative_example.html" title="Illustrative Example"
+          <a href="injectable_mocking_for_tests.html" title="Injectable Mocking For Tests Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="singletons.html" title="Singletons Example"
@@ -207,7 +190,7 @@ injectable.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

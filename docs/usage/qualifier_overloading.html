@@ -47,16 +47,33 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-examples.qualifier_overloading.main">
-<span id="qualifier-overloading-example"></span><h1>Qualifier Overloading Example<a class="headerlink" href="#module-examples.qualifier_overloading.main" title="Permalink to this headline">¶</a></h1>
-<p>In this example you’ll learn about overloading qualifiers and take advantage of that
-to inject multiple dependencies as a list of instances.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">main.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+  <div class="section" id="module-examples.qualifier_overloading.qualifier_overloading_example">
+<span id="id1"></span><span id="qualifier-overloading-example"></span><h1>Qualifier Overloading Example<a class="headerlink" href="#module-examples.qualifier_overloading.qualifier_overloading_example" title="Permalink to this headline">¶</a></h1>
+<p>In this example you’ll learn about overloading qualifiers/classes for injection and how
+to take advantage of that to inject multiple dependencies as a list of instances.</p>
+<p>Overloading happens when two or more injectables are declared for a same qualifier
+or class.</p>
+<p>In this example we create a abstract base class <code class="docutils literal notranslate"><span class="pre">SenderService</span></code> and implement it in
+other three classes, <code class="docutils literal notranslate"><span class="pre">EmailSenderService</span></code>, <code class="docutils literal notranslate"><span class="pre">SmsSenderService</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">FaxSenderService</span></code>. All the three concrete services are declared as injectables and
+as injection declared class propagates to base classes we end up with three injectables
+declared for the <code class="docutils literal notranslate"><span class="pre">SenderService</span></code> class.</p>
+<p>In our <code class="docutils literal notranslate"><span class="pre">QualifierOverloading</span></code> example class we inject a list with all injectables
+declared for the <code class="docutils literal notranslate"><span class="pre">SenderService</span></code> by using the <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.List</span></code> type. We also use
+the <code class="docutils literal notranslate"><span class="pre">exclude_groups</span></code> parameter to filter out injectables that were declared with the
+<code class="docutils literal notranslate"><span class="pre">&quot;old&quot;</span></code> group label.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="dependencies_precedence.html#dependencies-precedence-example"><span class="std std-ref">Dependencies Precedence Example</span></a> shows how dependency resolution works in
+regards to precedence when a qualifier or class are resolved by multiple
+injectables and you’re injecting a single instance and not all matching injectables.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">qualifier_overloading_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
-<span class="kn">from</span> <span class="nn">examples.qualifier_overloading.services.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
+<span class="kn">from</span> <span class="nn">examples.qualifier_overloading.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">load_injection_container</span>
 
 
@@ -85,8 +102,8 @@ to inject multiple dependencies as a list of instances.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">sender_service.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">sender_service.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
 
@@ -97,9 +114,9 @@ to inject multiple dependencies as a list of instances.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">email_sender_service.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.qualifier_overloading.services.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">email_sender_service.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.qualifier_overloading.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
@@ -110,9 +127,9 @@ to inject multiple dependencies as a list of instances.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">sms_sender_service.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.qualifier_overloading.services.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">sms_sender_service.py</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.qualifier_overloading.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
@@ -123,9 +140,9 @@ to inject multiple dependencies as a list of instances.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">fax_sender_service.py</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.qualifier_overloading.services.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">fax_sender_service.py</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.qualifier_overloading.sender_service</span> <span class="kn">import</span> <span class="n">SenderService</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
 
 
@@ -161,17 +178,18 @@ to inject multiple dependencies as a list of instances.</p>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Qualifier Overloading Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiple_namespaces.html">Multiple Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="illustrative_example.html">Illustrative Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing_example.html">Testing Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
@@ -211,7 +229,7 @@ to inject multiple dependencies as a list of instances.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 11, 2020.
+      Last updated on May 20, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

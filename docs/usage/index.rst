@@ -8,14 +8,15 @@ Usage Examples
 .. toctree::
     :glob:
 
+    TLDR
     basic_usage
     dependencies_precedence
     qualifier_overloading
     lazy_injection
     optional_injection
     cyclic_dependency
-    multiple_namespaces
+    namespaces
     singletons
     factory
-    illustrative_example
-    testing_example
+    injectable_mocking_for_tests
+    injection_container_resetting_for_tests
