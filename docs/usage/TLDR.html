@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>TL;DR &#8212; injectable 3.4.1 documentation</title>
+    <title>TL;DR &#8212; injectable 3.4.2 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.4.1</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.4.2</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -67,7 +67,6 @@ the <a class="reference internal" href="index.html#usage-examples"><span class="
         <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span>
 
 
-<span class="nd">@injectable</span>  <span class="c1"># make examples also injectable for testing</span>
 <span class="k">class</span> <span class="nc">IllustrativeExample</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dep</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">Dep</span><span class="p">)):</span>
@@ -78,10 +77,14 @@ the <a class="reference internal" href="index.html#usage-examples"><span class="
         <span class="c1"># foo</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">run_example</span><span class="p">():</span>
     <span class="n">load_injection_container</span><span class="p">()</span>
     <span class="n">example</span> <span class="o">=</span> <span class="n">IllustrativeExample</span><span class="p">()</span>
     <span class="n">example</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_example</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -161,7 +164,7 @@ the <a class="reference internal" href="index.html#usage-examples"><span class="
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 20, 2020.
+      Last updated on May 22, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

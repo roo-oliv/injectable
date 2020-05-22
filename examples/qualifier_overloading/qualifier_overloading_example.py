@@ -27,10 +27,9 @@ from typing import List
 
 from examples import Example
 from examples.qualifier_overloading.sender_service import SenderService
-from injectable import injectable, autowired, Autowired, load_injection_container
+from injectable import autowired, Autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class QualifierOverloading(Example):
     @autowired
     def __init__(
@@ -48,7 +47,11 @@ class QualifierOverloading(Example):
         # Sending SMS to World: Hello!
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = QualifierOverloading()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

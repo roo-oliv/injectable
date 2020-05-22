@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Injection Container Resetting For Tests Example &#8212; injectable 3.4.1 documentation</title>
+    <title>Injection Container Resetting For Tests Example &#8212; injectable 3.4.2 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.4.1</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.4.2</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -62,6 +62,7 @@ namespaces.</p>
     <span class="n">Autowired</span><span class="p">,</span>
     <span class="n">load_injection_container</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">injectable.errors</span> <span class="kn">import</span> <span class="n">InjectionError</span>
 <span class="kn">from</span> <span class="nn">injectable.testing</span> <span class="kn">import</span> <span class="n">reset_injection_container</span>
 
 
@@ -71,7 +72,6 @@ namespaces.</p>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;doing something&quot;</span><span class="p">)</span>
 
 
-<span class="nd">@injectable</span>  <span class="c1"># make examples also injectable for testing</span>
 <span class="k">class</span> <span class="nc">InjectionContainerResetting</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
@@ -83,19 +83,23 @@ namespaces.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
             <span class="c1"># WARNING:root:Injection Container is empty. Make sure \</span>
             <span class="c1"># &#39;load_injection_container&#39; is being called before any injections are made.</span>
-        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-            <span class="c1"># Mapping key not found.</span>
+        <span class="k">except</span> <span class="n">InjectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="c1"># No injectable matches class &#39;Foo&#39;</span>
 
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foo</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">Foo</span><span class="p">)):</span>
         <span class="n">foo</span><span class="o">.</span><span class="n">do_something</span><span class="p">()</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">run_example</span><span class="p">():</span>
     <span class="n">load_injection_container</span><span class="p">()</span>
     <span class="n">example</span> <span class="o">=</span> <span class="n">InjectionContainerResetting</span><span class="p">()</span>
     <span class="n">example</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_example</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -175,7 +179,7 @@ namespaces.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 20, 2020.
+      Last updated on May 22, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

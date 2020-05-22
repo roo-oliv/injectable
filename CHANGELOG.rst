@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.2 (2020-05-22)
+------------------
+
+* Fix optional injection bug when the namespace is empty
+
 3.4.1 (2020-05-11)
 ------------------
 

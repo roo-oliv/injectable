@@ -34,10 +34,9 @@ namespace, therefore no conflicts.
 from typing import Optional
 
 from examples import Example
-from injectable import Autowired, autowired, injectable, load_injection_container
+from injectable import Autowired, autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class Namespaces(Example):
     @autowired
     def __init__(
@@ -61,7 +60,11 @@ class Namespaces(Example):
         # 94.06 million miles
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = Namespaces()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

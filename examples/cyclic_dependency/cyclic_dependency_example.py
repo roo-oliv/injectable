@@ -17,10 +17,9 @@ when its attributes are accessed or its methods are invoked.
 """
 # sphinx-start
 from examples import Example
-from injectable import injectable, Autowired, autowired, load_injection_container
+from injectable import Autowired, autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class CyclicDependency(Example):
     @autowired
     def __init__(self, service_a: Autowired("A"), service_b: Autowired("B")):
@@ -35,7 +34,11 @@ class CyclicDependency(Example):
         # some property from A
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = CyclicDependency()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

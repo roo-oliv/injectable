@@ -16,10 +16,9 @@ having the responsibility of knowing how to actually instantiate it.
 # sphinx-start
 from examples import Example
 from examples.factory.external_client import ExternalClient
-from injectable import injectable, autowired, Autowired, load_injection_container
+from injectable import autowired, Autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class Factory(Example):
     @autowired
     def __init__(
@@ -32,7 +31,11 @@ class Factory(Example):
         # ExternalClient connected to https://dummy/endpoint
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = Factory()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

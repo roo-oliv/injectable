@@ -25,7 +25,6 @@ class RealDep:
         print("RealDep")
 
 
-@injectable  # make examples also injectable for testing
 class InjectableMocking(Example):
     def __init__(self):
         clear_injectables(RealDep)
@@ -41,7 +40,11 @@ class InjectableMocking(Example):
         dep.print.assert_called()
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = InjectableMocking()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

@@ -23,10 +23,9 @@ called when actually needed, i.e., when we invoke ``ServiceA::something``.
 from examples import Example
 from examples.lazy_injection.service_a import ServiceA
 from examples.lazy_injection.service_b import ServiceB
-from injectable import autowired, Autowired, injectable, load_injection_container
+from injectable import autowired, Autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class LazyInjection(Example):
     @autowired
     def __init__(
@@ -52,7 +51,11 @@ class LazyInjection(Example):
         # ServiceB::something called
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = LazyInjection()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

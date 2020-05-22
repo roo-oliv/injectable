@@ -23,10 +23,9 @@ of each service's repository to demonstrate how they are completely independent.
 # sphinx-start
 from examples import Example
 from examples.basic_usage.basic_service import BasicService
-from injectable import autowired, Autowired, injectable, load_injection_container
+from injectable import autowired, Autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class BasicUsage(Example):
     @autowired
     def __init__(
@@ -54,7 +53,11 @@ class BasicUsage(Example):
         # bar
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = BasicUsage()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

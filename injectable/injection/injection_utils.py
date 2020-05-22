@@ -26,7 +26,9 @@ def get_namespace_injectables(
             "Injection Container is empty. Make sure 'load_injection_container'"
             " is being called before any injections are made."
         )
-    injection_namespace = InjectionContainer.NAMESPACES[namespace]
+    injection_namespace = InjectionContainer.NAMESPACES.get(namespace)
+    if not injection_namespace:
+        return set()
     registry = (
         injection_namespace.class_registry
         if registry_type is RegistryType.CLASS

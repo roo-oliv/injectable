@@ -2,9 +2,9 @@
 In this example you'll see how to declare an injection as optional using
 :class:`typing.Optional`.
 
-When a dependency is not found for injection you'll receive a :exc:`KeyError`. This may
-not be what you want if it is expected and OK that in some situations the dependency
-simply won't be present.
+When a dependency is not found for injection you'll receive an
+:exc:`injectable.InjectionError`. This may not be what you want if it is expected and OK
+that in some situations the dependency simply won't be present.
 
 In our ``OptionalInjection`` example class we optionally autowire the ``some_service``
 argument with the ``"foo"`` qualifier and we optionally autowire the
@@ -31,10 +31,9 @@ list ``[]`` to ``bunch_of_services``.
 from typing import Optional, List
 
 from examples import Example
-from injectable import autowired, Autowired, injectable, load_injection_container
+from injectable import autowired, Autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class OptionalInjection(Example):
     @autowired
     def __init__(
@@ -53,7 +52,11 @@ class OptionalInjection(Example):
         # []
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = OptionalInjection()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

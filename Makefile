@@ -72,19 +72,19 @@ docs:
 	make html -B
 	cp -a build/html/. docs
 
-CURRENT_VERSION = 3.4.1
+CURRENT_VERSION = 3.4.2
 
 .PHONY: bump-patch-version
 bump-patch-version:
-	bumpversion --allow-dirty --current-version $(CURRENT_VERSION) patch
+	bump2version --allow-dirty --current-version $(CURRENT_VERSION) patch
 
 .PHONY: bump-minor-version
 bump-minor-version:
-	bumpversion --allow-dirty --current-version $(CURRENT_VERSION) minor
+	bump2version --allow-dirty --current-version $(CURRENT_VERSION) minor
 
 .PHONY: bump-major-version
 bump-major-version:
-	bumpversion --allow-dirty --current-version $(CURRENT_VERSION) major
+	bump2version --allow-dirty --current-version $(CURRENT_VERSION) major
 
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
