@@ -27,7 +27,7 @@ project = "injectable"
 year = "2018"
 author = "Rodrigo Martins de Oliveira"
 copyright = "{0}, {1}".format(year, author)
-version = release = "3.4.1"
+version = release = "3.4.2"
 
 pygments_style = "trac"
 templates_path = ["."]

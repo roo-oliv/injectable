@@ -14,10 +14,9 @@ with it.
 # sphinx-start
 from examples import Example
 from examples.singletons.singleton_client import SingletonClient
-from injectable import injectable, Autowired, autowired, load_injection_container
+from injectable import Autowired, autowired, load_injection_container
 
 
-@injectable  # make examples also injectable for testing
 class Singletons(Example):
     @autowired
     def __init__(
@@ -41,7 +40,11 @@ class Singletons(Example):
         # True
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = Singletons()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

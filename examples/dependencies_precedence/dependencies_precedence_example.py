@@ -27,14 +27,12 @@ qualifier attributed to it.
 from examples import Example
 from examples.dependencies_precedence.abstract_service import AbstractService
 from injectable import (
-    injectable,
     autowired,
     Autowired,
     load_injection_container,
 )
 
 
-@injectable  # make examples also injectable for testing
 class DependenciesPrecedence(Example):
     @autowired
     def __init__(
@@ -53,7 +51,11 @@ class DependenciesPrecedence(Example):
         # 4 * 2 = 8
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = DependenciesPrecedence()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

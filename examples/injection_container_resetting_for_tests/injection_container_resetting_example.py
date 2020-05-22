@@ -12,6 +12,7 @@ from injectable import (
     Autowired,
     load_injection_container,
 )
+from injectable.errors import InjectionError
 from injectable.testing import reset_injection_container
 
 
@@ -21,7 +22,6 @@ class Foo:
         print("doing something")
 
 
-@injectable  # make examples also injectable for testing
 class InjectionContainerResetting(Example):
     def run(self):
         self.bar()
@@ -33,16 +33,20 @@ class InjectionContainerResetting(Example):
             self.bar()
             # WARNING:root:Injection Container is empty. Make sure \
             # 'load_injection_container' is being called before any injections are made.
-        except KeyError as e:
-            print(e.__doc__)
-            # Mapping key not found.
+        except InjectionError as e:
+            print(e)
+            # No injectable matches class 'Foo'
 
     @autowired
     def bar(self, foo: Autowired(Foo)):
         foo.do_something()
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = InjectionContainerResetting()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

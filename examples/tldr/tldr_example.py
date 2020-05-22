@@ -17,7 +17,6 @@ class Dep:
         self.foo = "foo"
 
 
-@injectable  # make examples also injectable for testing
 class IllustrativeExample(Example):
     @autowired
     def __init__(self, dep: Autowired(Dep)):
@@ -28,7 +27,11 @@ class IllustrativeExample(Example):
         # foo
 
 
-if __name__ == "__main__":
+def run_example():
     load_injection_container()
     example = IllustrativeExample()
     example.run()
+
+
+if __name__ == "__main__":
+    run_example()

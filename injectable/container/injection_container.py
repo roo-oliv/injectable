@@ -1,4 +1,5 @@
 import os
+import sys
 import warnings
 from importlib.util import module_from_spec, spec_from_file_location
 from typing import Dict, Optional, Callable
@@ -185,4 +186,5 @@ class InjectionContainer:
         module_name = find_module_name(file)
         spec = spec_from_file_location(module_name, file.path)
         module = module_from_spec(spec)
+        sys.modules[module_name] = module
         spec.loader.exec_module(module)
