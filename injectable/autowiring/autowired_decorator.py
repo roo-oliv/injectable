@@ -42,7 +42,7 @@ def autowired(func: T) -> T:
     """
     signature = inspect.signature(func)
     autowired_parameters = []
-    for index, parameter in enumerate(signature.parameters.values()):
+    for _, parameter in enumerate(signature.parameters.values()):
         if not isinstance(parameter.annotation, _Autowired):
             if len(autowired_parameters) == 0 or parameter.kind in [
                 parameter.KEYWORD_ONLY,
