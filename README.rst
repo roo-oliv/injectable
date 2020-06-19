@@ -101,7 +101,7 @@ and designed for Humans.
                     database: Autowired(Database),
                     message_brokers: Autowired(List[Broker]),
                 ):
-                    pending = database.retrieve_pending_messages()
+                    pending = database.get_pending_messages()
                     for broker in message_brokers:
                         broker.send_pending(pending)
 
