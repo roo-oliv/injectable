@@ -111,17 +111,14 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
-        patch_injection_container("find_module_name")
-        spec = MagicMock()
-        patch_injection_container("spec_from_file_location", return_value=spec)
-        patch_injection_container("module_from_spec")
+        run_path = patch_injection_container("run_path")
 
         # when
         InjectionContainer.load()
 
         # then
         assert file_collector.collect.called is True
-        assert spec.loader.exec_module.call_count == 2
+        assert run_path.call_count == 2
 
     def test__load__with_files_without_injectables(
         self, patch_injection_container, patch_open
@@ -139,17 +136,14 @@ class TestInjectionContainer:
             "PythonFileCollector", return_value=file_collector,
         )
         patch_open(read_data='"""not injectable"""')
-        patch_injection_container("find_module_name")
-        spec = MagicMock()
-        patch_injection_container("spec_from_file_location", return_value=spec)
-        patch_injection_container("module_from_spec")
+        run_path = patch_injection_container("run_path")
 
         # when
         InjectionContainer.load()
 
         # then
         assert file_collector.collect.called is True
-        assert spec.loader.exec_module.called is False
+        assert run_path.called is False
 
     def test__load__with_already_loaded_files(
         self, patch_injection_container, patch_open
@@ -170,10 +164,7 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
-        patch_injection_container("find_module_name")
-        spec = MagicMock()
-        patch_injection_container("spec_from_file_location", return_value=spec)
-        patch_injection_container("module_from_spec")
+        run_path = patch_injection_container("run_path")
         InjectionContainer.load()
 
         # when
@@ -181,7 +172,7 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.call_count == 2
-        assert spec.loader.exec_module.call_count == 2
+        assert run_path.call_count == 2
         assert len(InjectionContainer.LOADED_FILEPATHS) == 2
 
     def test__load_dependencies_from__leaves_loading_vars_clean(
@@ -232,17 +223,14 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
-        patch_injection_container("find_module_name")
-        spec = MagicMock()
-        patch_injection_container("spec_from_file_location", return_value=spec)
-        patch_injection_container("module_from_spec")
+        run_path = patch_injection_container("run_path")
 
         # when
         InjectionContainer.load_dependencies_from(search_path, namespace)
 
         # then
         assert file_collector.collect.called is True
-        assert spec.loader.exec_module.call_count == 2
+        assert run_path.call_count == 2
 
     def test__load_dependencies_from__with_files_without_injectables(
         self, patch_injection_container, patch_open
@@ -260,17 +248,14 @@ class TestInjectionContainer:
             "PythonFileCollector", return_value=file_collector,
         )
         patch_open(read_data='"""not injectable"""')
-        patch_injection_container("find_module_name")
-        spec = MagicMock()
-        patch_injection_container("spec_from_file_location", return_value=spec)
-        patch_injection_container("module_from_spec")
+        run_path = patch_injection_container("run_path")
 
         # when
         InjectionContainer.load_dependencies_from(search_path, namespace)
 
         # then
         assert file_collector.collect.called is True
-        assert spec.loader.exec_module.called is False
+        assert run_path.called is False
 
     def test__load_dependencies_from__with_already_loaded_files(
         self, patch_injection_container, patch_open
@@ -291,10 +276,7 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
-        patch_injection_container("find_module_name")
-        spec = MagicMock()
-        patch_injection_container("spec_from_file_location", return_value=spec)
-        patch_injection_container("module_from_spec")
+        run_path = patch_injection_container("run_path")
         InjectionContainer.load_dependencies_from(search_path, namespace)
 
         # when
@@ -302,7 +284,7 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.call_count == 2
-        assert spec.loader.exec_module.call_count == 2
+        assert run_path.call_count == 2
         assert len(InjectionContainer.LOADED_FILEPATHS) == 2
 
     def test__register_injectable__with_defaults(self, patch_injection_container):

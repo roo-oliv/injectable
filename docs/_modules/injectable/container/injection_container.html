@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.container.injection_container &#8212; injectable 3.4.2 documentation</title>
+    <title>injectable.container.injection_container &#8212; injectable 3.4.3 documentation</title>
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.2</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.3</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -47,13 +47,12 @@
             
   <h1>Source code for injectable.container.injection_container</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">module_from_spec</span><span class="p">,</span> <span class="n">spec_from_file_location</span>
+<span class="kn">from</span> <span class="nn">runpy</span> <span class="kn">import</span> <span class="n">run_path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
 
-<span class="kn">from</span> <span class="nn">pycollect</span> <span class="kn">import</span> <span class="n">PythonFileCollector</span><span class="p">,</span> <span class="n">find_module_name</span>
+<span class="kn">from</span> <span class="nn">pycollect</span> <span class="kn">import</span> <span class="n">PythonFileCollector</span>
 
 <span class="kn">from</span> <span class="nn">injectable.container.injectable</span> <span class="kn">import</span> <span class="n">Injectable</span>
 <span class="kn">from</span> <span class="nn">injectable.container.namespace</span> <span class="kn">import</span> <span class="n">Namespace</span>
@@ -190,7 +189,7 @@
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_load_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="n">run_path</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -204,7 +203,7 @@
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_load_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="n">run_path</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_DEFAULT_NAMESPACE</span> <span class="o">=</span> <span class="kc">None</span>
@@ -227,15 +226,7 @@
                 <span class="s2">&quot;@injectable_factory&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;injectable_factory(&quot;</span><span class="p">,</span>
             <span class="p">]</span>
-        <span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_load_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">DirEntry</span><span class="p">):</span>
-        <span class="n">module_name</span> <span class="o">=</span> <span class="n">find_module_name</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">spec_from_file_location</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="n">module</span> <span class="o">=</span> <span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
-        <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span></div>
+        <span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -284,7 +275,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on May 22, 2020.
+      Last updated on Jun 24, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

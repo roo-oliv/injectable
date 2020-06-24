@@ -13,6 +13,7 @@ This issue was fixed in injectable 3.1.4.
 from typing import List
 
 from injectable import injectable, autowired, Autowired, load_injection_container
+from injectable.testing import reset_injection_container
 
 
 @injectable(qualifier="foo")
@@ -27,5 +28,6 @@ def bar(foo: Autowired(List["foo"])):
 
 
 def test_issue_8_fix():
+    reset_injection_container()
     load_injection_container()
     bar()

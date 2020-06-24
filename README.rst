@@ -5,6 +5,8 @@
 Injectable: Dependency Injection for Humans™
 ============================================
 
+[**Examples**](https://injectable.readthedocs.io/en/latest/usage/index.html) | [**Developer Reference**](https://injectable.readthedocs.io/en/latest/reference/index.html) | [**Authors**](https://injectable.readthedocs.io/en/latest/authors.html)
+
 .. start-badges
 
 .. list-table::
