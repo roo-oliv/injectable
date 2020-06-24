@@ -1,11 +1,10 @@
 import os
-import sys
 import warnings
-from importlib.util import module_from_spec, spec_from_file_location
+from runpy import run_path
 from typing import Dict, Optional, Callable
 from typing import Set
 
-from pycollect import PythonFileCollector, find_module_name
+from pycollect import PythonFileCollector
 
 from injectable.container.injectable import Injectable
 from injectable.container.namespace import Namespace
@@ -142,7 +141,7 @@ class InjectionContainer:
             if file.path in cls.LOADED_FILEPATHS:
                 continue
             cls.LOADING_FILEPATH = file.path
-            cls._load_file(file)
+            run_path(file.path)
             cls.LOADED_FILEPATHS.add(file.path)
             cls.LOADING_FILEPATH = None
 
@@ -156,7 +155,7 @@ class InjectionContainer:
             if file.path in cls.LOADED_FILEPATHS:
                 continue
             cls.LOADING_FILEPATH = file.path
-            cls._load_file(file)
+            run_path(file.path)
             cls.LOADED_FILEPATHS.add(file.path)
             cls.LOADING_FILEPATH = None
         cls.LOADING_DEFAULT_NAMESPACE = None
@@ -180,11 +179,3 @@ class InjectionContainer:
                 "injectable_factory(",
             ]
         )
-
-    @classmethod
-    def _load_file(cls, file: os.DirEntry):
-        module_name = find_module_name(file)
-        spec = spec_from_file_location(module_name, file.path)
-        module = module_from_spec(spec)
-        sys.modules[module_name] = module
-        spec.loader.exec_module(module)

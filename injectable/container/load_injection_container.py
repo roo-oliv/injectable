@@ -20,7 +20,7 @@ def load_injection_container(
             specific namespace. Defaults to
             :const:`injectable.constants.DEFAULT_NAMESPACE`.
 
-    Usage::service_2
+    Usage::
 
       >>> from injectable import load_injection_container
       >>> load_injection_container()

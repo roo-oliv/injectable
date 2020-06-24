@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.3 (2020-06-24)
+------------------
+
+* Fix Injectable failing to resolve complex/entangled imports
+
 3.4.2 (2020-05-22)
 ------------------
 
