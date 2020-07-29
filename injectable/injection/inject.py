@@ -14,7 +14,7 @@ T = TypeVar("T")
 
 
 def inject(
-    dependency: Union[T, str],
+    dependency: Union[Type[T], str],
     *,
     namespace: str = None,
     group: str = None,
