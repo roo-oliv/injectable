@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable &#8212; injectable 3.4.3 documentation</title>
+    <title>injectable &#8212; injectable 3.4.4 documentation</title>
     <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.4.3</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.4.4</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -73,8 +73,8 @@ specific namespace. Defaults to
 </ul>
 </dd>
 </dl>
-<p>Usage::service_2</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">load_injection_container</span>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">load_injection_container</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">load_injection_container</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -328,7 +328,7 @@ one instance of it will be created and shared globally. Defaults to False.</p></
 
 <dl class="py function">
 <dt id="injectable.inject">
-<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">inject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>T<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">group</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_groups</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">optional</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="../_modules/injectable/injection/inject.html#inject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.inject" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">injectable.</code><code class="sig-name descname">inject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Type<span class="p">[</span>T<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">group</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude_groups</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lazy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">optional</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="../_modules/injectable/injection/inject.html#inject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.inject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Injects the requested dependency by instantiating a new instance of it or a
 singleton instance if specified by the injectable. Returns an instance of the
 requested dependency.</p>
@@ -499,7 +499,7 @@ namespace. Defaults to False.</p></li>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jun 24, 2020.
+      Last updated on Jul 29, 2020.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>

@@ -20,3 +20,4 @@ Usage Examples
     factory
     injectable_mocking_for_tests
     injection_container_resetting_for_tests
+    service_locator
