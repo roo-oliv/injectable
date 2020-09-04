@@ -20,7 +20,9 @@ from injectable import Autowired, autowired, load_injection_container
 class Singletons(Example):
     @autowired
     def __init__(
-        self, client1: Autowired(SingletonClient), client2: Autowired(SingletonClient),
+        self,
+        client1: Autowired(SingletonClient),
+        client2: Autowired(SingletonClient),
     ):
         self.client1 = client1
         self.client2 = client2

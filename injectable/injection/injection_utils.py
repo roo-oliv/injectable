@@ -39,7 +39,9 @@ def get_namespace_injectables(
 
 
 def filter_by_group(
-    matches: Set[Injectable], group: str = None, exclude_groups: Sequence[str] = None,
+    matches: Set[Injectable],
+    group: str = None,
+    exclude_groups: Sequence[str] = None,
 ) -> Set[Injectable]:
     exclude = exclude_groups or []
     matches = {

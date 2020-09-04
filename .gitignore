@@ -109,3 +109,6 @@ ENV/
 
 # vscode
 .vscode/
+
+# codespaces
+/pythonenv3.8

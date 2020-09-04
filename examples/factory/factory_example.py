@@ -22,7 +22,8 @@ from injectable import autowired, Autowired, load_injection_container
 class Factory(Example):
     @autowired
     def __init__(
-        self, client: Autowired(ExternalClient),
+        self,
+        client: Autowired(ExternalClient),
     ):
         self.client = client
 

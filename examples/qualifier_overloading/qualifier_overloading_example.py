@@ -33,7 +33,8 @@ from injectable import autowired, Autowired, load_injection_container
 class QualifierOverloading(Example):
     @autowired
     def __init__(
-        self, sender_services: Autowired(List[SenderService], exclude_groups=["old"]),
+        self,
+        sender_services: Autowired(List[SenderService], exclude_groups=["old"]),
     ):
         self.sender_services = sender_services
 
