@@ -80,7 +80,8 @@ class TestInjectionContainer:
         # given
         search_path = os.path.join("..", "relative", "path")
         get_caller_filepath = patch_injection_container(
-            "get_caller_filepath", return_value=os.path.join("fake", "path", "file.py"),
+            "get_caller_filepath",
+            return_value=os.path.join("fake", "path", "file.py"),
         )
         expected_path = os.path.join("fake", "relative", "path")
         file_collector = MagicMock()
@@ -98,7 +99,8 @@ class TestInjectionContainer:
     ):
         # given
         patch_injection_container(
-            "get_caller_filepath", return_value=os.path.join("fake", "path", "file.py"),
+            "get_caller_filepath",
+            return_value=os.path.join("fake", "path", "file.py"),
         )
         file_collector = MagicMock()
         file_collector.collect.return_value = {
@@ -106,7 +108,8 @@ class TestInjectionContainer:
             MagicMock(spec=os.DirEntry),
         }
         patch_injection_container(
-            "PythonFileCollector", return_value=file_collector,
+            "PythonFileCollector",
+            return_value=file_collector,
         )
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
@@ -125,7 +128,8 @@ class TestInjectionContainer:
     ):
         # given
         patch_injection_container(
-            "get_caller_filepath", return_value=os.path.join("fake", "path", "file.py"),
+            "get_caller_filepath",
+            return_value=os.path.join("fake", "path", "file.py"),
         )
         file_collector = MagicMock()
         file_collector.collect.return_value = {
@@ -133,7 +137,8 @@ class TestInjectionContainer:
             MagicMock(spec=os.DirEntry),
         }
         patch_injection_container(
-            "PythonFileCollector", return_value=file_collector,
+            "PythonFileCollector",
+            return_value=file_collector,
         )
         patch_open(read_data='"""not injectable"""')
         run_path = patch_injection_container("run_path")
@@ -150,7 +155,8 @@ class TestInjectionContainer:
     ):
         # given
         patch_injection_container(
-            "get_caller_filepath", return_value=os.path.join("fake", "path", "file.py"),
+            "get_caller_filepath",
+            return_value=os.path.join("fake", "path", "file.py"),
         )
         mocked_file_1 = MagicMock(spec=os.DirEntry)
         mocked_file_1.path = os.path.join("fake", "path", "file_1.py")
@@ -159,7 +165,8 @@ class TestInjectionContainer:
         file_collector = MagicMock()
         file_collector.collect.return_value = {mocked_file_1, mocked_file_2}
         patch_injection_container(
-            "PythonFileCollector", return_value=file_collector,
+            "PythonFileCollector",
+            return_value=file_collector,
         )
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
@@ -218,7 +225,8 @@ class TestInjectionContainer:
             MagicMock(spec=os.DirEntry),
         }
         patch_injection_container(
-            "PythonFileCollector", return_value=file_collector,
+            "PythonFileCollector",
+            return_value=file_collector,
         )
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
@@ -245,7 +253,8 @@ class TestInjectionContainer:
             MagicMock(spec=os.DirEntry),
         }
         patch_injection_container(
-            "PythonFileCollector", return_value=file_collector,
+            "PythonFileCollector",
+            return_value=file_collector,
         )
         patch_open(read_data='"""not injectable"""')
         run_path = patch_injection_container("run_path")
@@ -271,7 +280,8 @@ class TestInjectionContainer:
         file_collector = MagicMock()
         file_collector.collect.return_value = {mocked_file_1, mocked_file_2}
         patch_injection_container(
-            "PythonFileCollector", return_value=file_collector,
+            "PythonFileCollector",
+            return_value=file_collector,
         )
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
@@ -295,7 +305,8 @@ class TestInjectionContainer:
         InjectionContainer.LOADING_DEFAULT_NAMESPACE = namespace
         mocked_namespace: Namespace = MagicMock(spec=Namespace)
         patch_injection_container(
-            "Namespace", return_value=mocked_namespace,
+            "Namespace",
+            return_value=mocked_namespace,
         )
 
         # when
@@ -330,7 +341,8 @@ class TestInjectionContainer:
         InjectionContainer.LOADING_DEFAULT_NAMESPACE = DEFAULT_NAMESPACE
         mocked_namespace: Namespace = MagicMock(spec=Namespace)
         patch_injection_container(
-            "Namespace", return_value=mocked_namespace,
+            "Namespace",
+            return_value=mocked_namespace,
         )
 
         # when
@@ -366,7 +378,8 @@ class TestInjectionContainer:
         InjectionContainer.LOADING_DEFAULT_NAMESPACE = namespace
         mocked_namespace: Namespace = MagicMock(spec=Namespace)
         patch_injection_container(
-            "Namespace", return_value=mocked_namespace,
+            "Namespace",
+            return_value=mocked_namespace,
         )
 
         # when
@@ -400,7 +413,8 @@ class TestInjectionContainer:
         InjectionContainer.LOADING_DEFAULT_NAMESPACE = namespace
         mocked_namespace: Namespace = MagicMock(spec=Namespace)
         patch_injection_container(
-            "Namespace", return_value=mocked_namespace,
+            "Namespace",
+            return_value=mocked_namespace,
         )
 
         # when
@@ -436,7 +450,8 @@ class TestInjectionContainer:
         InjectionContainer.LOADING_DEFAULT_NAMESPACE = DEFAULT_NAMESPACE
         mocked_namespace: Namespace = MagicMock(spec=Namespace)
         patch_injection_container(
-            "Namespace", return_value=mocked_namespace,
+            "Namespace",
+            return_value=mocked_namespace,
         )
 
         # when

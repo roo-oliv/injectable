@@ -42,7 +42,10 @@ class InjectionContainer:
 
     @classmethod
     def load(
-        cls, search_path: str = None, *, default_namespace: str = None,
+        cls,
+        search_path: str = None,
+        *,
+        default_namespace: str = None,
     ):
         """
         Loads injectables under the search path to the :class:`InjectionContainer`

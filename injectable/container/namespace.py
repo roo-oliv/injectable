@@ -26,7 +26,9 @@ class Namespace:
                 self.register_injectable(injectable, base_class, propagate=propagate)
 
     def _register_to_class(
-        self, klass: type, injectable: Injectable,
+        self,
+        klass: type,
+        injectable: Injectable,
     ):
         qualified_name = get_dependency_name(klass)
         if qualified_name not in self.class_registry:
@@ -34,7 +36,9 @@ class Namespace:
         self.class_registry[qualified_name].add(injectable)
 
     def _register_to_qualifier(
-        self, qualifier: str, injectable: Injectable,
+        self,
+        qualifier: str,
+        injectable: Injectable,
     ):
         if qualifier not in self.qualifier_registry:
             self.qualifier_registry[qualifier] = set()

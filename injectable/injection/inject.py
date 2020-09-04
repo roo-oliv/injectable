@@ -162,7 +162,11 @@ def inject_multiple(
             )
         return []
     if group is not None or exclude_groups is not None:
-        matches = filter_by_group(matches, group, exclude_groups,)
+        matches = filter_by_group(
+            matches,
+            group,
+            exclude_groups,
+        )
         if not matches:
             if not optional:
                 raise InjectionError(

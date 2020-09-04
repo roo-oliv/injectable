@@ -6,7 +6,9 @@ from injectable.constants import DEFAULT_NAMESPACE
 
 
 def load_injection_container(
-    search_path: str = None, *, default_namespace: str = None,
+    search_path: str = None,
+    *,
+    default_namespace: str = None,
 ):
     """
     Loads injectables under the search path to a shared injection container under the

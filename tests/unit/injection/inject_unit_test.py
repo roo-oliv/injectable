@@ -345,7 +345,9 @@ class TestInjectMultiple:
         assert instances == []
 
     def test__inject_multiple__with_no_matches_for_group_when_non_optional(
-        self, get_namespace_injectables_mock, filter_by_group_mock,
+        self,
+        get_namespace_injectables_mock,
+        filter_by_group_mock,
     ):
         # given
         matches = {MagicMock(spec=Injectable), MagicMock(spec=Injectable)}
@@ -364,7 +366,9 @@ class TestInjectMultiple:
         assert filter_by_group_mock.called is True
 
     def test__inject_multiple__with_no_matches_for_group_when_optional(
-        self, get_namespace_injectables_mock, filter_by_group_mock,
+        self,
+        get_namespace_injectables_mock,
+        filter_by_group_mock,
     ):
         # given
         matches = {MagicMock(spec=Injectable), MagicMock(spec=Injectable)}
