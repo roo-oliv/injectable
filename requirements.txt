@@ -1,4 +1,4 @@
-lazy-object-proxy==1.5.1
+lazy-object-proxy==1.5.2
 pycollect==0.2.3
 parameters-validation==1.2.0
 cached-property==1.5.2
