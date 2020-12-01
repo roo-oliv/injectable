@@ -78,7 +78,7 @@ Injectable: Dependency Injection for Humans™
 
 .. |downloads| image:: https://pepy.tech/badge/injectable/month
     :alt: Downloads per Month
-    :target: https://pepy.tech/project/injectable/month
+    :target: https://pepy.tech/project/injectable
 
 
 .. end-badges

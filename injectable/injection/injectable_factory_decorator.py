@@ -23,6 +23,11 @@ def injectable_factory(
     :class:`InjectableLoadError <injectable.errors.InjectableLoadError>` will be raised
     if none are defined.
 
+    This decorator can be used in async functions. When an autowired async function
+    asks for injection of a coroutine the coroutine will be automatically awaited. When
+    an autowired non-async function asks for injection of a coroutine the coroutine will
+    not be awaited but directly passed as an argument.
+
     .. note::
         This decorator shall be the first decorator of the function since only the
         received function will be registered as an injectable factory

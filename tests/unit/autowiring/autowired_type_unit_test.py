@@ -1,4 +1,4 @@
-from typing import Union, Optional, List, Sequence
+from typing import Union, Optional, List, Sequence, Awaitable
 
 import pytest
 from pytest_mock import MockFixture
@@ -238,5 +238,51 @@ class TestAutowiredType:
         assert mocked_inject.call_count == 0
         assert mocked_inject_multiple.call_count == 1
         args, kwargs = mocked_inject_multiple.call_args
+        assert args[0] == expected
+        assert kwargs["optional"] is True
+
+    class AsyncClass:
+        async def __new__(cls):
+            instance = super().__new__(cls)
+            await instance.__init__()
+            return instance
+
+        async def __init__(self):
+            pass
+
+    def test__inject__with_coroutine_class_dependency(self, mocker: MockFixture):
+        # given
+        mocked_inject = mocker.patch("injectable.autowiring.autowired_type.inject")
+        mocked_inject_multiple = mocker.patch(
+            "injectable.autowiring.autowired_type.inject_multiple"
+        )
+        autowired = Autowired(Awaitable[self.AsyncClass])
+
+        # when
+        autowired.inject()
+
+        # then
+        assert mocked_inject.call_count == 1
+        assert mocked_inject_multiple.call_count == 0
+        args, kwargs = mocked_inject.call_args
+        assert args[0] == self.AsyncClass
+        assert kwargs["coroutine"] is True
+
+    def test__inject__with_coroutine_qualifier_dependency(self, mocker: MockFixture):
+        # given
+        mocked_inject = mocker.patch("injectable.autowiring.autowired_type.inject")
+        mocked_inject_multiple = mocker.patch(
+            "injectable.autowiring.autowired_type.inject_multiple"
+        )
+        expected = "Expected"
+        autowired = Autowired(Optional[expected])
+
+        # when
+        autowired.inject()
+
+        # then
+        assert mocked_inject.call_count == 1
+        assert mocked_inject_multiple.call_count == 0
+        args, kwargs = mocked_inject.call_args
         assert args[0] == expected
         assert kwargs["optional"] is True

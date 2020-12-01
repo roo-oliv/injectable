@@ -1,8 +1,10 @@
 import inspect
+from asyncio import gather
 from functools import wraps
 from typing import TypeVar, Callable, Any
 
 from injectable.autowiring.autowired_type import _Autowired
+from injectable.autowiring.autowiring_utils import coroutine_wrapper
 from injectable.errors import AutowiringError
 
 T = TypeVar("T", bound=Callable[..., Any])
@@ -22,6 +24,9 @@ def autowired(func: T) -> T:
     if a parameter annotated with :class:`Autowired <injectable.Autowired>` is given a
     default value or if a non Autowired-annotated positional parameter is placed after
     an Autowired-annotated positional parameter.
+
+    When used in an async function it will automatically asynchronously wait for all
+    injectables that happen to be coroutines.
 
     Before attempting to call an autowired function make sure
     :meth:`load_injection_container <injectable.load_injection_container>` was invoked.
@@ -62,7 +67,7 @@ def autowired(func: T) -> T:
         raise AutowiringError("No parameter is typed with 'Autowired'")
 
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def sync_wrapper(*args, **kwargs):
         bound_arguments = signature.bind_partial(*args, **kwargs).arguments
         args = list(args)
         for parameter in autowired_parameters:
@@ -76,4 +81,34 @@ def autowired(func: T) -> T:
 
         return func(*args, **kwargs)
 
-    return wrapper
+    @wraps(func)
+    async def async_wrapper(*args, **kwargs):
+        bound_arguments = signature.bind_partial(*args, **kwargs).arguments
+        args = list(args)
+        args_tasks = []
+        kwargs_tasks = []
+        kwargs_names = []
+        for parameter in autowired_parameters:
+            if parameter.name in bound_arguments:
+                continue
+            dependency = parameter.annotation.inject()
+            if parameter.annotation.multiple:
+                task = gather(*[coroutine_wrapper(o) for o in dependency])
+            else:
+                task = coroutine_wrapper(dependency)
+            if parameter.kind is parameter.POSITIONAL_ONLY:
+                args_tasks.append(task)
+            else:
+                kwargs_tasks.append(task)
+                kwargs_names.append(parameter.name)
+
+        awaited_args, awaited_kwargs = await gather(
+            gather(*args_tasks), gather(*kwargs_tasks)
+        )
+        args.extend(awaited_args)
+        for k, v in zip(kwargs_names, awaited_kwargs):
+            kwargs[k] = v
+
+        return await func(*args, **kwargs)
+
+    return async_wrapper if inspect.iscoroutinefunction(func) else sync_wrapper

@@ -18,6 +18,9 @@ def injectable(
     """
     Class decorator to mark it as an injectable dependency.
 
+    This decorator can be used in classes that declare async ``__new__`` and
+    ``__init__`` methods.
+
     This decorator accepts customization parameters but can be invoked without the
     parenthesis when no parameter will be specified.
 

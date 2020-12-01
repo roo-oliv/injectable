@@ -1,6 +1,8 @@
 import collections
+import inspect
 
-from typing import Union, List, Tuple, Sequence, Iterable
+from typing import Union, List, Tuple, Sequence, Iterable, Awaitable, Coroutine, \
+    AsyncIterable, AsyncIterator
 
 from typing_inspect import is_forward_ref, get_forward_arg
 
@@ -29,3 +31,16 @@ def is_raw_sequence(dependency):
         list,
         tuple,
     ]
+
+
+def is_awaitable(tp):
+    return tp in [
+        Awaitable,
+        Coroutine,
+        AsyncIterable,
+        AsyncIterator,
+    ]
+
+
+async def coroutine_wrapper(obj):
+    return await obj if inspect.iscoroutine(obj) else obj

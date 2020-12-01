@@ -93,6 +93,9 @@ class Autowired:
     Autowired parameters must be last in declaration if there are others which aren't
     autowired. Also, autowired parameters must not be given default values.
 
+    Injectables that are coroutines will be automatically awaited if the function being
+    autowired is an async function otherwise a coroutine object will be injected.
+
     This type annotation does not performs the function autowiring by itself. The
     function must be decorated with :meth:`@autowired <injectable.autowired>` for
     autowiring.
@@ -101,9 +104,9 @@ class Autowired:
     :param dependency: class, base class or qualifier of the dependency to be used
             for lookup among the registered injectables. Can be wrapped in a typing
             sequence, e.g. ``List[...]``, to inject a list containing all matching
-            injectables. Can be wrapped in a optional, e.g. ``Optional[...]``, to
-            inject None if no matches are found to inject. ``Optional[List[...]]`` is
-            valid and will inject an empty list if no matches are found to inject.
+            injectables. Can be wrapped in an optional, e.g. ``Optional[...]``, to
+            inject ``None`` if no matches are found to inject. ``Optional[List[...]]``
+            is valid and will inject an empty list if no matches are found to inject.
     :param namespace: (optional) namespace in which to look for the dependency.
             Defaults to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to filter out other injectables outside of this
