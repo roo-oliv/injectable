@@ -1,5 +1,5 @@
 pytest-runner==5.2
-testfixtures==6.15.0
+testfixtures==6.16.0
 pytest==6.1.2
 pytest-mock==3.3.1
 pytest-cov==2.10.1
