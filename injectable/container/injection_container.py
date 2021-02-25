@@ -170,7 +170,7 @@ class InjectionContainer:
 
     @classmethod
     def _contains_injectables(cls, file_entry: os.DirEntry) -> bool:
-        with open(file_entry) as file:
+        with open(file_entry, encoding='utf-8') as file:
             source = file.read()
         # TODO: Consider the use of ast.parse for this
         return any(
