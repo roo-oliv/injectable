@@ -3,9 +3,10 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.container.injection_container &#8212; injectable 3.4.4 documentation</title>
-    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>injectable.container.injection_container &#8212; injectable 3.4.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -28,7 +29,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.4</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.5</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -90,7 +91,10 @@
 
 <div class="viewcode-block" id="InjectionContainer.load"><a class="viewcode-back" href="../../../reference/injectable.html#injectable.InjectionContainer.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads injectables under the search path to the :class:`InjectionContainer`</span>
@@ -184,7 +188,7 @@
     <span class="k">def</span> <span class="nf">_link_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">files</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_python_files</span><span class="p">(</span><span class="n">search_path</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_contains_injectables</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_contains_injectables</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -194,11 +198,13 @@
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load_dependencies_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">absolute_search_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load_dependencies_from</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">absolute_search_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+    <span class="p">):</span>
         <span class="n">files</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_python_files</span><span class="p">(</span><span class="n">absolute_search_path</span><span class="p">)</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_DEFAULT_NAMESPACE</span> <span class="o">=</span> <span class="n">default_namespace</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_contains_injectables</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_contains_injectables</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -214,8 +220,8 @@
         <span class="k">return</span> <span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">search_path</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_contains_injectables</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_entry</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">DirEntry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_entry</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_contains_injectables</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_entry</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">DirEntry</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_entry</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="c1"># TODO: Consider the use of ast.parse for this</span>
         <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
@@ -229,6 +235,7 @@
         <span class="p">)</span></div>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -275,8 +282,8 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 29, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Last updated on Mar 11, 2021.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
     </div>
   </body>
 </html>

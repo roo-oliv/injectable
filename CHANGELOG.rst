@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4.5 (2021-03-11)
+------------------
+
+* Fix opening of UTF-8 files & allow for user set encoding
+
 3.4.4 (2020-07-29)
 ------------------
 

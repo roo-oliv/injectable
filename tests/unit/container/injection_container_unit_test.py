@@ -297,6 +297,34 @@ class TestInjectionContainer:
         assert run_path.call_count == 2
         assert len(InjectionContainer.LOADED_FILEPATHS) == 2
 
+    def test__load_dependencies_from__with_specific_encoding(
+        self, patch_injection_container, patch_open
+    ):
+        # given
+        root = "/" if os.name != "nt" else "C:\\"
+        search_path = os.path.join(root, "fake", "path")
+        namespace = DEFAULT_NAMESPACE
+        file_collector = MagicMock()
+        file_collector.collect.return_value = {
+            MagicMock(spec=os.DirEntry),
+            MagicMock(spec=os.DirEntry),
+        }
+        patch_injection_container(
+            "PythonFileCollector",
+            return_value=file_collector,
+        )
+        patch_open(
+            read_data=r"from injectable import injectable\n@injectable\nclass A: ..."
+        )
+        run_path = patch_injection_container("run_path")
+
+        # when
+        InjectionContainer.load_dependencies_from(search_path, namespace)
+
+        # then
+        assert file_collector.collect.called is True
+        assert run_path.call_count == 2
+
     def test__register_injectable__with_defaults(self, patch_injection_container):
         # given
         klass = TestInjectionContainer

@@ -3,9 +3,10 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>injectable.container.load_injection_container &#8212; injectable 3.4.4 documentation</title>
-    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>injectable.container.load_injection_container &#8212; injectable 3.4.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -28,7 +29,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.4</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.5</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -54,7 +55,10 @@
 
 
 <div class="viewcode-block" id="load_injection_container"><a class="viewcode-back" href="../../../reference/injectable.html#injectable.load_injection_container">[docs]</a><span class="k">def</span> <span class="nf">load_injection_container</span><span class="p">(</span>
-    <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads injectables under the search path to a shared injection container under the</span>
@@ -67,6 +71,8 @@
 <span class="sd">            injectables which does not explicitly request to be addressed in a</span>
 <span class="sd">            specific namespace. Defaults to</span>
 <span class="sd">            :const:`injectable.constants.DEFAULT_NAMESPACE`.</span>
+<span class="sd">    :param encoding: (optional) defines which encoding to use when reading project files</span>
+<span class="sd">            to discover and register injectables. Defaults to ``utf-8``.</span>
 
 <span class="sd">    Usage::</span>
 
@@ -88,10 +94,11 @@
         <span class="n">caller_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">get_caller_filepath</span><span class="p">())</span>
         <span class="n">search_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">caller_path</span><span class="p">,</span> <span class="n">search_path</span><span class="p">))</span>
     <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">load_dependencies_from</span><span class="p">(</span>
-        <span class="n">search_path</span><span class="p">,</span> <span class="n">default_namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span>
+        <span class="n">search_path</span><span class="p">,</span> <span class="n">default_namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span><span class="p">,</span> <span class="n">encoding</span>
     <span class="p">)</span></div>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -138,8 +145,8 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 29, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Last updated on Mar 11, 2021.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
     </div>
   </body>
 </html>

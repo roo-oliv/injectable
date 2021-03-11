@@ -3,9 +3,10 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Service Locator Example &#8212; injectable 3.4.4 documentation</title>
-    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Locator Example &#8212; injectable 3.4.5 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
     
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -30,7 +31,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-3.4.4</a> &#187;</li>
+        <li><a href="../index.html">injectable-3.4.5</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -84,7 +85,9 @@ works by using class inheritance.</p>
 
 
 <span class="k">class</span> <span class="nc">ServiceLocator</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">primary_basic_service</span> <span class="o">=</span> <span class="n">inject</span><span class="p">(</span><span class="n">SampleService</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_basic_service_implementations</span> <span class="o">=</span> <span class="n">inject_multiple</span><span class="p">(</span><span class="n">SampleService</span><span class="p">)</span>
 
@@ -182,6 +185,7 @@ works by using class inheritance.</p>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -256,8 +260,8 @@ works by using class inheritance.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 29, 2020.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Last updated on Mar 11, 2021.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
     </div>
   </body>
 </html>
