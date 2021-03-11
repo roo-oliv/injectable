@@ -139,7 +139,7 @@ class InjectionContainer:
     def _link_dependencies(cls, search_path: str):
         files = cls._collect_python_files(search_path)
         for file in files:
-            if not cls._contains_injectables(file):
+            if not cls._contains_injectables(file, encoding="utf-8"):
                 continue
             if file.path in cls.LOADED_FILEPATHS:
                 continue
@@ -149,11 +149,13 @@ class InjectionContainer:
             cls.LOADING_FILEPATH = None
 
     @classmethod
-    def load_dependencies_from(cls, absolute_search_path: str, default_namespace: str):
+    def load_dependencies_from(
+        cls, absolute_search_path: str, default_namespace: str, encoding: str = "utf-8"
+    ):
         files = cls._collect_python_files(absolute_search_path)
         cls.LOADING_DEFAULT_NAMESPACE = default_namespace
         for file in files:
-            if not cls._contains_injectables(file):
+            if not cls._contains_injectables(file, encoding):
                 continue
             if file.path in cls.LOADED_FILEPATHS:
                 continue
@@ -169,8 +171,8 @@ class InjectionContainer:
         return collector.collect(search_path)
 
     @classmethod
-    def _contains_injectables(cls, file_entry: os.DirEntry) -> bool:
-        with open(file_entry, encoding='utf-8') as file:
+    def _contains_injectables(cls, file_entry: os.DirEntry, encoding: str) -> bool:
+        with open(file_entry, encoding=encoding) as file:
             source = file.read()
         # TODO: Consider the use of ast.parse for this
         return any(
