@@ -9,6 +9,7 @@ def load_injection_container(
     search_path: str = None,
     *,
     default_namespace: str = None,
+    encoding: str = "utf-8",
 ):
     """
     Loads injectables under the search path to a shared injection container under the
@@ -21,6 +22,8 @@ def load_injection_container(
             injectables which does not explicitly request to be addressed in a
             specific namespace. Defaults to
             :const:`injectable.constants.DEFAULT_NAMESPACE`.
+    :param encoding: (optional) defines which encoding to use when reading project files
+            to discover and register injectables. Defaults to ``utf-8``.
 
     Usage::
 
@@ -42,5 +45,5 @@ def load_injection_container(
         caller_path = os.path.dirname(get_caller_filepath())
         search_path = os.path.abspath(os.path.join(caller_path, search_path))
     InjectionContainer.load_dependencies_from(
-        search_path, default_namespace or DEFAULT_NAMESPACE
+        search_path, default_namespace or DEFAULT_NAMESPACE, encoding
     )

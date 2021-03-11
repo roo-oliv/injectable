@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 
 from typing import Union, List, Tuple, Sequence, Iterable
 
@@ -15,8 +15,8 @@ def is_sequence(tp):
     return tp in [
         list,
         tuple,
-        collections.Sequence,
-        collections.Iterable,
+        collections.abc.Sequence,
+        collections.abc.Iterable,
         List,
         Tuple,
         Sequence,
