@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>injectable.container.load_injection_container &#8212; injectable 3.4.5 documentation</title>
+    <title>injectable.container.load_injection_container &#8212; injectable 3.4.6 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     
@@ -29,7 +29,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.5</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.6</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -57,7 +57,7 @@
 <div class="viewcode-block" id="load_injection_container"><a class="viewcode-back" href="../../../reference/injectable.html#injectable.load_injection_container">[docs]</a><span class="k">def</span> <span class="nf">load_injection_container</span><span class="p">(</span>
     <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_NAMESPACE</span><span class="p">,</span>
     <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -93,9 +93,7 @@
     <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">search_path</span><span class="p">):</span>
         <span class="n">caller_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">get_caller_filepath</span><span class="p">())</span>
         <span class="n">search_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">caller_path</span><span class="p">,</span> <span class="n">search_path</span><span class="p">))</span>
-    <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">load_dependencies_from</span><span class="p">(</span>
-        <span class="n">search_path</span><span class="p">,</span> <span class="n">default_namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span><span class="p">,</span> <span class="n">encoding</span>
-    <span class="p">)</span></div>
+    <span class="n">InjectionContainer</span><span class="o">.</span><span class="n">load_dependencies_from</span><span class="p">(</span><span class="n">search_path</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -145,7 +143,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Mar 11, 2021.
+      Last updated on Mar 20, 2021.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
     </div>
   </body>

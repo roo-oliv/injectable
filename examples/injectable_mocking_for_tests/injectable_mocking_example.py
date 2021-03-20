@@ -3,6 +3,14 @@ This is an example of how one can use the testing utility functions
 :meth:`clear_injectables <injectable.testing.clear_injectables>` and
 :meth:`register_injectables <injectable.testing.register_injectables>` for mocking
 a dependency for tests.
+
+In this example, since we call
+:meth:`load_injection_container <injectable.load_injection_container>` and ``RealDep``
+gets registered we need to make use of the
+:meth:`clear_injectables <injectable.testing.clear_injectables>` utility before calling
+:meth:`register_injectables <injectable.testing.register_injectables>` though if
+:meth:`load_injection_container <injectable.load_injection_container>` was never called
+we wouldn't need to use :meth:`clear_injectables <injectable.testing.clear_injectables>`.
 """
 # sphinx-start
 from unittest.mock import Mock

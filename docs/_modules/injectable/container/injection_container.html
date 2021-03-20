@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>injectable.container.injection_container &#8212; injectable 3.4.5 documentation</title>
+    <title>injectable.container.injection_container &#8212; injectable 3.4.6 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pydoctheme.css" type="text/css" />
     
@@ -29,7 +29,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.5</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.6</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -94,7 +94,7 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">search_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_NAMESPACE</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads injectables under the search path to the :class:`InjectionContainer`</span>
@@ -131,8 +131,9 @@
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_DEFAULT_NAMESPACE</span> <span class="o">=</span> <span class="n">default_namespace</span> <span class="ow">or</span> <span class="n">DEFAULT_NAMESPACE</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">[</span><span class="n">default_namespace</span><span class="p">]</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_DEFAULT_NAMESPACE</span> <span class="o">=</span> <span class="n">default_namespace</span>
+        <span class="k">if</span> <span class="n">default_namespace</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">[</span><span class="n">default_namespace</span><span class="p">]</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">search_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">search_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">get_caller_filepath</span><span class="p">())</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">search_path</span><span class="p">):</span>
@@ -203,6 +204,8 @@
     <span class="p">):</span>
         <span class="n">files</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_python_files</span><span class="p">(</span><span class="n">absolute_search_path</span><span class="p">)</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_DEFAULT_NAMESPACE</span> <span class="o">=</span> <span class="n">default_namespace</span>
+        <span class="k">if</span> <span class="n">default_namespace</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">NAMESPACES</span><span class="p">[</span><span class="n">default_namespace</span><span class="p">]</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_contains_injectables</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
                 <span class="k">continue</span>
@@ -282,7 +285,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Mar 11, 2021.
+      Last updated on Mar 20, 2021.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
     </div>
   </body>
