@@ -3,8 +3,8 @@ from unittest.mock import MagicMock, call
 import pytest
 
 from injectable import InjectionContainer, Injectable
-from injectable.container.namespace import Namespace
 from injectable.constants import DEFAULT_NAMESPACE
+from injectable.container.namespace import Namespace
 from injectable.testing import register_injectables
 
 
@@ -71,6 +71,25 @@ class TestRegisterInjectables:
         # then
         assert all(
             call.register_injectable(inj, klass, qualifier, True)
+            in namespace.mock_calls
+            for inj in injectables
+        )
+
+    def test__register_injectables__with_empty_injection_container(self):
+        # given
+        InjectionContainer.NAMESPACES = {}
+        namespace = MagicMock(spec=Namespace)()
+        InjectionContainer._get_namespace_entry = MagicMock(return_value=namespace)
+        injectables = [MagicMock(spec=Injectable)(), MagicMock(spec=Injectable)()]
+        klass = MagicMock
+        qualifier = "TEST"
+
+        # when
+        register_injectables(injectables, klass, qualifier)
+
+        # then
+        assert all(
+            call.register_injectable(inj, klass, qualifier, False)
             in namespace.mock_calls
             for inj in injectables
         )
