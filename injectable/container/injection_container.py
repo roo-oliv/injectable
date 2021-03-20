@@ -45,7 +45,7 @@ class InjectionContainer:
         cls,
         search_path: str = None,
         *,
-        default_namespace: str = None,
+        default_namespace: str = DEFAULT_NAMESPACE,
     ):
         """
         Loads injectables under the search path to the :class:`InjectionContainer`
@@ -82,8 +82,9 @@ class InjectionContainer:
             DeprecationWarning,
             2,
         )
-        cls.LOADING_DEFAULT_NAMESPACE = default_namespace or DEFAULT_NAMESPACE
-        cls.NAMESPACES[default_namespace] = Namespace()
+        cls.LOADING_DEFAULT_NAMESPACE = default_namespace
+        if default_namespace not in cls.NAMESPACES:
+            cls.NAMESPACES[default_namespace] = Namespace()
         if search_path is None:
             search_path = os.path.dirname(get_caller_filepath())
         elif not os.path.isabs(search_path):
@@ -154,6 +155,8 @@ class InjectionContainer:
     ):
         files = cls._collect_python_files(absolute_search_path)
         cls.LOADING_DEFAULT_NAMESPACE = default_namespace
+        if default_namespace not in cls.NAMESPACES:
+            cls.NAMESPACES[default_namespace] = Namespace()
         for file in files:
             if not cls._contains_injectables(file, encoding):
                 continue

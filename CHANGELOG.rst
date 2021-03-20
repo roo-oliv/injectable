@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.4.6 (2021-03-20)
+------------------
+
+* Fix ``testing.register_injectables`` not creating the namespace when it doesn't exist
+    yet
+
 3.4.5 (2021-03-11)
 ------------------
 

@@ -9,7 +9,7 @@ def register_injectables(
     injectables: Collection[Injectable],
     klass: Optional[type] = None,
     qualifier: Optional[str] = None,
-    namespace: str = None,
+    namespace: str = DEFAULT_NAMESPACE,
     propagate: bool = False,
 ):
     """
@@ -51,6 +51,6 @@ def register_injectables(
         raise ValueError(
             "When 'propagate' is True the parameter 'klass' must be defined"
         )
-    namespace = InjectionContainer.NAMESPACES[namespace or DEFAULT_NAMESPACE]
+    namespace = InjectionContainer._get_namespace_entry(namespace)
     for injectable in injectables:
         namespace.register_injectable(injectable, klass, qualifier, propagate)

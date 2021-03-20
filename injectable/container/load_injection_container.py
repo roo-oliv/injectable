@@ -8,7 +8,7 @@ from injectable.constants import DEFAULT_NAMESPACE
 def load_injection_container(
     search_path: str = None,
     *,
-    default_namespace: str = None,
+    default_namespace: str = DEFAULT_NAMESPACE,
     encoding: str = "utf-8",
 ):
     """
@@ -44,6 +44,4 @@ def load_injection_container(
     elif not os.path.isabs(search_path):
         caller_path = os.path.dirname(get_caller_filepath())
         search_path = os.path.abspath(os.path.join(caller_path, search_path))
-    InjectionContainer.load_dependencies_from(
-        search_path, default_namespace or DEFAULT_NAMESPACE, encoding
-    )
+    InjectionContainer.load_dependencies_from(search_path, default_namespace, encoding)
