@@ -4,7 +4,7 @@ pytest==6.2.3
 pytest-mock==3.6.0
 pytest-cov==2.11.1
 coveralls==3.0.1
-black==21.4b1
+black==21.4b2
 flake8==3.9.1
 sphinx==3.5.4
 sphinx_py3doc_enhanced_theme==2.4.0
