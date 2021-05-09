@@ -1,11 +1,11 @@
 pytest-runner==5.3.0
 testfixtures==6.17.1
 pytest==6.2.4
-pytest-mock==3.6.0
+pytest-mock==3.6.1
 pytest-cov==2.11.1
 coveralls==3.0.1
 black==21.5b0
-flake8==3.9.1
-sphinx==3.5.4
+flake8==3.9.2
+sphinx==4.0.0
 sphinx_py3doc_enhanced_theme==2.4.0
 bump2version==1.0.1
