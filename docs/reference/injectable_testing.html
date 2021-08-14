@@ -5,14 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>injectable.testing &#8212; injectable 3.4.6 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pydoctheme.css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     
     <script src="../_static/sidebar.js"></script>
     
@@ -68,8 +67,8 @@ to use these utilities for mocking purposes.</p>
 section shows how to use these utilities for clearing the injection container state.</p>
 </div>
 <dl class="py function">
-<dt id="injectable.testing.clear_injectables">
-<code class="sig-prename descclassname">injectable.testing.</code><code class="sig-name descname">clear_injectables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dependency</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>type<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Set<span class="p">[</span>injectable.container.injectable.Injectable<span class="p">]</span><a class="reference internal" href="../_modules/injectable/testing/clear_injectables_util.html#clear_injectables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.testing.clear_injectables" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="injectable.testing.clear_injectables">
+<span class="sig-prename descclassname"><span class="pre">injectable.testing.</span></span><span class="sig-name descname"><span class="pre">clear_injectables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dependency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">type</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="injectable.html#injectable.Injectable" title="injectable.container.injectable.Injectable"><span class="pre">injectable.container.injectable.Injectable</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/injectable/testing/clear_injectables_util.html#clear_injectables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#injectable.testing.clear_injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility function to clear all injectables registered for the dependency in a given
 namespace. Returns a set containing all cleared injectables.</p>
 <dl class="field-list simple">
@@ -92,8 +91,8 @@ Defaults to <a class="reference internal" href="injectable_constants.html#inject
 </dd></dl>
 
 <dl class="py function">
-<dt id="injectable.testing.register_injectables">
-<code class="sig-prename descclassname">injectable.testing.</code><code class="sig-name descname">register_injectables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">injectables</span><span class="p">:</span> <span class="n">Collection<span class="p">[</span>injectable.container.injectable.Injectable<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">klass</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>type<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">qualifier</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'DEFAULT_NAMESPACE'</span></em>, <em class="sig-param"><span class="n">propagate</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/testing/register_injectables_util.html#register_injectables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.testing.register_injectables" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="injectable.testing.register_injectables">
+<span class="sig-prename descclassname"><span class="pre">injectable.testing.</span></span><span class="sig-name descname"><span class="pre">register_injectables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">injectables</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="injectable.html#injectable.Injectable" title="injectable.container.injectable.Injectable"><span class="pre">injectable.container.injectable.Injectable</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">klass</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">type</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualifier</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'DEFAULT_NAMESPACE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propagate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/testing/register_injectables_util.html#register_injectables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#injectable.testing.register_injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility function to manually register injectables in a given namespace for the
 provided class and/or qualifier.</p>
 <p>At least one of <code class="docutils literal notranslate"><span class="pre">klass</span></code> or <code class="docutils literal notranslate"><span class="pre">qualifier</span></code> parameters need to be defined. Otherwise
@@ -131,8 +130,8 @@ Defaults to False.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="injectable.testing.reset_injection_container">
-<code class="sig-prename descclassname">injectable.testing.</code><code class="sig-name descname">reset_injection_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/testing/reset_injection_container_util.html#reset_injection_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#injectable.testing.reset_injection_container" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="injectable.testing.reset_injection_container">
+<span class="sig-prename descclassname"><span class="pre">injectable.testing.</span></span><span class="sig-name descname"><span class="pre">reset_injection_container</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/testing/reset_injection_container_util.html#reset_injection_container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#injectable.testing.reset_injection_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility function to reset the injection container, clearing all injectables
 registered from all namespaces and reseting the record for already scanned files.</p>
 <p>Usage:</p>
@@ -161,7 +160,7 @@ registered from all namespaces and reseting the record for already scanned files
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -214,8 +213,8 @@ registered from all namespaces and reseting the record for already scanned files
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Mar 20, 2021.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+      Last updated on Aug 14, 2021.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
     </div>
   </body>
 </html>

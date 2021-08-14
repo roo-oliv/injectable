@@ -12,6 +12,12 @@ and will deal with all the necessary logic to instantiate an ``ExternalClient``.
 
 Now our ``Factory`` example class can be injected with an ``ExternalClient`` without
 having the responsibility of knowing how to actually instantiate it.
+
+.. seealso::
+
+    The :meth:`injectable_factory <injectable.injectable_factory>` decorator can also be
+    used in lambdas for simpler cases. The :ref:`injecting_existing_instance_example`
+    shows how to use it like so.
 """
 # sphinx-start
 from examples import Example

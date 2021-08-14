@@ -15,7 +15,7 @@ def injectable_factory(
     namespace: str = None,
     group: str = None,
     singleton: bool = False,
-) -> T:
+) -> Callable[..., Callable[..., T]]:
     """
     Function decorator to mark it as a injectable factory for the dependency.
 

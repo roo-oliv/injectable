@@ -18,6 +18,7 @@ Usage Examples
     namespaces
     singletons
     factory
+    injecting_existing_instance
     injectable_mocking_for_tests
     injection_container_resetting_for_tests
     service_locator

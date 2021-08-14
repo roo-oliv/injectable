@@ -5,20 +5,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Factory Example &#8212; injectable 3.4.6 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pydoctheme.css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     
     <script src="../_static/sidebar.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Injectable Mocking For Tests Example" href="injectable_mocking_for_tests.html" />
+    <link rel="next" title="Injecting Existing Instance Example" href="injecting_existing_instance.html" />
     <link rel="prev" title="Singletons Example" href="singletons.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
@@ -60,6 +59,12 @@ class through the <a class="reference internal" href="../reference/injectable.ht
 and will deal with all the necessary logic to instantiate an <code class="docutils literal notranslate"><span class="pre">ExternalClient</span></code>.</p>
 <p>Now our <code class="docutils literal notranslate"><span class="pre">Factory</span></code> example class can be injected with an <code class="docutils literal notranslate"><span class="pre">ExternalClient</span></code> without
 having the responsibility of knowing how to actually instantiate it.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="../reference/injectable.html#injectable.injectable_factory" title="injectable.injectable_factory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">injectable_factory</span></code></a> decorator can also be
+used in lambdas for simpler cases. The <a class="reference internal" href="injecting_existing_instance.html#injecting-existing-instance-example"><span class="std std-ref">Injecting Existing Instance Example</span></a>
+shows how to use it like so.</p>
+</div>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">factory_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
@@ -135,7 +140,7 @@ having the responsibility of knowing how to actually instantiate it.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -155,6 +160,7 @@ having the responsibility of knowing how to actually instantiate it.</p>
 <li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Factory Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injecting_existing_instance.html">Injecting Existing Instance Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="service_locator.html">Service Locator Example</a></li>
@@ -187,7 +193,7 @@ having the responsibility of knowing how to actually instantiate it.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="injectable_mocking_for_tests.html" title="Injectable Mocking For Tests Example"
+          <a href="injecting_existing_instance.html" title="Injecting Existing Instance Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="singletons.html" title="Singletons Example"
@@ -197,8 +203,8 @@ having the responsibility of knowing how to actually instantiate it.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Mar 20, 2021.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.3.1.
+      Last updated on Aug 14, 2021.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
     </div>
   </body>
 </html>
