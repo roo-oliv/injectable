@@ -1,10 +1,10 @@
 import os
 import warnings
-from runpy import run_path
+from runpy import run_path, run_module
 from typing import Dict, Optional, Callable
 from typing import Set
 
-from pycollect import PythonFileCollector
+from pycollect import PythonFileCollector, module_finder
 
 from injectable.container.injectable import Injectable
 from injectable.container.namespace import Namespace
@@ -145,7 +145,12 @@ class InjectionContainer:
             if file.path in cls.LOADED_FILEPATHS:
                 continue
             cls.LOADING_FILEPATH = file.path
-            run_path(file.path)
+            try:
+                run_module(module_finder.find_module_name(file.path))
+            except AttributeError:
+                # This is needed for some corner cases involving pytest
+                # See more at https://github.com/pytest-dev/pytest/issues/9007
+                run_path(file.path)
             cls.LOADED_FILEPATHS.add(file.path)
             cls.LOADING_FILEPATH = None
 
@@ -163,7 +168,12 @@ class InjectionContainer:
             if file.path in cls.LOADED_FILEPATHS:
                 continue
             cls.LOADING_FILEPATH = file.path
-            run_path(file.path)
+            try:
+                run_module(module_finder.find_module_name(file.path))
+            except AttributeError:
+                # This is needed for some corner cases involving pytest
+                # See more at https://github.com/pytest-dev/pytest/issues/9007
+                run_path(file.path)
             cls.LOADED_FILEPATHS.add(file.path)
             cls.LOADING_FILEPATH = None
         cls.LOADING_DEFAULT_NAMESPACE = None

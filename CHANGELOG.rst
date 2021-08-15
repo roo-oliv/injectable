@@ -1,11 +1,16 @@
 Changelog
 =========
 
+3.4.7 (2021-08-15)
+------------------
+
+* Fix injectable crashing when relative imports are used in files containing injectables.
+
 3.4.6 (2021-03-20)
 ------------------
 
 * Fix ``testing.register_injectables`` not creating the namespace when it doesn't exist
-    yet
+  yet
 
 3.4.5 (2021-03-11)
 ------------------
@@ -50,7 +55,7 @@ Changelog
 ------------------
 
 * ``InjectionContainer::load`` is more resilient against duplicated injectables
-    registering
+  registering
 
 3.2.0 (2020-04-15)
 ------------------
@@ -76,7 +81,7 @@ Changelog
 ------------------
 
 * Fix bug of scanning the same module more than once when ``InjectionContainer.load()``
-    is called multiple times with different relative search paths.
+  is called multiple times with different relative search paths.
 
 3.1.0 (2020-04-13)
 ------------------
@@ -121,11 +126,11 @@ Changelog
 ------------------
 
 * Statically infer dependency's constructor suitability for injection instead of using
-    trial instantiation
+  trial instantiation
 * Fix bug of raising ``TypeError`` when injectable fails on the trial dependency
-    instantiation which can happen when the dependency does provide a default
-    constructor with no arguments but the running environment (possibly a test suite
-    environment) will make the instantiation fail
+  instantiation which can happen when the dependency does provide a default
+  constructor with no arguments but the running environment (possibly a test suite
+  environment) will make the instantiation fail
 
 1.1.0 (2018-02-10)
 ------------------
@@ -136,7 +141,7 @@ Changelog
 ------------------
 
 * Fixes required dependency ``lazy_object_proxy`` not being installed when installing
-    injectable through pip
+  injectable through pip
 
 1.0.0 (2018-02-06)
 ------------------

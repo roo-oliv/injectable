@@ -114,6 +114,8 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
 
         # when
@@ -121,6 +123,44 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.called is True
+        assert run_module.call_count == 2
+        assert run_path.call_count == 0
+
+    def test__load__when_runpy_run_module_fails_in_pytest_corner_case(
+        self, patch_injection_container, patch_open
+    ):
+        # given
+        patch_injection_container(
+            "get_caller_filepath",
+            return_value=os.path.join("fake", "path", "file.py"),
+        )
+        file_collector = MagicMock()
+        file_collector.collect.return_value = {
+            MagicMock(spec=os.DirEntry),
+            MagicMock(spec=os.DirEntry),
+        }
+        patch_injection_container(
+            "PythonFileCollector",
+            return_value=file_collector,
+        )
+        patch_open(
+            read_data="from injectable import injectable\n@injectable\nclass A: ..."
+        )
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
+
+        def raise_attribute_error(*args, **kwargs):
+            raise AttributeError()
+
+        run_module.side_effect = raise_attribute_error
+        run_path = patch_injection_container("run_path")
+
+        # when
+        InjectionContainer.load()
+
+        # then
+        assert file_collector.collect.called is True
+        assert run_module.call_count == 2
         assert run_path.call_count == 2
 
     def test__load__with_files_without_injectables(
@@ -141,6 +181,8 @@ class TestInjectionContainer:
             return_value=file_collector,
         )
         patch_open(read_data='"""not injectable"""')
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
 
         # when
@@ -148,6 +190,7 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.called is True
+        assert run_module.called is False
         assert run_path.called is False
 
     def test__load__with_already_loaded_files(
@@ -171,6 +214,8 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
         InjectionContainer.load()
 
@@ -179,7 +224,8 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.call_count == 2
-        assert run_path.call_count == 2
+        assert run_module.call_count == 2
+        assert run_path.call_count == 0
         assert len(InjectionContainer.LOADED_FILEPATHS) == 2
 
     def test__load_dependencies_from__leaves_loading_vars_clean(
@@ -231,6 +277,8 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
 
         # when
@@ -238,7 +286,8 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.called is True
-        assert run_path.call_count == 2
+        assert run_module.call_count == 2
+        assert run_path.call_count == 0
 
     def test__load_dependencies_from__with_files_without_injectables(
         self, patch_injection_container, patch_open
@@ -257,6 +306,8 @@ class TestInjectionContainer:
             return_value=file_collector,
         )
         patch_open(read_data='"""not injectable"""')
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
 
         # when
@@ -264,6 +315,7 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.called is True
+        assert run_module.called is False
         assert run_path.called is False
 
     def test__load_dependencies_from__with_already_loaded_files(
@@ -286,6 +338,8 @@ class TestInjectionContainer:
         patch_open(
             read_data="from injectable import injectable\n@injectable\nclass A: ..."
         )
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
         InjectionContainer.load_dependencies_from(search_path, namespace)
 
@@ -294,7 +348,8 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.call_count == 2
-        assert run_path.call_count == 2
+        assert run_module.call_count == 2
+        assert run_path.call_count == 0
         assert len(InjectionContainer.LOADED_FILEPATHS) == 2
 
     def test__load_dependencies_from__with_specific_encoding(
@@ -316,6 +371,8 @@ class TestInjectionContainer:
         patch_open(
             read_data=r"from injectable import injectable\n@injectable\nclass A: ..."
         )
+        patch_injection_container("module_finder")
+        run_module = patch_injection_container("run_module")
         run_path = patch_injection_container("run_path")
 
         # when
@@ -323,7 +380,8 @@ class TestInjectionContainer:
 
         # then
         assert file_collector.collect.called is True
-        assert run_path.call_count == 2
+        assert run_module.call_count == 2
+        assert run_path.call_count == 0
 
     def test__register_injectable__with_defaults(self, patch_injection_container):
         # given
