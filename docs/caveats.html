@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Caveats &#8212; injectable 3.4.7 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="injectable.testing" href="reference/injectable_testing.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="index.html">injectable-3.4.7</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/allrod5/injectable/">Fork me on GitHub</a>
+            <img src="_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="caveats">
+<h1>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline">¶</a></h1>
+<p>This is a non-exhaustive list of known caveats to the usage of this library.</p>
+<div class="section" id="automatic-dependency-discovery">
+<h2>Automatic dependency discovery<a class="headerlink" href="#automatic-dependency-discovery" title="Permalink to this headline">¶</a></h2>
+<p>Injectable automatic dependency discovery system is inspired from Airflow’s DAG automatic
+discovery. So first all files in the search path are recursively read looking for any
+occurrence of the following four strings: <code class="docutils literal notranslate"><span class="pre">&#64;injectable</span></code>, <code class="docutils literal notranslate"><span class="pre">injectable(</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&#64;injectable_factory</span></code>, and <code class="docutils literal notranslate"><span class="pre">injectable_factory(</span></code>. Then those files are executed as
+python modules so the decorators can register the injectable to the container.</p>
+<p>This implementation leads to some issues:</p>
+<ul class="simple">
+<li><p>If, for any reason, the code aliases the decorators to other incompatible names or
+do not use the decorator functions directly automatic dependency will fail and those
+injectables will never be registered to the container.</p></li>
+<li><p>Any file containing these strings will be executed causing potential unintended
+side-effects such as file-level code outside classes and functions being executed.</p></li>
+<li><p>The module of each injectable class may be loaded twice: one for in this automatic
+discovery step and another by the regular application operation. This will render
+impossible to run type checks for injected objects through the use of <code class="docutils literal notranslate"><span class="pre">type</span></code> or
+<code class="docutils literal notranslate"><span class="pre">isinstance</span></code> builtin functions. If one must type check using the type’s
+<code class="docutils literal notranslate"><span class="pre">__qualname__</span></code> attribute is a possible workaround.</p></li>
+</ul>
+</div>
+<div class="section" id="pytest-and-relative-imports">
+<h2>Pytest and relative imports<a class="headerlink" href="#pytest-and-relative-imports" title="Permalink to this headline">¶</a></h2>
+<p>As described in this issue: <a class="reference external" href="https://github.com/pytest-dev/pytest/issues/9007">https://github.com/pytest-dev/pytest/issues/9007</a> , pytest
+won’t work with injectable’s automatic dependency discovery system if one declares
+injectables in the same file of the test itself, load the injection container during the
+test and use relative imports in this file. This corner-case combination will lead to an
+<code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">'AssertionRewritingHook'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'get_code'</span></code>.</p>
+<p>Currently the workaround for this is either to use absolute imports in these files or to
+move the declaration of injectables to any other file other than the test’s file.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Caveats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-dependency-discovery">Automatic dependency discovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytest-and-relative-imports">Pytest and relative imports</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/caveats.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="reference/injectable_testing.html" title="injectable.testing"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Aug 15, 2021.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+  </body>
+</html>

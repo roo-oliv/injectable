@@ -9,6 +9,7 @@ Contents
    installation
    usage/index
    reference/index
+   caveats
    contributing
    authors
    changelog

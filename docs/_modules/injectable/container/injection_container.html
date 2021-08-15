@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>injectable.container.injection_container &#8212; injectable 3.4.6 documentation</title>
+    <title>injectable.container.injection_container &#8212; injectable 3.4.7 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/pydoctheme.css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.6</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-3.4.7</a> &#187;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -48,11 +48,11 @@
   <h1>Source code for injectable.container.injection_container</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">runpy</span> <span class="kn">import</span> <span class="n">run_path</span>
+<span class="kn">from</span> <span class="nn">runpy</span> <span class="kn">import</span> <span class="n">run_path</span><span class="p">,</span> <span class="n">run_module</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
 
-<span class="kn">from</span> <span class="nn">pycollect</span> <span class="kn">import</span> <span class="n">PythonFileCollector</span>
+<span class="kn">from</span> <span class="nn">pycollect</span> <span class="kn">import</span> <span class="n">PythonFileCollector</span><span class="p">,</span> <span class="n">module_finder</span>
 
 <span class="kn">from</span> <span class="nn">injectable.container.injectable</span> <span class="kn">import</span> <span class="n">Injectable</span>
 <span class="kn">from</span> <span class="nn">injectable.container.namespace</span> <span class="kn">import</span> <span class="n">Namespace</span>
@@ -193,7 +193,12 @@
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span>
-            <span class="n">run_path</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">run_module</span><span class="p">(</span><span class="n">module_finder</span><span class="o">.</span><span class="n">find_module_name</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># This is needed for some corner cases involving pytest</span>
+                <span class="c1"># See more at https://github.com/pytest-dev/pytest/issues/9007</span>
+                <span class="n">run_path</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -211,7 +216,12 @@
             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span>
-            <span class="n">run_path</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">run_module</span><span class="p">(</span><span class="n">module_finder</span><span class="o">.</span><span class="n">find_module_name</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># This is needed for some corner cases involving pytest</span>
+                <span class="c1"># See more at https://github.com/pytest-dev/pytest/issues/9007</span>
+                <span class="n">run_path</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADED_FILEPATHS</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_FILEPATH</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">LOADING_DEFAULT_NAMESPACE</span> <span class="o">=</span> <span class="kc">None</span>
@@ -284,7 +294,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Aug 14, 2021.
+      Last updated on Aug 15, 2021.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
     </div>
   </body>
