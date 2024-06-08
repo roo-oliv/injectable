@@ -1,3 +1,4 @@
+from typing import Annotated
 from unittest.mock import MagicMock
 
 import pytest
@@ -185,3 +186,45 @@ class TestAutowiredDecorator:
         assert parameters["a"] is None
         assert parameters["b"] is None
         assert parameters["c"] is AutowiredMockC.inject()
+
+    def test__autowired__with_one_autowired_in_annotated(self):
+        # given
+        AutowiredMock = MagicMock(spec=_Autowired)
+
+        @autowired
+        def f(a: Annotated[type, AutowiredMock]):
+            return {"a": a}
+
+        # when
+        parameters = f()
+
+        # then
+        assert AutowiredMock.inject.called is True
+        assert parameters["a"] is AutowiredMock.inject()
+
+    def test__autowired__with_two_autowired_in_annotation_raises(self):
+        # given
+        AutowiredMockA = MagicMock(spec=_Autowired)
+        AutowiredMockB = MagicMock(spec=_Autowired)
+
+        with pytest.raises(AutowiringError):
+
+            @autowired
+            def f(a: Annotated[type, AutowiredMockA, AutowiredMockB]):
+                return {"a": a}
+
+    def test__autowired_with_no_autowire_in_annotation_continues(self):
+        # given
+        AutowiredMock = MagicMock(spec=_Autowired)
+
+        @autowired
+        def f(a: Annotated[str, str], b: Annotated[type, AutowiredMock]):
+            return {"a": a, "b": b}
+
+        # when
+        parameters = f("test")
+
+        # then
+        assert AutowiredMock.inject.called is True
+        assert parameters["a"] == "test"
+        assert parameters["b"] is AutowiredMock.inject()
