@@ -1,10 +1,11 @@
-from typing import Annotated
+from typing import Annotated, Optional
 from unittest.mock import MagicMock
 
 import pytest
 from injectable import autowired, Autowired
 from injectable.autowiring.autowired_type import _Autowired
 from injectable.errors import AutowiringError
+from pytest_mock import MockFixture
 
 
 class TestAutowiredDecorator:
@@ -228,3 +229,103 @@ class TestAutowiredDecorator:
         assert AutowiredMock.inject.called is True
         assert parameters["a"] == "test"
         assert parameters["b"] is AutowiredMock.inject()
+
+    def test__autowired__with_positional_only_args(self):
+        # given
+        AutowiredMockA = MagicMock(spec=_Autowired)
+        AutowiredMockB = MagicMock(spec=_Autowired)
+        AutowiredMockC = MagicMock(spec=_Autowired)
+
+        @autowired
+        def f(
+            a: AutowiredMockA,
+            /,  # noqa: E999, E225
+            b: AutowiredMockB,
+            c: AutowiredMockC,
+        ):
+            return {"a": a, "b": b, "c": c}
+
+        # when
+        parameters = f(b=None)
+
+        # then
+        assert AutowiredMockA.inject.called is True
+        assert AutowiredMockB.inject.called is False
+        assert AutowiredMockC.inject.called is True
+        assert parameters["a"] is AutowiredMockA.inject()
+        assert parameters["b"] is None
+        assert parameters["c"] is AutowiredMockC.inject()
+
+    def test__inject__with_list_class_dependency(self, mocker: MockFixture):
+        # given
+        mocked_inject = mocker.patch("injectable.autowiring.autowired_type.inject")
+        mocked_inject_multiple = mocker.patch(
+            "injectable.autowiring.autowired_type.inject_multiple"
+        )
+        autowired = Autowired(list[TestAutowiredDecorator])
+
+        # when
+        autowired.inject()
+
+        # then
+        assert mocked_inject.call_count == 0
+        assert mocked_inject_multiple.call_count == 1
+        args, kwargs = mocked_inject_multiple.call_args
+        assert args[0] == TestAutowiredDecorator
+
+    def test__inject__with_list_qualifier_dependency(self, mocker: MockFixture):
+        # given
+        mocked_inject = mocker.patch("injectable.autowiring.autowired_type.inject")
+        mocked_inject_multiple = mocker.patch(
+            "injectable.autowiring.autowired_type.inject_multiple"
+        )
+        expected = "Expected"
+        autowired = Autowired(list[expected])
+
+        # when
+        autowired.inject()
+
+        # then
+        assert mocked_inject.call_count == 0
+        assert mocked_inject_multiple.call_count == 1
+        args, kwargs = mocked_inject_multiple.call_args
+        assert args[0] == expected
+
+    def test__inject__with_optional_list_class_dependency(self, mocker: MockFixture):
+        # given
+        mocked_inject = mocker.patch("injectable.autowiring.autowired_type.inject")
+        mocked_inject_multiple = mocker.patch(
+            "injectable.autowiring.autowired_type.inject_multiple"
+        )
+        autowired = Autowired(Optional[list[TestAutowiredDecorator]])
+
+        # when
+        autowired.inject()
+
+        # then
+        assert mocked_inject.call_count == 0
+        assert mocked_inject_multiple.call_count == 1
+        args, kwargs = mocked_inject_multiple.call_args
+        assert args[0] == TestAutowiredDecorator
+        assert kwargs["optional"] is True
+
+    def test__inject__with_optional_list_qualifier_dependency(
+        self, mocker: MockFixture
+    ):
+        # given
+        mocked_inject = mocker.patch("injectable.autowiring.autowired_type.inject")
+        mocked_inject_multiple = mocker.patch(
+            "injectable.autowiring.autowired_type.inject_multiple"
+        )
+        expected = "Expected"
+        autowired = Autowired(Optional[list[expected]])
+
+        # when
+        autowired.inject()
+
+        # then
+        assert mocked_inject.call_count == 0
+        assert mocked_inject_multiple.call_count == 1
+        args, kwargs = mocked_inject_multiple.call_args
+        assert args[0] == expected
+        assert kwargs["optional"] is True

@@ -3,8 +3,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Caveats &#8212; injectable 3.4.7 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Caveats &#8212; injectable 4.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css" />
     
@@ -30,7 +31,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="index.html">injectable-3.4.7</a> &#187;</li> 
+        <li><a href="index.html">injectable-4.0.0</a> &#187;</li> 
       </ul>
     </div>
     
@@ -46,10 +47,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="caveats">
+  <section id="caveats">
 <h1>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline">¶</a></h1>
 <p>This is a non-exhaustive list of known caveats to the usage of this library.</p>
-<div class="section" id="automatic-dependency-discovery">
+<section id="automatic-dependency-discovery">
 <h2>Automatic dependency discovery<a class="headerlink" href="#automatic-dependency-discovery" title="Permalink to this headline">¶</a></h2>
 <p>Injectable automatic dependency discovery system is inspired from Airflow’s DAG automatic
 discovery. So first all files in the search path are recursively read looking for any
@@ -69,8 +70,8 @@ impossible to run type checks for injected objects through the use of <code clas
 <code class="docutils literal notranslate"><span class="pre">isinstance</span></code> builtin functions. If one must type check using the type’s
 <code class="docutils literal notranslate"><span class="pre">__qualname__</span></code> attribute is a possible workaround.</p></li>
 </ul>
-</div>
-<div class="section" id="pytest-and-relative-imports">
+</section>
+<section id="pytest-and-relative-imports">
 <h2>Pytest and relative imports<a class="headerlink" href="#pytest-and-relative-imports" title="Permalink to this headline">¶</a></h2>
 <p>As described in this issue: <a class="reference external" href="https://github.com/pytest-dev/pytest/issues/9007">https://github.com/pytest-dev/pytest/issues/9007</a> , pytest
 won’t work with injectable’s automatic dependency discovery system if one declares
@@ -79,8 +80,8 @@ test and use relative imports in this file. This corner-case combination will le
 <code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">'AssertionRewritingHook'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'get_code'</span></code>.</p>
 <p>Currently the workaround for this is either to use absolute imports in these files or to
 move the declaration of injectables to any other file other than the test’s file.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -148,8 +149,8 @@ move the declaration of injectables to any other file other than the test’s fi
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Aug 15, 2021.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+      Last updated on Jul 04, 2024.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

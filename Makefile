@@ -1,7 +1,7 @@
 .PHONY: environment
 environment:  ## create environment
-	pyenv install -s 3.6.9
-	pyenv virtualenv 3.6.9 injectable
+	pyenv install -s 3.9.19
+	pyenv virtualenv 3.9.19 injectable
 	pyenv local injectable
 
 .PHONY: requirements
@@ -24,7 +24,7 @@ black-check:  ## check Black code style
 	@echo "\033[33mBlack Code Style\033[0m"
 	@echo "\033[33m================\033[0m"
 	@echo ""
-	@python -m black --target-version=py36 --check --exclude="build/|buck-out/|dist/|_build/\
+	@python -m black --target-version=py39 --check --exclude="build/|buck-out/|dist/|_build/\
 	|pip/|env/|\.pip/|\.git/|\.hg/|\.mypy_cache/|\.tox/|\.venv/" . \
 	&& echo "\n\n\033[32mSuccess\033[0m\n" || (echo "\n\n\033[31mFailure\033[0m\n\n\
 	\033[34mRun \"\e[4mmake black\e[24m\" to apply style formatting to your code\
@@ -32,7 +32,7 @@ black-check:  ## check Black code style
 
 .PHONY: black
 black:  ## apply the Black code style to code
-	black --target-version=py36 --exclude="build/|buck-out/|dist/|_build/|pip/|env/|\.pip/|\.git/\
+	black --target-version=py39 --exclude="build/|buck-out/|dist/|_build/|pip/|env/|\.pip/|\.git/\
 	|\.hg/|\.mypy_cache/|\.tox/|\.venv/" .
 
 .PHONY: tests
@@ -72,7 +72,7 @@ docs:
 	make html -B
 	cp -a build/html/. docs
 
-CURRENT_VERSION = 3.4.7
+CURRENT_VERSION = 4.0.0
 
 .PHONY: bump-patch-version
 bump-patch-version:

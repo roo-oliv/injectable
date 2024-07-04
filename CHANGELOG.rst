@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.0.0 (2024-07-04)
+------------------
+* Drop support for Python versions 3.6, 3.7 and 3.8
+* Comply with PEP-593 and support typing.Annotated
+
 3.4.7 (2021-08-15)
 ------------------
 
