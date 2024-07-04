@@ -1,6 +1,6 @@
 import inspect
 from functools import wraps
-from typing import TypeVar, Callable, Any
+from typing import TypeVar, Callable, Any, get_args, _AnnotatedAlias
 
 from injectable.autowiring.autowired_type import _Autowired
 from injectable.errors import AutowiringError
@@ -43,7 +43,9 @@ def autowired(func: T) -> T:
     signature = inspect.signature(func)
     autowired_parameters = []
     for index, parameter in enumerate(signature.parameters.values()):
-        if not isinstance(parameter.annotation, _Autowired):
+        annotation = _get_parameter_annotation(parameter)
+
+        if not isinstance(annotation, _Autowired):
             if len(autowired_parameters) == 0 or parameter.kind in [
                 parameter.KEYWORD_ONLY,
                 parameter.VAR_KEYWORD,
@@ -68,7 +70,8 @@ def autowired(func: T) -> T:
         for parameter in autowired_parameters:
             if parameter.name in bound_arguments:
                 continue
-            dependency = parameter.annotation.inject()
+            annotation = _get_parameter_annotation(parameter)
+            dependency = annotation.inject()
             if parameter.kind is parameter.POSITIONAL_ONLY:
                 args.append(dependency)
             else:
@@ -77,3 +80,17 @@ def autowired(func: T) -> T:
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def _get_parameter_annotation(parameter) -> type:
+    if isinstance(parameter.annotation, _AnnotatedAlias):
+        autowired_annotations = list(
+            filter(lambda t: isinstance(t, _Autowired), get_args(parameter.annotation))
+        )
+        if len(autowired_annotations) == 0:
+            return parameter.annotation
+        if len(autowired_annotations) > 1:
+            raise AutowiringError("Multiple Autowired annotations found")
+        return autowired_annotations[0]
+
+    return parameter.annotation
