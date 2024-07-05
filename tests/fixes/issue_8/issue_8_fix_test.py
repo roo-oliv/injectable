@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 8:
 Autowired(List[...]) does not work with qualifiers
-https://github.com/allrod5/injectable/issues/8
+https://github.com/roo-oliv/injectable/issues/8
 
 Injectable 3.1.3 attempts to use the argument of typing.List as a qualifier though
 string arguments to subscriptable typing types are encapsulated in a typing.ForwardRef

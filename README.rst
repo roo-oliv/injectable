@@ -24,25 +24,25 @@ Injectable: Dependency Injection for Humans™
     :target: https://injectable.readthedocs.io/en/latest/
     :alt: Documentation
 
-.. |build| image:: https://github.com/allrod5/injectable/workflows/build/badge.svg
+.. |build| image:: https://github.com/roo-oliv/injectable/workflows/build/badge.svg
     :alt: Build Status
-    :target: https://github.com/allrod5/injectable/actions
+    :target: https://github.com/roo-oliv/injectable/actions
 
-.. |requires| image:: https://requires.io/github/allrod5/injectable/requirements.svg?branch=master
+.. |requires| image:: https://requires.io/github/roo-oliv/injectable/requirements.svg?branch=master
     :alt: Requirements Status
-    :target: https://requires.io/github/allrod5/injectable/requirements/?branch=master
+    :target: https://requires.io/github/roo-oliv/injectable/requirements/?branch=master
 
-.. |coveralls| image:: https://coveralls.io/repos/allrod5/injectable/badge.svg?branch=master&service=github
+.. |coveralls| image:: https://coveralls.io/repos/roo-oliv/injectable/badge.svg?branch=master&service=github
     :alt: Coverage Status
-    :target: https://coveralls.io/r/allrod5/injectable
+    :target: https://coveralls.io/r/roo-oliv/injectable
 
-.. |reliability| image:: https://sonarcloud.io/api/project_badges/measure?project=allrod5_injectable&metric=reliability_rating
+.. |reliability| image:: https://sonarcloud.io/api/project_badges/measure?project=roo-oliv_injectable&metric=reliability_rating
     :alt: Reliability Rating
-    :target: https://sonarcloud.io/dashboard?id=allrod5_injectable
+    :target: https://sonarcloud.io/dashboard?id=roo-oliv_injectable
 
-.. |security| image:: https://sonarcloud.io/api/project_badges/measure?project=allrod5_injectable&metric=security_rating
+.. |security| image:: https://sonarcloud.io/api/project_badges/measure?project=roo-oliv_injectable&metric=security_rating
     :alt: Security Rating
-    :target: https://sonarcloud.io/dashboard?id=allrod5_injectable
+    :target: https://sonarcloud.io/dashboard?id=roo-oliv_injectable
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code Style
@@ -68,13 +68,13 @@ Injectable: Dependency Injection for Humans™
     :alt: Supported implementations
     :target: https://pypi.org/project/injectable
 
-.. |license| image:: https://img.shields.io/github/license/allrod5/injectable
+.. |license| image:: https://img.shields.io/github/license/roo-oliv/injectable
     :alt: GitHub license
-    :target: https://github.com/allrod5/injectable/blob/master/LICENSE
+    :target: https://github.com/roo-oliv/injectable/blob/master/LICENSE
 
 .. |platforms| image:: https://img.shields.io/badge/platforms-windows%20%7C%20macos%20%7C%20linux-lightgrey
     :alt: Supported Platforms
-    :target: https://github.com/allrod5/injectable/blob/master/.github/workflows/build.yml#L11
+    :target: https://github.com/roo-oliv/injectable/blob/master/.github/workflows/build.yml#L11
 
 .. |downloads| image:: https://pepy.tech/badge/injectable/month
     :alt: Downloads per Month

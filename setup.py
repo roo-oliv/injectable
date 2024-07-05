@@ -40,9 +40,9 @@ setup(
             "injectable.egg-info",
         )
     ),
-    url="https://github.com/allrod5/injectable",
+    url="https://github.com/roo-oliv/injectable",
     license="MIT",
-    author="Rodrigo Martins de Oliveira",
+    author="Rodrigo Oliveira",
     author_email="oliveira.rodrigo.m@gmail.com",
     description="Dependency Injection for Humans™",
     long_description=f"{readme}\n{changelog}",

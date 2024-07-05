@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 81:
 No context is created when no injectables are found, attempt to put object fails.
-https://github.com/allrod5/injectable/issues/81
+https://github.com/roo-oliv/injectable/issues/81
 
 In injectable 3.4.5 and prior releases the :func:`testing.register_injectables` utility
 wasn't check for the existence of the requested namespace and would fail if it didn't

@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 16:
 Optional injection doesn't work when there are the namespace is empty
-https://github.com/allrod5/injectable/issues/16
+https://github.com/roo-oliv/injectable/issues/16
 
 Injectable 3.4.1 attempted to get the namespace to perform an injection by direct key
 access which would result in an error if the namespace doesn't exist. This behavior

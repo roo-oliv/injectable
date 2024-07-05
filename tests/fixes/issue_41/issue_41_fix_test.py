@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 41:
 ImportError due to changes in 3.4.3
-https://github.com/allrod5/injectable/issues/41
+https://github.com/roo-oliv/injectable/issues/41
 
 Injectable (>=3.4.3, <= 3.4.6) executes files with injectables as scripts to register
 dependencies but this does not work for files which use relative imports.

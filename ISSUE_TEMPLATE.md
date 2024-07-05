@@ -10,5 +10,5 @@ is another way to accomplish what you want. Remember that this is an opensource 
 Requests are welcome and encouraged**.
 
 _By submiting an issue you accept this project's
-[Code of Conduct](https://github.com/allrod5/injectable/blob/master/CODE_OF_CONDUCT.md). Any issue out of
+[Code of Conduct](https://github.com/roo-oliv/injectable/blob/master/CODE_OF_CONDUCT.md). Any issue out of
 these guidelines can be deleted at any moment without further explanation._

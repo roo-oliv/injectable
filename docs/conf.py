@@ -32,15 +32,15 @@ version = release = "4.0.0"
 pygments_style = "trac"
 templates_path = ["."]
 extlinks = {
-    "issue": ("https://github.com/allrod5/injectable/issues/%s", "#"),
-    "pr": ("https://github.com/allrod5/injectable/pull/%s", "PR #"),
+    "issue": ("https://github.com/roo-oliv/injectable/issues/%s", "#"),
+    "pr": ("https://github.com/roo-oliv/injectable/pull/%s", "PR #"),
 }
 import sphinx_py3doc_enhanced_theme
 
 html_theme = "sphinx_py3doc_enhanced_theme"
 html_theme_path = [sphinx_py3doc_enhanced_theme.get_html_theme_path()]
 html_theme_options = {
-    "githuburl": "https://github.com/allrod5/injectable/",
+    "githuburl": "https://github.com/roo-oliv/injectable/",
     "body_max_width": "90%",
 }
 

@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 30:
 Injectable fails to resolve entangled imports
-https://github.com/allrod5/injectable/issues/30
+https://github.com/roo-oliv/injectable/issues/30
 
 Injectable 3.4.2 attempted to manually import injectables into system modules. This
 was causing unintended side effects. Now it just executes the injectable's files.

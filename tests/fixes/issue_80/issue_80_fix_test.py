@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 80:
 Injectable fails reading files with UTF-8 characters in Windows.
-https://github.com/allrod5/injectable/issues/80
+https://github.com/roo-oliv/injectable/issues/80
 
 Injectable 3.4.4 and prior releases attempted to read files with the default system
 encoding, which is 'cp-1252' for Windows, and throws an UnicodeDecodeError when reading

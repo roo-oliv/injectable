@@ -1,7 +1,7 @@
 """
 Test the fix for the issue 15:
 Using named args breaks injectable
-https://github.com/allrod5/injectable/issues/15
+https://github.com/roo-oliv/injectable/issues/15
 
 Injectable 3.4.0 attempted to always inject autowired parameters as positional args
 which may result in passing a duplicated parameter when the caller passes a
