@@ -30,6 +30,7 @@ In ``ServiceLocator::run`` we illustrate how the :meth:`injectable.inject` and
     The :ref:`qualifier_overloading_example` details how overloading an injectable
     works by using class inheritance.
 """
+
 # sphinx-start
 from examples import Example
 from examples.service_locator.sample_service import SampleService

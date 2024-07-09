@@ -15,6 +15,7 @@ Now our ``InjectingExistingInstance`` example class can be injected with our exi
     used in regular functions and not just in lambdas. The :ref:`factory_example` shows
     how to use it.
 """
+
 # sphinx-start
 from examples import Example
 from examples.injecting_existing_instance.app import Application

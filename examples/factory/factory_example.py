@@ -19,6 +19,7 @@ having the responsibility of knowing how to actually instantiate it.
     used in lambdas for simpler cases. The :ref:`injecting_existing_instance_example`
     shows how to use it like so.
 """
+
 # sphinx-start
 from examples import Example
 from examples.factory.external_client import ExternalClient

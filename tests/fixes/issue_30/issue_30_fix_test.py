@@ -8,13 +8,13 @@ was causing unintended side effects. Now it just executes the injectable's files
 
 This issue was fixed in injectable 3.4.3.
 """
+
 from injectable import autowired, Autowired, load_injection_container
 from injectable.testing import reset_injection_container
 
 
 @autowired
-def f(foo: Autowired("foo")):
-    ...
+def f(foo: Autowired("foo")): ...
 
 
 def test_issue_30_fix():

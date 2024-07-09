@@ -9,6 +9,7 @@ non-keyword-only parameter as named arg.
 
 This issue was fixed in injectable 3.4.1.
 """
+
 from injectable import injectable, autowired, Autowired, load_injection_container
 
 

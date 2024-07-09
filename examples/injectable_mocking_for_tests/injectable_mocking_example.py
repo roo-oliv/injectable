@@ -12,6 +12,7 @@ gets registered we need to make use of the
 :meth:`load_injection_container <injectable.load_injection_container>` was never called
 we wouldn't need to use :meth:`clear_injectables <injectable.testing.clear_injectables>`.
 """
+
 # sphinx-start
 from unittest.mock import Mock
 

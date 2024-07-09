@@ -19,6 +19,7 @@ called when actually needed, i.e., when we invoke ``ServiceA::something``.
     The :ref:`cyclic_dependency_example` details how to leverage lazy injection to deal
     with circular references.
 """
+
 # sphinx-start
 from examples import Example
 from examples.lazy_injection.service_a import ServiceA

@@ -59,8 +59,7 @@ class TestNamespace:
         base_class = TestNamespace
         base_class_lookup_key = base_class.__qualname__
 
-        class Child(base_class):
-            ...
+        class Child(base_class): ...
 
         child_class = Child
         child_class_lookup_key = child_class.__qualname__
@@ -79,8 +78,7 @@ class TestNamespace:
         base_class = TestNamespace
         base_class_lookup_key = base_class.__qualname__
 
-        class Child(base_class):
-            ...
+        class Child(base_class): ...
 
         child_class = Child
         child_class_lookup_key = child_class.__qualname__

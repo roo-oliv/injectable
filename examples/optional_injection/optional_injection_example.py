@@ -27,6 +27,7 @@ list ``[]`` to ``bunch_of_services``.
     The :ref:`qualifier_overloading_example` shows how to use :class:`typing.List` to
     get all instances which resolves a dependency instead of just the primary one.
 """
+
 # sphinx-start
 from typing import Optional, List
 

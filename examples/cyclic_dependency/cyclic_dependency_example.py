@@ -15,6 +15,7 @@ when its attributes are accessed or its methods are invoked.
 
     The :ref:`lazy_injection_example` details how lazy injection works.
 """
+
 # sphinx-start
 from examples import Example
 from injectable import Autowired, autowired, load_injection_container

@@ -9,6 +9,7 @@ files with UTF-8 characters.
 
 This issue was fixed in injectable 3.4.5.
 """
+
 from injectable import injectable, autowired, Autowired, load_injection_container
 
 

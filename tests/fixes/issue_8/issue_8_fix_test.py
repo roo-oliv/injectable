@@ -10,6 +10,7 @@ the ForwardRef object itself.
 
 This issue was fixed in injectable 3.1.4.
 """
+
 from typing import List
 
 from injectable import injectable, autowired, Autowired, load_injection_container

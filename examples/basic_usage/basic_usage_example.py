@@ -20,6 +20,7 @@ of each service's repository to demonstrate how they are completely independent.
     The :ref:`singleton_example` shows how to make a dependency to be shared for all
     injections instead of having the default behavior of independent instances.
 """
+
 # sphinx-start
 from examples import Example
 from examples.basic_usage.basic_service import BasicService

@@ -4,6 +4,7 @@ This is an example of how one can use the testing utility function
 clear all state from the injection container including all registered injectables and
 namespaces.
 """
+
 # sphinx-start
 from examples import Example
 from injectable import (

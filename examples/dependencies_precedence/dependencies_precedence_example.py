@@ -23,6 +23,7 @@ qualifier attributed to it.
     The :ref:`qualifier_overloading_example` shows how to get all instances which
     resolves a dependency instead of just the primary one.
 """
+
 # sphinx-start
 from examples import Example
 from examples.dependencies_precedence.abstract_service import AbstractService

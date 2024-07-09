@@ -30,6 +30,7 @@ namespace, therefore no conflicts.
     The :ref:`optional_injection_example` details how declaring an injection as
     optional works.
 """
+
 # sphinx-start
 from typing import Optional
 

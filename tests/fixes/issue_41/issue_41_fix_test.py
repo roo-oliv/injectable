@@ -13,6 +13,7 @@ fallback will be used so if you also use relative imports in this test injectabl
 fail to load the injection container. The workaround for now would be to use absolute
 imports or to declare the injectables in a separated file.
 """
+
 from injectable import autowired, Autowired, load_injection_container
 from injectable.testing import reset_injection_container
 

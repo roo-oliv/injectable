@@ -11,6 +11,7 @@ When we run our example we can see that, as there is only one instance being sha
 between injections a change to its state is then reflected to every other place injected
 with it.
 """
+
 # sphinx-start
 from examples import Example
 from examples.singletons.singleton_client import SingletonClient

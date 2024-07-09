@@ -11,8 +11,7 @@ from pytest_mock import MockFixture
 class TestAutowiredDecorator:
     def test__autowired__without_arguments_raises(self):
         # given
-        def f():
-            ...
+        def f(): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -20,8 +19,7 @@ class TestAutowiredDecorator:
 
     def test__autowired__without_autowired_arguments_raises(self):
         # given
-        def f(a, b):
-            ...
+        def f(a, b): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -29,8 +27,7 @@ class TestAutowiredDecorator:
 
     def test__autowired__with_autowired_arg_given_default_value_raises(self):
         # given
-        def f(a: Autowired("A") = None):
-            ...
+        def f(a: Autowired("A") = None): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -40,8 +37,7 @@ class TestAutowiredDecorator:
         self,
     ):
         # given
-        def f(a: Autowired("A"), b):
-            ...
+        def f(a: Autowired("A"), b): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -49,8 +45,7 @@ class TestAutowiredDecorator:
 
     def test__autowired__with_non_autowired_var_arg_after_autowired_arg_raises(self):
         # given
-        def f(a: Autowired("A"), *b):
-            ...
+        def f(a: Autowired("A"), *b): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -58,8 +53,7 @@ class TestAutowiredDecorator:
 
     def test__autowired__with_autowired_variadic_positional_arg_raises(self):
         # given
-        def f(*a: Autowired("A")):
-            ...
+        def f(*a: Autowired("A")): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -67,8 +61,7 @@ class TestAutowiredDecorator:
 
     def test__autowired__with_autowired_variadic_keyword_arg_raises(self):
         # given
-        def f(**a: Autowired("A")):
-            ...
+        def f(**a: Autowired("A")): ...
 
         # then
         with pytest.raises(AutowiringError):
@@ -76,8 +69,7 @@ class TestAutowiredDecorator:
 
     def test__autowired__with_autowired_positional_arg_does_not_raise(self):
         # given
-        def f(a: Autowired("A")):
-            ...
+        def f(a: Autowired("A")): ...
 
         # then
         autowired(f)
@@ -86,8 +78,7 @@ class TestAutowiredDecorator:
         self,
     ):
         # given
-        def f(a, b: Autowired("B")):
-            ...
+        def f(a, b: Autowired("B")): ...
 
         # then
         autowired(f)
@@ -96,8 +87,7 @@ class TestAutowiredDecorator:
         self,
     ):
         # given
-        def f(a: Autowired("A"), *, k):
-            ...
+        def f(a: Autowired("A"), *, k): ...
 
         # then
         autowired(f)
@@ -106,8 +96,7 @@ class TestAutowiredDecorator:
         self,
     ):
         # given
-        def f(a: Autowired("A"), **k):
-            ...
+        def f(a: Autowired("A"), **k): ...
 
         # then
         autowired(f)

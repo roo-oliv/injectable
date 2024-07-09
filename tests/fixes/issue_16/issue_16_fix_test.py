@@ -9,6 +9,7 @@ would lead to optional injections referring an inexistent namespace to fail.
 
 This issue was fixed in injectable 3.4.2.
 """
+
 from typing import Optional
 
 from injectable import autowired, Autowired

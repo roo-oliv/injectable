@@ -6,6 +6,7 @@ This is the injectable's public API.
     The :ref:`usage_examples` section presents a collection of examples on how to use
     this API.
 """
+
 from injectable.autowiring.autowired_type import Autowired
 from injectable.autowiring.autowired_decorator import autowired
 from injectable.container.injection_container import InjectionContainer

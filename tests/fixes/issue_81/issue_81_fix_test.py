@@ -11,6 +11,7 @@ registered to the namespace.
 
 This issue was fixed in injectable 3.4.6.
 """
+
 from injectable import Injectable, inject
 from injectable.testing import register_injectables, reset_injection_container
 

@@ -25,6 +25,7 @@ from type hints and comply with linters.
 
     The :ref:`namespaces_example` details how namespaces work.
 """
+
 # sphinx-start
 from typing import Annotated
 from examples import Example
