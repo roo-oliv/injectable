@@ -19,6 +19,7 @@ Usage Examples
     singletons
     factory
     injecting_existing_instance
+    annotated_usage
     injectable_mocking_for_tests
     injection_container_resetting_for_tests
     service_locator

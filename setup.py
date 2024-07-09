@@ -52,10 +52,9 @@ setup(
         " circular circular-dependency cyclic cyclic-dependency"
         " inversion-of-control ioc container spring guice fixture for-humans humans"
     ),
-    python_requires=">=3.6",
+    python_requires=">=3.9",
     install_requires=requirements,
     setup_requires=[],
-    test_requires=dev_requirements,
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",

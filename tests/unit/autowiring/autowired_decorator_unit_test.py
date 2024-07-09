@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pytest
 from injectable import autowired, Autowired
 from injectable.autowiring.autowired_type import _Autowired
-from injectable.errors import AutowiringError
+from injectable.errors import AutowiringError, InjectionError
 from pytest_mock import MockFixture
 
 
@@ -191,6 +191,7 @@ class TestAutowiredDecorator:
     def test__autowired__with_one_autowired_in_annotated(self):
         # given
         AutowiredMock = MagicMock(spec=_Autowired)
+        AutowiredMock.dependency = "dependency"
 
         @autowired
         def f(a: Annotated[type, AutowiredMock]):
@@ -206,8 +207,11 @@ class TestAutowiredDecorator:
     def test__autowired__with_two_autowired_in_annotation_raises(self):
         # given
         AutowiredMockA = MagicMock(spec=_Autowired)
+        AutowiredMockA.dependency = "dependency"
         AutowiredMockB = MagicMock(spec=_Autowired)
+        AutowiredMockB.dependency = "dependency"
 
+        # then
         with pytest.raises(AutowiringError):
 
             @autowired
@@ -217,6 +221,7 @@ class TestAutowiredDecorator:
     def test__autowired_with_no_autowire_in_annotation_continues(self):
         # given
         AutowiredMock = MagicMock(spec=_Autowired)
+        AutowiredMock.dependency = "dependency"
 
         @autowired
         def f(a: Annotated[str, str], b: Annotated[type, AutowiredMock]):
@@ -229,6 +234,45 @@ class TestAutowiredDecorator:
         assert AutowiredMock.inject.called is True
         assert parameters["a"] == "test"
         assert parameters["b"] is AutowiredMock.inject()
+
+    def test__autowired_with_no_autowire_but_with_annotated_raises(self):
+        with pytest.raises(AutowiringError):
+
+            @autowired
+            def f(a: Annotated[str, str], b: Annotated[type, "foo"]):
+                return {"a": a, "b": b}
+
+    def test__autowired__w_annotated_n_no_dep_explicit_declaration_tries_to_inject_class(
+        self,
+    ):
+        # given
+        @autowired
+        def f(a: Annotated[type, Autowired]):
+            return {"a": a}
+
+        # when
+        with pytest.raises(InjectionError) as e:
+            f()
+
+        # then
+        assert e.value.registry_type == "class"
+        assert e.value.dependency_name == "type"
+
+    def test__autowired__w_annotated_n_no_dep_explicit_declaration_tries_to_inject_qual(
+        self,
+    ):
+        # given
+        @autowired
+        def f(a: Annotated["type", Autowired]):
+            return {"a": a}
+
+        # when
+        with pytest.raises(InjectionError) as e:
+            f()
+
+        # then
+        assert e.value.registry_type == "qualifier"
+        assert e.value.dependency_name == "type"
 
     def test__autowired__with_positional_only_args(self):
         # given

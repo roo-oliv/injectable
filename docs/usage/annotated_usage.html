@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Annotated Usage Example &#8212; injectable 4.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pydoctheme.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    
+    <script src="../_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Injectable Mocking For Tests Example" href="injectable_mocking_for_tests.html" />
+    <link rel="prev" title="Injecting Existing Instance Example" href="injecting_existing_instance.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head><body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="../index.html">injectable-4.0.0</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/roo-oliv/injectable/">Fork me on GitHub</a>
+            <img src="../_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-examples.annotated_usage.annotated_usage_example">
+<span id="id1"></span><span id="annotated-usage-example"></span><h1>Annotated Usage Example<a class="headerlink" href="#module-examples.annotated_usage.annotated_usage_example" title="Permalink to this headline">¶</a></h1>
+<p>In this example you’ll see how the <a class="reference internal" href="../reference/injectable.html#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> type
+annotation can be used with the <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code> type annotation to separate metadata
+from type hints and comply with linters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code> it is possible to omit the dependency type parameter
+in the <a class="reference internal" href="../reference/injectable.html#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a>. In this case, the first type
+declared in <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code> will be used. For convenience, one can use
+<code class="docutils literal notranslate"><span class="pre">Autowired</span></code> without parenthesis in these situations.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="../reference/injectable.html#injectable.Autowired" title="injectable.Autowired"><code class="xref py py-class docutils literal notranslate"><span class="pre">Autowired</span></code></a> type annotation can also be used
+directly without using the <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code> type annotation. The
+<a class="reference internal" href="basic_usage.html#basic-usage-example"><span class="std std-ref">Basic Usage Example</span></a> shows how to use it like so.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="qualifier_overloading.html#qualifier-overloading-example"><span class="std std-ref">Qualifier Overloading Example</span></a> details how overloading an injectable
+works by using class inheritance.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="namespaces.html#namespaces-example"><span class="std std-ref">Namespaces Example</span></a> details how namespaces work.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">annotated_usage_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
+<span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
+<span class="kn">from</span> <span class="nn">examples.annotated_usage.extended_service</span> <span class="kn">import</span> <span class="n">ExtendedService</span>
+<span class="kn">from</span> <span class="nn">examples.annotated_usage.simple_service</span> <span class="kn">import</span> <span class="n">SimpleService</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">load_injection_container</span>
+
+
+<span class="k">class</span> <span class="nc">AnnotatedUsage</span><span class="p">(</span><span class="n">Example</span><span class="p">):</span>
+    <span class="nd">@autowired</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">simple_service</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SimpleService</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">],</span>
+        <span class="n">extended_service</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SimpleService</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">ExtendedService</span><span class="p">)],</span>
+        <span class="n">fallback_service</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SimpleService</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="s2">&quot;fallback&quot;</span><span class="p">)],</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span> <span class="o">=</span> <span class="n">simple_service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extended_service</span> <span class="o">=</span> <span class="n">extended_service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback_service</span> <span class="o">=</span> <span class="n">fallback_service</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simple_service</span><span class="o">.</span><span class="n">speak</span><span class="p">()</span>
+        <span class="c1"># Simple Service says: Hello!</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">extended_service</span><span class="o">.</span><span class="n">speak</span><span class="p">()</span>
+        <span class="c1"># Extended Service says: Hello!</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback_service</span><span class="o">.</span><span class="n">speak</span><span class="p">()</span>
+        <span class="c1"># Fallback Service says: Hello!</span>
+
+
+<span class="k">def</span> <span class="nf">run_example</span><span class="p">():</span>
+    <span class="n">load_injection_container</span><span class="p">()</span>
+    <span class="n">example</span> <span class="o">=</span> <span class="n">AnnotatedUsage</span><span class="p">()</span>
+    <span class="n">example</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_example</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">simple_service.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+
+<span class="nd">@injectable</span><span class="p">(</span><span class="n">primary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SimpleService</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_statement</span> <span class="o">=</span> <span class="s2">&quot;says: Hello!&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Simple Service&quot;</span>
+
+    <span class="k">def</span> <span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_statement</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">extended_service.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.annotated_usage.simple_service</span> <span class="kn">import</span> <span class="n">SimpleService</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+
+<span class="nd">@injectable</span>
+<span class="k">class</span> <span class="nc">ExtendedService</span><span class="p">(</span><span class="n">SimpleService</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Extended Service&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">fallback_service.py</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">examples.annotated_usage.simple_service</span> <span class="kn">import</span> <span class="n">SimpleService</span>
+<span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span>
+
+
+<span class="nd">@injectable</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="s2">&quot;fallback&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">FallbackService</span><span class="p">(</span><span class="n">SimpleService</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Fallback Service&quot;</span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Injectable: Dependency Injection for Humans™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="TLDR.html">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dependencies_precedence.html">Dependencies Precedence Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qualifier_overloading.html">Qualifier Overloading Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lazy_injection.html">Lazy Injection Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optional_injection.html">Optional Injection Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cyclic_dependency.html">Cyclic Dependency Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespaces.html">Namespaces Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="singletons.html">Singletons Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory.html">Factory Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injecting_existing_instance.html">Injecting Existing Instance Example</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Annotated Usage Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injectable_mocking_for_tests.html">Injectable Mocking For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="injection_container_resetting_for_tests.html">Injection Container Resetting For Tests Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_locator.html">Service Locator Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caveats.html">Caveats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/usage/annotated_usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="injectable_mocking_for_tests.html" title="Injectable Mocking For Tests Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="injecting_existing_instance.html" title="Injecting Existing Instance Example"
+             accesskey="P">previous</a> |</li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Rodrigo Martins de Oliveira.
+      Last updated on Jul 09, 2024.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>

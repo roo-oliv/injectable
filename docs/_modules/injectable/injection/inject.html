@@ -4,47 +4,47 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>injectable.injection.inject &#8212; injectable 3.4.7 documentation</title>
+    <title>injectable.injection.inject &#8212; injectable 4.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/pydoctheme.css" />
-
+    
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-
+    
     <script src="../../../_static/sidebar.js"></script>
-
+    
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../../../_static/favicon.png" />
     <meta name="viewport" content="width=device-width,initial-scale=0.8">
-
-
+    
+    
 
   </head><body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../../../index.html">injectable-3.4.7</a> &#187;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li><a href="../../../index.html">injectable-4.0.0</a> &#187;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
-
+    
         <div class="badge">
             <a href="https://github.com/roo-oliv/injectable/">Fork me on GitHub</a>
             <img src="../../../_static/right-red@2x.png">
         </div>
-
-
+    
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-
+            
   <h1>Source code for injectable.injection.inject</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span>
 
@@ -127,18 +127,13 @@
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dependency_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exclude_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">exclude_groups</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; matches group &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dependency_name</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
     <span class="n">injectable</span> <span class="o">=</span> <span class="n">resolve_single_injectable</span><span class="p">(</span><span class="n">dependency_name</span><span class="p">,</span> <span class="n">registry_type</span><span class="p">,</span> <span class="n">matches</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">injectable</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span></div>
@@ -205,9 +200,7 @@
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;No injectable matches </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dependency_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exclude_groups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="n">filter_by_group</span><span class="p">(</span>
@@ -217,10 +210,7 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No injectable for </span><span class="si">{</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">dependency_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; matches group &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">InjectionError</span><span class="p">(</span><span class="n">registry_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dependency_name</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">inj</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span> <span class="k">for</span> <span class="n">inj</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span></div>
 </pre></div>
@@ -232,7 +222,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
     <a id="sidebar-anchor"></a>
-
+    
 
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
@@ -273,7 +263,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 04, 2024.
+      Last updated on Jul 09, 2024.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>

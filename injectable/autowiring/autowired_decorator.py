@@ -1,8 +1,8 @@
 import inspect
 from functools import wraps
-from typing import TypeVar, Callable, Any, get_args, _AnnotatedAlias
+from typing import TypeVar, Callable, Any, get_args, _AnnotatedAlias, Union
 
-from injectable.autowiring.autowired_type import _Autowired
+from injectable.autowiring.autowired_type import _Autowired, Autowired
 from injectable.errors import AutowiringError
 
 T = TypeVar("T", bound=Callable[..., Any])
@@ -82,15 +82,32 @@ def autowired(func: T) -> T:
     return wrapper
 
 
-def _get_parameter_annotation(parameter) -> type:
+def _get_parameter_annotation(parameter) -> Union[type, _Autowired]:
     if isinstance(parameter.annotation, _AnnotatedAlias):
         autowired_annotations = list(
-            filter(lambda t: isinstance(t, _Autowired), get_args(parameter.annotation))
+            filter(lambda t: _is_autowired(t), get_args(parameter.annotation))
         )
         if len(autowired_annotations) == 0:
             return parameter.annotation
         if len(autowired_annotations) > 1:
             raise AutowiringError("Multiple Autowired annotations found")
-        return autowired_annotations[0]
+        autowired_annotation = autowired_annotations[0]
+        if not isinstance(autowired_annotation, _Autowired):
+            return autowired_annotation(dependency=get_args(parameter.annotation)[0])
+        if autowired_annotation.dependency is None:
+            return type(autowired_annotation)(
+                dependency=get_args(parameter.annotation)[0],
+                namespace=autowired_annotation.namespace,
+                group=autowired_annotation.group,
+                exclude_groups=autowired_annotation.exclude_groups,
+                lazy=autowired_annotation.lazy,
+            )
+        return autowired_annotation
 
     return parameter.annotation
+
+
+def _is_autowired(annotation) -> bool:
+    return isinstance(annotation, _Autowired) or (
+        inspect.isclass(annotation) and issubclass(annotation, Autowired)
+    )

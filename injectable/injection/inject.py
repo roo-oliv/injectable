@@ -79,18 +79,13 @@ def inject(
     )
     if not matches:
         if not optional:
-            raise InjectionError(
-                f"No injectable matches {registry_type.value} '{dependency_name}'"
-            )
+            raise InjectionError(registry_type.value, dependency_name)
         return None
     if group is not None or exclude_groups is not None:
         matches = filter_by_group(matches, group, exclude_groups)
         if not matches:
             if not optional:
-                raise InjectionError(
-                    f"No injectable for {registry_type.value} '{dependency_name}'"
-                    f" matches group '{group}'"
-                )
+                raise InjectionError(registry_type.value, dependency_name)
             return None
     injectable = resolve_single_injectable(dependency_name, registry_type, matches)
     return injectable.get_instance(lazy=lazy)
@@ -157,9 +152,7 @@ def inject_multiple(
     )
     if not matches:
         if not optional:
-            raise InjectionError(
-                f"No injectable matches {registry_type.value} '{dependency_name}'"
-            )
+            raise InjectionError(registry_type.value, dependency_name)
         return []
     if group is not None or exclude_groups is not None:
         matches = filter_by_group(
@@ -169,9 +162,6 @@ def inject_multiple(
         )
         if not matches:
             if not optional:
-                raise InjectionError(
-                    f"No injectable for {registry_type.value} '{dependency_name}'"
-                    f" matches group '{group}'"
-                )
+                raise InjectionError(registry_type.value, dependency_name)
             return []
     return [inj.get_instance(lazy=lazy) for inj in matches]

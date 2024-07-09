@@ -15,7 +15,7 @@ T = TypeVar("T")
 class _Autowired:
     def __init__(
         self,
-        dependency: Union[T, str],
+        dependency: Union[T, str] = None,
         *,
         namespace: str = None,
         group: str = None,
@@ -25,38 +25,41 @@ class _Autowired:
         optional = False
         multiple = False
 
-        if typing_inspect.is_optional_type(dependency):
-            dependency = typing_inspect.get_args(dependency, evaluate=True)[0]
-            optional = True
-        elif typing_inspect.is_union_type(dependency):
-            raise TypeError(
-                "Autowired Union can only be used to indicate"
-                " optional autowiring in the forms 'Union[T, None]' or"
-                " 'Optional[T]'"
-            )
+        if dependency is not None:
+            if typing_inspect.is_optional_type(dependency):
+                dependency = typing_inspect.get_args(dependency, evaluate=True)[0]
+                optional = True
+            elif typing_inspect.is_union_type(dependency):
+                raise TypeError(
+                    "Autowired Union can only be used to indicate"
+                    " optional autowiring in the forms 'Union[T, None]' or"
+                    " 'Optional[T]'"
+                )
 
-        if is_sequence(typing_inspect.get_origin(dependency) or dependency):
-            subscripted_types = typing_inspect.get_args(dependency, evaluate=True)
-            if subscripted_types == typing_inspect.get_args(Sequence):
-                raise TypeError("Type not defined for Autowired list")
-            subscripted_type = subscripted_types[0]
-            if typing_inspect.is_optional_type(subscripted_type):
-                raise TypeError(
-                    "List of Optional is invalid for autowiring. Use"
-                    " 'Autowired(Optional[List[...]])' instead."
-                )
-            elif typing_inspect.is_union_type(subscripted_type):
-                raise TypeError("Only one type should be defined for Autowired list")
-            dependency = subscripted_type
-            multiple = True
-        elif is_raw_sequence(dependency):
-            if len(dependency) != 1:
-                raise TypeError(
-                    "Only one type should be defined for Autowired"
-                    f" {dependency.__class__.__qualname__}"
-                )
-            dependency = dependency[0]
-            multiple = True
+            if is_sequence(typing_inspect.get_origin(dependency) or dependency):
+                subscripted_types = typing_inspect.get_args(dependency, evaluate=True)
+                if subscripted_types == typing_inspect.get_args(Sequence):
+                    raise TypeError("Type not defined for Autowired list")
+                subscripted_type = subscripted_types[0]
+                if typing_inspect.is_optional_type(subscripted_type):
+                    raise TypeError(
+                        "List of Optional is invalid for autowiring. Use"
+                        " 'Autowired(Optional[List[...]])' instead."
+                    )
+                elif typing_inspect.is_union_type(subscripted_type):
+                    raise TypeError(
+                        "Only one type should be defined for Autowired list"
+                    )
+                dependency = subscripted_type
+                multiple = True
+            elif is_raw_sequence(dependency):
+                if len(dependency) != 1:
+                    raise TypeError(
+                        "Only one type should be defined for Autowired"
+                        f" {dependency.__class__.__qualname__}"
+                    )
+                dependency = dependency[0]
+                multiple = True
 
         self.optional = optional
         self.multiple = multiple
@@ -67,6 +70,8 @@ class _Autowired:
         self.lazy = lazy
 
     def inject(self) -> T:
+        if self.dependency is None:
+            raise TypeError("No dependency was provided for autowiring")
         if self.multiple:
             return inject_multiple(
                 self.dependency,
@@ -98,12 +103,13 @@ class Autowired:
     autowiring.
 
 
-    :param dependency: class, base class or qualifier of the dependency to be used
-            for lookup among the registered injectables. Can be wrapped in a typing
-            sequence, e.g. ``List[...]``, to inject a list containing all matching
-            injectables. Can be wrapped in a optional, e.g. ``Optional[...]``, to
-            inject None if no matches are found to inject. ``Optional[List[...]]`` is
-            valid and will inject an empty list if no matches are found to inject.
+    :param dependency: (optional when using ``typing.Annotated``) class, base class
+            or qualifier of the dependency to be used for lookup among the
+            registered injectables. Can be wrapped in a typing sequence, e.g.
+            ``List[T]``, to inject a list containing all matching injectables. Can
+            be wrapped in an optional, e.g. ``Optional[T]``, to inject None if no
+            matches are found to inject. ``Optional[List[T]]`` is valid and will
+            inject an empty list if no matches are found to inject.
     :param namespace: (optional) namespace in which to look for the dependency.
             Defaults to :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param group: (optional) group to filter out other injectables outside of this
@@ -116,17 +122,22 @@ class Autowired:
 
     Usage::
 
+      >>> from typing import Annotated
       >>> from injectable import Autowired, autowired
       >>>
       >>> @autowired
-      ... def foo(arg: Autowired("qualifier")):
+      ... def foo(
+      ...     dep_a: Autowired("qualifier"),
+      ...     dep_b: Autowired(T),
+      ...     dep_c: Annotated[T, Autowired],
+      ... ):
       ...     ...
     """
 
     # fake signature to conform return type to be the same as the dependency arg
     def __new__(
         cls,
-        dependency: Union[T, str],
+        dependency: Union[T, str] = None,
         *,
         namespace: str = None,
         group: str = None,

@@ -8,14 +8,14 @@
     <title>injectable &#8212; injectable 4.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pydoctheme.css" />
-
+    
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-
+    
     <script src="../_static/sidebar.js"></script>
-
+    
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="injectable.constants" href="injectable_constants.html" />
@@ -23,8 +23,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <link rel="shortcut icon" type="image/png" href="../_static/favicon.png" />
     <meta name="viewport" content="width=device-width,initial-scale=0.8">
-
-
+    
+    
 
   </head><body>
     <div class="related">
@@ -32,22 +32,22 @@
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
         <li><a href="../index.html">injectable-4.0.0</a> &#187;</li>
-          <li><a href="index.html" accesskey="U">Reference</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Reference</a> &#187;</li> 
       </ul>
     </div>
-
+    
         <div class="badge">
             <a href="https://github.com/roo-oliv/injectable/">Fork me on GitHub</a>
             <img src="../_static/right-red@2x.png">
         </div>
-
-
+    
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-
+            
   <section id="injectable">
 <h1>injectable<a class="headerlink" href="#injectable" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-injectable"></span><p>This is the injectable’s public API.</p>
@@ -58,7 +58,7 @@ this API.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="injectable.Autowired">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">injectable.</span></span><span class="sig-name descname"><span class="pre">Autowired</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dependency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">injectable.autowiring.autowired_type.T</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lazy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/autowiring/autowired_type.html#Autowired"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#injectable.Autowired" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">injectable.</span></span><span class="sig-name descname"><span class="pre">Autowired</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dependency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">injectable.autowiring.autowired_type.T</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lazy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/injectable/autowiring/autowired_type.html#Autowired"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#injectable.Autowired" title="Permalink to this definition">¶</a></dt>
 <dd><p>Autowired type annotation marks a parameter to be autowired for injection.</p>
 <p>Autowired parameters must be last in declaration if there are others which aren’t
 autowired. Also, autowired parameters must not be given default values.</p>
@@ -68,12 +68,13 @@ autowiring.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dependency</strong> – class, base class or qualifier of the dependency to be used
-for lookup among the registered injectables. Can be wrapped in a typing
-sequence, e.g. <code class="docutils literal notranslate"><span class="pre">List[...]</span></code>, to inject a list containing all matching
-injectables. Can be wrapped in a optional, e.g. <code class="docutils literal notranslate"><span class="pre">Optional[...]</span></code>, to
-inject None if no matches are found to inject. <code class="docutils literal notranslate"><span class="pre">Optional[List[...]]</span></code> is
-valid and will inject an empty list if no matches are found to inject.</p></li>
+<li><p><strong>dependency</strong> – (optional when using <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code>) class, base class
+or qualifier of the dependency to be used for lookup among the
+registered injectables. Can be wrapped in a typing sequence, e.g.
+<code class="docutils literal notranslate"><span class="pre">List[T]</span></code>, to inject a list containing all matching injectables. Can
+be wrapped in an optional, e.g. <code class="docutils literal notranslate"><span class="pre">Optional[T]</span></code>, to inject None if no
+matches are found to inject. <code class="docutils literal notranslate"><span class="pre">Optional[List[T]]</span></code> is valid and will
+inject an empty list if no matches are found to inject.</p></li>
 <li><p><strong>namespace</strong> – (optional) namespace in which to look for the dependency.
 Defaults to <a class="reference internal" href="injectable_constants.html#injectable.constants.DEFAULT_NAMESPACE" title="injectable.constants.DEFAULT_NAMESPACE"><code class="xref py py-const docutils literal notranslate"><span class="pre">injectable.constants.DEFAULT_NAMESPACE</span></code></a>.</p></li>
 <li><p><strong>group</strong> – (optional) group to filter out other injectables outside of this
@@ -87,10 +88,15 @@ Defaults to False.</p></li>
 </dd>
 </dl>
 <p>Usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@autowired</span>
-<span class="gp">... </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;qualifier&quot;</span><span class="p">)):</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">dep_a</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;qualifier&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">dep_b</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">dep_c</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">):</span>
 <span class="gp">... </span>    <span class="o">...</span>
 </pre></div>
 </div>
@@ -444,7 +450,7 @@ loading a same injectable more than once.</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
     <a id="sidebar-anchor"></a>
-
+    
 
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
@@ -504,7 +510,7 @@ loading a same injectable more than once.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 04, 2024.
+      Last updated on Jul 09, 2024.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>

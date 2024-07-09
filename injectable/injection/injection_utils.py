@@ -60,16 +60,6 @@ def resolve_single_injectable(
             return injectable
 
     primary_matches = [inj for inj in matches if inj.primary]
-    if len(primary_matches) == 0:
-        raise InjectionError(
-            f"No primary injectable registered for {registry_type.value}:"
-            f" '{dependency_name}'. Unable to resolve unambiguously: {len(matches)}"
-            f" possible matches."
-        )
-    if len(primary_matches) > 1:
-        raise InjectionError(
-            f"Found {len(primary_matches)} injectables registered as primary for "
-            f"{registry_type.value}: '{dependency_name}'. Unable to resolve"
-            f" unambiguously."
-        )
+    if len(primary_matches) != 1:
+        raise InjectionError(registry_type.value, dependency_name, matches)
     return primary_matches[0]
