@@ -17,24 +17,20 @@ Injectable: Dependency Injection for Humans™
     * - docs
       - |docs|
     * - tests
-      - |build| |requires| |coveralls| |reliability| |security| |black| |flake8|
+      - |build| |coveralls| |reliability| |security| |black| |flake8|
     * - package
       - |version| |wheel| |supported-versions| |supported-implementations| |platforms| |downloads|
 .. |docs| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=plastic
     :target: https://injectable.readthedocs.io/en/latest/
     :alt: Documentation
 
-.. |build| image:: https://github.com/roo-oliv/injectable/workflows/build/badge.svg
+.. |build| image:: https://github.com/roo-oliv/injectable/actions/workflows/build.yml/badge.svg
     :alt: Build Status
-    :target: https://github.com/roo-oliv/injectable/actions
+    :target: https://github.com/roo-oliv/injectable/actions/workflows/build.yml
 
-.. |requires| image:: https://requires.io/github/roo-oliv/injectable/requirements.svg?branch=master
-    :alt: Requirements Status
-    :target: https://requires.io/github/roo-oliv/injectable/requirements/?branch=master
-
-.. |coveralls| image:: https://coveralls.io/repos/roo-oliv/injectable/badge.svg?branch=master&service=github
+.. |coveralls| image:: https://coveralls.io/repos/github/allrod5/injectable/badge.svg?branch=master
     :alt: Coverage Status
-    :target: https://coveralls.io/r/roo-oliv/injectable
+    :target: https://coveralls.io/github/allrod5/injectable?branch=master
 
 .. |reliability| image:: https://sonarcloud.io/api/project_badges/measure?project=roo-oliv_injectable&metric=reliability_rating
     :alt: Reliability Rating
