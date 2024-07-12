@@ -85,7 +85,7 @@ def autowired(func: T) -> T:
 def _get_parameter_annotation(parameter) -> Union[type, _Autowired]:
     if isinstance(parameter.annotation, _AnnotatedAlias):
         autowired_annotations = list(
-            filter(lambda t: _is_autowired(t), get_args(parameter.annotation))
+            filter(lambda t: _is_autowired(t), _get_args_flattened(parameter.annotation))
         )
         if len(autowired_annotations) == 0:
             return parameter.annotation
@@ -93,7 +93,7 @@ def _get_parameter_annotation(parameter) -> Union[type, _Autowired]:
             raise AutowiringError("Multiple Autowired annotations found")
         autowired_annotation = autowired_annotations[0]
         if not isinstance(autowired_annotation, _Autowired):
-            return autowired_annotation(dependency=get_args(parameter.annotation)[0])
+            return get_args(autowired_annotation(dependency=get_args(parameter.annotation)[0]))[1]
         if autowired_annotation.dependency is None:
             return type(autowired_annotation)(
                 dependency=get_args(parameter.annotation)[0],
@@ -111,3 +111,11 @@ def _is_autowired(annotation) -> bool:
     return isinstance(annotation, _Autowired) or (
         inspect.isclass(annotation) and issubclass(annotation, Autowired)
     )
+
+
+def _get_args_flattened(annotation) -> list:
+    return [
+        arg
+        for e in get_args(annotation)
+        for arg in (_get_args_flattened(e) if isinstance(e, _AnnotatedAlias) else [e])
+    ]

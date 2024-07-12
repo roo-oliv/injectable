@@ -1,4 +1,4 @@
-from typing import Union, TypeVar, Sequence
+from typing import Union, TypeVar, Sequence, Annotated
 
 import typing_inspect
 
@@ -144,10 +144,13 @@ class Autowired:
         exclude_groups: Sequence[str] = None,
         lazy: bool = False,
     ) -> T:
-        return _Autowired(
+        instance = _Autowired(
             dependency,
             namespace=namespace,
             group=group,
             exclude_groups=exclude_groups,
             lazy=lazy,
         )
+        if dependency is None:
+            return instance
+        return Annotated[dependency, instance]
