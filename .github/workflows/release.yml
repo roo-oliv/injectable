@@ -5,16 +5,16 @@ on:
     types: published
 
 jobs:
-  release:
+  pypi-publish:
+    name: Upload release to PyPI
     runs-on: ubuntu-latest
-
+    environment:
+      name: pypi
+      url: https://pypi.org/p/injectable
+    permissions:
+      id-token: write
     steps:
-    - id: checkout_action
-      uses: actions/checkout@master
-    - name: Publish new release to PyPI
-      uses: mariamrf/py-package-publish-action@v1.0.0
-      with:
-        python_version: 3.9.19
-      env:
-        TWINE_USERNAME: ${{ secrets.pypi_username }}
-        TWINE_PASSWORD: ${{ secrets.pypi_password }}
+      - id: checkout_action
+        uses: actions/checkout@master
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.9.0
