@@ -1,5 +1,0 @@
-lazy-object-proxy~=1.6
-pycollect~=0.2
-parameters-validation~=1.2
-cached-property~=1.5
-typing-inspect~=0.7

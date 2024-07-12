@@ -1,0 +1,121 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "injectable"
+description = "Injectable is an elegant and simple Dependency Injection framework built with Heart and designed for Humans."
+authors = [{name = "Rodrigo Oliveira", email = "oliveira.rodrigo.m@gmail.com"}]
+readme = "README.rst"
+requires-python = ">= 3.9"
+license = {file = "LICENSE"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Typing :: Typed",
+]
+dynamic = ["version"]
+urls.homepage = "https://injectable.readthedocs.io/en/latest/"
+urls.changelog = "https://injectable.readthedocs.io/en/latest/changelog.html"
+urls.issues = "https://github.com/roo-oliv/injectable/issues"
+urls.source = "https://github.com/roo-oliv/injectable"
+dependencies = [
+    "lazy-object-proxy ~= 1.6",
+    "pycollect ~= 0.2",
+    "parameters-validation ~= 1.2",
+    "cached-property ~= 1.5",
+    "typing-inspect ~= 0.7",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx ~= 4.1",
+    "sphinx_py3doc_enhanced_theme ~= 2.4",
+]
+test = [
+    "pytest-runner ~= 5.3",
+    "testfixtures ~= 6.18",
+    "pytest ~= 6.2",
+    "pytest-mock ~= 3.6",
+    "pytest-cov ~= 2.12",
+    "coveralls ~= 3.2",
+    "black ~= 24.4.2",
+    "flake8 ~= 7.1.0",
+]
+build = [
+    "bump2version ~= 1.0",
+    "build ~= 1.2.1",
+    "flit ~= 3.9.0",
+]
+
+[tool.flit.sdist]
+include = ["tests/", ".gitignore", "CHANGELOG.rst"]
+exclude = [
+    "**/__pycache__",
+    "docs/",
+    "**/*.egg-info",
+    "tests/packages/*/build",
+    "htmlcov/",
+    "dist/",
+    "build/",
+    "ci/",
+    ".tox",
+    ".pytest_cache",
+    ".git",
+    ".eggs",
+    "pythonenv*",
+]
+
+[tool.coverage.paths]
+source = ["injectable"]
+
+[tool.coverage.run]
+branch = true
+source = [
+    "injectable",
+    "tests",
+]
+parallel = true
+
+[tool.coverage.report]
+show_missing = true
+precision = 2
+
+[tool.sonar]
+sources = "injectable"
+python.coverage.reportPath = "coverage.xml"
+tests = "./tests"
+
+[tool.bumpversion]
+current_version = "4.0.0"
+
+[[tool.bumpversion.files]]
+filename = "Makefile"
+search = "CURRENT_VERSION = {current_version}"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+
+[[tool.bumpversion.files]]
+filename = "docs/conf.py"
+search = 'version = release = "{current_version}"'
+
+[[tool.bumpversion.files]]
+filename = "injectable/__init__.py"
+search = '__version__ = "{current_version}"'

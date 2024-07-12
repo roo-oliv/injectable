@@ -6,7 +6,7 @@ environment:  ## create environment
 
 .PHONY: requirements
 requirements:  ## install all requirements
-	pip install -Ur requirements.txt -Ur requirements.dev.txt
+	pip install ".[docs,test,build]"
 
 .PHONY: flake-check
 flake-check:  ## check PEP-8 and other standards with flake8
@@ -37,25 +37,25 @@ black:  ## apply the Black code style to code
 
 .PHONY: tests
 tests:  ## run tests with pytest
-	python setup.py develop
+	pip install -e .[test]
 	python -m pytest --cov=injectable --cov-report term --cov-report html:htmlcov \
 	--cov-report xml:coverage.xml tests
 
 .PHONY: unit-tests
 unit-tests:  ## run unit tests with pytest
-	python setup.py develop
+	pip install -e .[test]
 	python -m pytest --cov=injectable --cov-report term --cov-report \
 	html:tests/unit/htmlcov --cov-report xml:tests/unit/coverage.xml tests/unit
 
 .PHONY: fixes-tests
 fixes-tests:  ## run fixes tests with pytest
-	python setup.py develop
+	pip install -e .[test]
 	python -m pytest --cov=injectable --cov-report term --cov-report \
 	html:tests/fixes/htmlcov --cov-report xml:tests/fixes/coverage.xml tests/fixes
 
 .PHONY: examples-tests
 examples-tests:  ## run examples tests with pytest
-	python setup.py develop
+	pip install -e .[test]
 	python -m pytest --cov=injectable --cov-report term --cov-report \
 	html:tests/examples/htmlcov --cov-report xml:tests/examples/coverage.xml \
 	tests/examples
@@ -65,7 +65,8 @@ checks: black-check flake-check  ## perform code standards and style checks
 
 .PHONY: package
 package:
-	python setup.py sdist
+	pip install -e .[build]
+	flit build
 
 .PHONY: docs
 docs:
