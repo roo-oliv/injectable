@@ -96,11 +96,6 @@ parallel = true
 show_missing = true
 precision = 2
 
-[tool.sonar]
-sources = "injectable"
-python.coverage.reportPath = "coverage.xml"
-tests = "./tests"
-
 [tool.bumpversion]
 current_version = "4.0.0"
 
