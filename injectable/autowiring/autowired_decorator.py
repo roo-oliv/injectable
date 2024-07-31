@@ -1,14 +1,14 @@
 import inspect
 from functools import wraps
-from typing import TypeVar, Callable, Any, get_args, _AnnotatedAlias, Union
+from typing import TypeVar, Callable, get_args, _AnnotatedAlias, Union
 
 from injectable.autowiring.autowired_type import _Autowired, Autowired
 from injectable.errors import AutowiringError
 
-T = TypeVar("T", bound=Callable[..., Any])
+R = TypeVar("R")
 
 
-def autowired(func: T) -> T:
+def autowired(func: Callable[..., R]) -> Callable[..., R]:
     """
     Function decorator to setup dependency injection autowiring.
 
@@ -64,7 +64,7 @@ def autowired(func: T) -> T:
         raise AutowiringError("No parameter is typed with 'Autowired'")
 
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> R:
         bound_arguments = signature.bind_partial(*args, **kwargs).arguments
         args = list(args)
         for parameter in autowired_parameters:

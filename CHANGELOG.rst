@@ -1,6 +1,10 @@
 Changelog
 =========
 
+4.0.1 (2024-07-31)
+------------------
+* Fix ``@autowired`` decorator wrong type annotation causing issues with pyright, mypy, and other type checkers
+
 4.0.0 (2024-07-12)
 ------------------
 * Drop support for Python versions 3.6, 3.7 and 3.8

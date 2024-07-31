@@ -95,22 +95,3 @@ parallel = true
 [tool.coverage.report]
 show_missing = true
 precision = 2
-
-[tool.bumpversion]
-current_version = "4.0.0"
-
-[[tool.bumpversion.files]]
-filename = "Makefile"
-search = "CURRENT_VERSION = {current_version}"
-
-[[tool.bumpversion.files]]
-filename = "pyproject.toml"
-search = 'version = "{current_version}"'
-
-[[tool.bumpversion.files]]
-filename = "docs/conf.py"
-search = 'version = release = "{current_version}"'
-
-[[tool.bumpversion.files]]
-filename = "injectable/__init__.py"
-search = '__version__ = "{current_version}"'

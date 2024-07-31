@@ -19,7 +19,7 @@ from injectable import errors
 from injectable import testing
 from injectable import constants
 
-__version__ = "4.0.0"
+__version__ = "4.0.1"
 
 __all__ = [
     "load_injection_container",
