@@ -97,10 +97,10 @@ and designed for Humans.
                 def __init__(
                     self,
                     database: Annotated[Database, Autowired],
-                    message_brokers: Annotated[List[Broker], Autowired],
+                    brokers: Annotated[List[Broker], Autowired],
                 ):
                     pending = database.get_pending_messages()
-                    for broker in message_brokers:
+                    for broker in brokers:
                         broker.send_pending(pending)
 
         .. code:: python
