@@ -88,10 +88,10 @@ and designed for Humans.</p>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Database</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">],</span>
-        <span class="n">message_brokers</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Broker</span><span class="p">],</span> <span class="n">Autowired</span><span class="p">],</span>
+        <span class="n">brokers</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Broker</span><span class="p">],</span> <span class="n">Autowired</span><span class="p">],</span>
     <span class="p">):</span>
         <span class="n">pending</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_pending_messages</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">broker</span> <span class="ow">in</span> <span class="n">message_brokers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">broker</span> <span class="ow">in</span> <span class="n">brokers</span><span class="p">:</span>
             <span class="n">broker</span><span class="o">.</span><span class="n">send_pending</span><span class="p">(</span><span class="n">pending</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -133,23 +133,30 @@ and designed for Humans.</p>
 <section id="features-you-ll-love">
 <h2>Features you’ll love ❤️<a class="headerlink" href="#features-you-ll-love" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Autowiring</strong>: injection is transparent to the function. Just decorate the function
-with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;autowired</span></span></code> and annotate parameters with <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code>, that’s it.</p></li>
+<li><p><strong>Autowiring</strong>: injection is
+transparent to the function. Just decorate the function with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;autowired</span></span></code> and annotate
+parameters with <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code>, that’s it.
+<a class="reference external" href="https://injectable.readthedocs.io/en/latest/usage/TLDR.html">see an example</a></p></li>
 <li><p><strong>Automatic dependency discovery</strong>: just call <code class="code python docutils literal notranslate"><span class="name"><span class="pre">load_injection_container</span></span><span class="punctuation"><span class="pre">()</span></span></code> at
 the root of your project or pass the root path as an argument. All classes decorated
-with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span></code> will be automatically discovered and ready for injection.</p></li>
+with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span></code> will be automatically discovered and ready for injection.
+<a class="reference external" href="https://injectable.readthedocs.io/en/latest/reference/injectable.html#injectable.load_injection_container">see reference</a></p></li>
 <li><p><strong>Qualifier overloading</strong>: declare as many injectables as you like for a single
 qualifier or extending the same base class. You can inject all of them just by
 specifying a <code class="code python docutils literal notranslate"><span class="name"><span class="pre">typing</span></span><span class="operator"><span class="pre">.</span></span><span class="name"><span class="pre">List</span></span></code> to <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code>:
-<code class="code python docutils literal notranslate"><span class="name"><span class="pre">deps</span></span><span class="punctuation"><span class="pre">:</span></span> <span class="name"><span class="pre">Annotated</span></span><span class="punctuation"><span class="pre">[</span></span><span class="name"><span class="pre">List</span></span><span class="punctuation"><span class="pre">[</span></span><span class="literal string double"><span class="pre">&quot;qualifier&quot;</span></span><span class="punctuation"><span class="pre">],</span></span> <span class="name"><span class="pre">Autowired</span></span><span class="punctuation"><span class="pre">]</span></span></code>.</p></li>
+<code class="code python docutils literal notranslate"><span class="name"><span class="pre">deps</span></span><span class="punctuation"><span class="pre">:</span></span> <span class="name"><span class="pre">Annotated</span></span><span class="punctuation"><span class="pre">[</span></span><span class="name"><span class="pre">List</span></span><span class="punctuation"><span class="pre">[</span></span><span class="literal string double"><span class="pre">&quot;qualifier&quot;</span></span><span class="punctuation"><span class="pre">],</span></span> <span class="name"><span class="pre">Autowired</span></span><span class="punctuation"><span class="pre">]</span></span></code>.
+<a class="reference external" href="https://injectable.readthedocs.io/en/latest/usage/qualifier_overloading.html">see an example</a></p></li>
 <li><p><strong>Transparent lazy initialization</strong>: passing the argument <code class="code python docutils literal notranslate"><span class="name"><span class="pre">lazy</span></span><span class="operator"><span class="pre">=</span></span><span class="keyword constant"><span class="pre">True</span></span></code> for
 <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code> will make your dependency to be initialized only when actually used, all
-in a transparent fashion.</p></li>
+in a transparent fashion.
+<a class="reference external" href="https://injectable.readthedocs.io/en/latest/usage/lazy_injection.html">see an example</a></p></li>
 <li><p><strong>Singletons</strong>: decorate your class with <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">singleton</span></span><span class="operator"><span class="pre">=</span></span><span class="keyword constant"><span class="pre">True</span></span><span class="punctuation"><span class="pre">)</span></span></code> and only a
-single instance will be initialized and shared for injection.</p></li>
+single instance will be initialized and shared for injection.
+<a class="reference external" href="https://injectable.readthedocs.io/en/latest/usage/singletons.html">see an example</a></p></li>
 <li><p><strong>Namespaces</strong>: specify different namespaces for injectables as in
 <code class="code python docutils literal notranslate"><span class="name decorator"><span class="pre">&#64;injectable</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">namespace</span></span><span class="operator"><span class="pre">=</span></span><span class="literal string double"><span class="pre">&quot;foo&quot;</span></span><span class="punctuation"><span class="pre">)</span></span></code> and then just use them when annotating your
-parameters as in <code class="code python docutils literal notranslate"><span class="name"><span class="pre">dep</span></span><span class="punctuation"><span class="pre">:</span></span> <span class="name"><span class="pre">Annotated</span></span><span class="punctuation"><span class="pre">[</span></span><span class="operator"><span class="pre">...</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="name"><span class="pre">Autowired</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">namespace</span></span><span class="operator"><span class="pre">=</span></span><span class="literal string double"><span class="pre">&quot;foo&quot;</span></span><span class="punctuation"><span class="pre">)]</span></span></code>.</p></li>
+parameters as in <code class="code python docutils literal notranslate"><span class="name"><span class="pre">dep</span></span><span class="punctuation"><span class="pre">:</span></span> <span class="name"><span class="pre">Annotated</span></span><span class="punctuation"><span class="pre">[</span></span><span class="operator"><span class="pre">...</span></span><span class="punctuation"><span class="pre">,</span></span> <span class="name"><span class="pre">Autowired</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">namespace</span></span><span class="operator"><span class="pre">=</span></span><span class="literal string double"><span class="pre">&quot;foo&quot;</span></span><span class="punctuation"><span class="pre">)]</span></span></code>.
+<a class="reference external" href="https://injectable.readthedocs.io/en/latest/usage/namespaces.html">see an example</a></p></li>
 <li><p><strong>Linters friendly</strong>: <code class="code python docutils literal notranslate"><span class="name"><span class="pre">Autowired</span></span></code> is carefully designed to comply with static linter
 analysis such as PyCharm’s to preserve the parameter original type hint.</p></li>
 </ul>

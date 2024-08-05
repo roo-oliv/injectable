@@ -140,28 +140,35 @@ and designed for Humans.
 Features you'll love ❤️
 -----------------------
 
-* **Autowiring**: injection is transparent to the function. Just decorate the function
-  with :python:`@autowired` and annotate parameters with :python:`Autowired`, that's it.
+* **Autowiring**: injection is
+  transparent to the function. Just decorate the function with :python:`@autowired` and annotate
+  parameters with :python:`Autowired`, that's it.
+  `see an example <https://injectable.readthedocs.io/en/latest/usage/TLDR.html>`__
 
 * **Automatic dependency discovery**: just call :python:`load_injection_container()` at
   the root of your project or pass the root path as an argument. All classes decorated
   with :python:`@injectable` will be automatically discovered and ready for injection.
+  `see reference <https://injectable.readthedocs.io/en/latest/reference/injectable.html#injectable.load_injection_container>`__
 
 * **Qualifier overloading**: declare as many injectables as you like for a single
   qualifier or extending the same base class. You can inject all of them just by
   specifying a :python:`typing.List` to :python:`Autowired`:
   :python:`deps: Annotated[List["qualifier"], Autowired]`.
+  `see an example <https://injectable.readthedocs.io/en/latest/usage/qualifier_overloading.html>`__
 
 * **Transparent lazy initialization**: passing the argument :python:`lazy=True` for
   :python:`Autowired` will make your dependency to be initialized only when actually used, all
   in a transparent fashion.
+  `see an example <https://injectable.readthedocs.io/en/latest/usage/lazy_injection.html>`__
 
 * **Singletons**: decorate your class with :python:`@injectable(singleton=True)` and only a
   single instance will be initialized and shared for injection.
+  `see an example <https://injectable.readthedocs.io/en/latest/usage/singletons.html>`__
 
 * **Namespaces**: specify different namespaces for injectables as in
   :python:`@injectable(namespace="foo")` and then just use them when annotating your
   parameters as in :python:`dep: Annotated[..., Autowired(namespace="foo")]`.
+  `see an example <https://injectable.readthedocs.io/en/latest/usage/namespaces.html>`__
 
 * **Linters friendly**: :python:`Autowired` is carefully designed to comply with static linter
   analysis such as PyCharm's to preserve the parameter original type hint.
