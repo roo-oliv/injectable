@@ -38,9 +38,7 @@ from injectable import load_injection_container, inject, inject_multiple
 
 
 class ServiceLocator(Example):
-    def __init__(
-        self,
-    ):
+    def __init__(self):
         self.primary_basic_service = inject(SampleService)
         self.all_basic_service_implementations = inject_multiple(SampleService)
 

@@ -5,12 +5,12 @@ Each namespace has its own independent injectables registry and one namespace ca
 see the others injectables.
 
 To illustrate how this works we declare two classes, ``InternationalMeasuringService``
-and ``UnitedStatesMeasuringService``, and register them both as injectables for the
-``"MEASURING_SERVICE"`` qualifier but each is assigned to a different namespace,
-``"INTL"`` and ``"US"`` respectively.
+and ``UnitedStatesMeasuringService``, both implementing the ``MeasuringService``
+abstract base class but each is assigned to a different namespace, ``"INTL"`` and
+``"US"`` respectively.
 
 In our ``Namespace`` example class we inject three parameters with
-``"MEASURING_SERVICE"`` injectables: first without specifying any particular namespace
+``MeasuringService`` injectables: first without specifying any particular namespace
 and also declaring the injection as optional; then specifying the ``"INTL"`` namespace;
 and at last specifying the ``"US"`` namespace.
 
@@ -20,9 +20,9 @@ qualifier.
 
 What we see for the ``default_measuring_service`` argument is that without specifying a
 namespace the default namespace is used and no injectable that resolves the
-``"MEASURING_SERVICE"`` qualifier were registered in the default namespace. Then, for
+``MeasuringService`` dependency were registered in the default namespace. Then, for
 the ``intl_measuring_service`` and ``us_measuring_service`` arguments we only have a
-single injectable resolving the ``"MEASURING_SERVICE"`` qualifier declared in each
+single injectable resolving the ``MeasuringService`` dependency declared in each
 namespace, therefore no conflicts.
 
 .. seealso::
@@ -32,9 +32,10 @@ namespace, therefore no conflicts.
 """
 
 # sphinx-start
-from typing import Optional
+from typing import Annotated, Optional
 
 from examples import Example
+from examples.namespaces.measuring_service_abc import MeasuringService
 from injectable import Autowired, autowired, load_injection_container
 
 
@@ -42,9 +43,11 @@ class Namespaces(Example):
     @autowired
     def __init__(
         self,
-        default_measuring_service: Autowired(Optional["MEASURING_SERVICE"]),
-        intl_measuring_service: Autowired("MEASURING_SERVICE", namespace="INTL"),
-        us_measuring_service: Autowired("MEASURING_SERVICE", namespace="US"),
+        default_measuring_service: Annotated[Optional[MeasuringService], Autowired],
+        intl_measuring_service: Annotated[
+            MeasuringService, Autowired(namespace="INTL")
+        ],
+        us_measuring_service: Annotated[MeasuringService, Autowired(namespace="US")],
     ):
         self.default_measuring_service = default_measuring_service
         self.intl_measuring_service = intl_measuring_service

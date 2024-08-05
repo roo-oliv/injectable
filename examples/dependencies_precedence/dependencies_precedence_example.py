@@ -25,6 +25,8 @@ qualifier attributed to it.
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from examples.dependencies_precedence.abstract_service import AbstractService
 from injectable import (
@@ -38,8 +40,8 @@ class DependenciesPrecedence(Example):
     @autowired
     def __init__(
         self,
-        abstract_service_1: Autowired(AbstractService),
-        abstract_service_2: Autowired("multiply"),
+        abstract_service_1: Annotated[AbstractService, Autowired],
+        abstract_service_2: Annotated[AbstractService, Autowired("multiply")],
     ):
         self.abstract_service_1 = abstract_service_1
         self.abstract_service_2 = abstract_service_2

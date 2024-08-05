@@ -19,12 +19,13 @@ the ``exclude_groups`` parameter to filter out injectables that were declared wi
 .. seealso::
 
     The :ref:`dependencies_precedence_example` shows how dependency resolution works in
-    regards to precedence when a qualifier or class are resolved by multiple
-    injectables and you're injecting a single instance and not all matching injectables.
+    regard to precedence when a qualifier or class are resolved by multiple
+    injectables, and you're injecting a single instance and not all matching
+    injectables.
 """
 
 # sphinx-start
-from typing import List
+from typing import Annotated, List
 
 from examples import Example
 from examples.qualifier_overloading.sender_service import SenderService
@@ -35,7 +36,9 @@ class QualifierOverloading(Example):
     @autowired
     def __init__(
         self,
-        sender_services: Autowired(List[SenderService], exclude_groups=["old"]),
+        sender_services: Annotated[
+            List[SenderService], Autowired(exclude_groups=["old"])
+        ],
     ):
         self.sender_services = sender_services
 

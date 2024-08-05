@@ -14,6 +14,7 @@ we wouldn't need to use :meth:`clear_injectables <injectable.testing.clear_injec
 """
 
 # sphinx-start
+from typing import Annotated
 from unittest.mock import Mock
 
 from examples import Example
@@ -43,7 +44,7 @@ class InjectableMocking(Example):
         register_injectables({mocked_injectable}, RealDep)
 
     @autowired
-    def run(self, dep: Autowired(RealDep)):
+    def run(self, dep: Annotated[RealDep, Autowired]):
         dep.print()
         # MockedDep
         dep.print.assert_called()

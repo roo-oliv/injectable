@@ -22,6 +22,8 @@ of each service's repository to demonstrate how they are completely independent.
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from examples.basic_usage.basic_service import BasicService
 from injectable import autowired, Autowired, load_injection_container
@@ -31,8 +33,8 @@ class BasicUsage(Example):
     @autowired
     def __init__(
         self,
-        basic_service: Autowired(BasicService),
-        another_basic_service: Autowired(BasicService),
+        basic_service: Annotated[BasicService, Autowired],
+        another_basic_service: Annotated[BasicService, Autowired],
     ):
         self.basic_service = basic_service
         self.another_basic_service = another_basic_service

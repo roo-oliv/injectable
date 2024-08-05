@@ -17,6 +17,8 @@ Now our ``InjectingExistingInstance`` example class can be injected with our exi
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from examples.injecting_existing_instance.app import Application
 from injectable import autowired, Autowired, load_injection_container
@@ -26,7 +28,7 @@ class InjectingExistingInstance(Example):
     @autowired
     def __init__(
         self,
-        app: Autowired(Application),
+        app: Annotated[Application, Autowired],
     ):
         self.app = app
 

@@ -6,15 +6,16 @@ When a dependency is not found for injection you'll receive an
 :exc:`injectable.InjectionError`. This may not be what you want if it is expected and OK
 that in some situations the dependency simply won't be present.
 
-In our ``OptionalInjection`` example class we optionally autowire the ``some_service``
-argument with the ``"foo"`` qualifier and we optionally autowire the
-``bunch_of_services`` argument with a list of all injectables that satisfy the ``"bar"``
-qualifier.
+In our ``OptionalInjection`` example class we optionally autowire ``ServiceXYZ`` and we
+optionally autowire a list of all ``ServiceXYZ`` injectables. We declare the
+``ServiceXYZ`` as injectable but in the ``"XYZ"`` namespace.
 
-In this example, both qualifiers, ``"foo"`` and ``"bar"``, aren't declared by any
-injectable though as we declared both injections as optional, the ``__init__`` method
-won't fail and instead will inject the value ``None`` to ``some_service`` and an empty
-list ``[]`` to ``bunch_of_services``.
+In this example, both autowirings, ``optional_service`` and
+``bunch_of_optional_services``, aren't satisfied by any injectable since there are no
+``ServiceXYZ`` declared in the default namespace. But since we declared both injections
+as optional, the ``__init__`` method won't fail and instead will inject the value
+``None`` to ``optional_service`` and an empty list ``[]`` to
+``bunch_of_optional_services``.
 
 .. note::
 
@@ -29,9 +30,10 @@ list ``[]`` to ``bunch_of_services``.
 """
 
 # sphinx-start
-from typing import Optional, List
+from typing import Annotated, Optional, List
 
 from examples import Example
+from examples.optional_injection.service_xyz import ServiceXYZ
 from injectable import autowired, Autowired, load_injection_container
 
 
@@ -39,17 +41,17 @@ class OptionalInjection(Example):
     @autowired
     def __init__(
         self,
-        some_service: Autowired(Optional["foo"]),
-        bunch_of_services: Autowired(Optional[List["bar"]]),
+        optional_service: Annotated[Optional[ServiceXYZ], Autowired],
+        bunch_of_optional_services: Annotated[Optional[List[ServiceXYZ]], Autowired],
     ):
-        self.some_service = some_service
-        self.bunch_of_services = bunch_of_services
+        self.optional_service = optional_service
+        self.bunch_of_optional_services = bunch_of_optional_services
 
     def run(self):
-        print(self.some_service)
+        print(self.optional_service)
         # None
 
-        print(self.bunch_of_services)
+        print(self.bunch_of_optional_services)
         # []
 
 

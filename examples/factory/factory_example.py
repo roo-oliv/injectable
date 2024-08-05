@@ -21,6 +21,8 @@ having the responsibility of knowing how to actually instantiate it.
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from examples.factory.external_client import ExternalClient
 from injectable import autowired, Autowired, load_injection_container
@@ -30,7 +32,7 @@ class Factory(Example):
     @autowired
     def __init__(
         self,
-        client: Autowired(ExternalClient),
+        client: Annotated[ExternalClient, Autowired],
     ):
         self.client = client
 

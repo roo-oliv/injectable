@@ -21,6 +21,8 @@ called when actually needed, i.e., when we invoke ``ServiceA::something``.
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from examples.lazy_injection.service_a import ServiceA
 from examples.lazy_injection.service_b import ServiceB
@@ -30,7 +32,9 @@ from injectable import autowired, Autowired, load_injection_container
 class LazyInjection(Example):
     @autowired
     def __init__(
-        self, service_a: Autowired(ServiceA, lazy=True), service_b: Autowired(ServiceB)
+        self,
+        service_a: Annotated[ServiceA, Autowired(lazy=True)],
+        service_b: Annotated[ServiceB, Autowired],
     ):
         # ServiceB::__init__ called
         print("example init started")

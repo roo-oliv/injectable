@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Injectable Mocking For Tests Example &#8212; injectable 4.0.0 documentation</title>
+    <title>Injectable Mocking For Tests Example &#8212; injectable 4.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pydoctheme.css" />
     
@@ -31,7 +31,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-4.0.0</a> &#187;</li>
+        <li><a href="../index.html">injectable-4.0.1</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -63,7 +63,8 @@ gets registered we need to make use of the
 we wouldn’t need to use <a class="reference internal" href="../reference/injectable_testing.html#injectable.testing.clear_injectables" title="injectable.testing.clear_injectables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">clear_injectables</span></code></a>.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">injectable_mocking_example.py</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">Mock</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">Mock</span>
 
 <span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">Example</span>
 <span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="p">(</span>
@@ -92,7 +93,7 @@ we wouldn’t need to use <a class="reference internal" href="../reference/injec
         <span class="n">register_injectables</span><span class="p">({</span><span class="n">mocked_injectable</span><span class="p">},</span> <span class="n">RealDep</span><span class="p">)</span>
 
     <span class="nd">@autowired</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dep</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="n">RealDep</span><span class="p">)):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dep</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">RealDep</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">]):</span>
         <span class="n">dep</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
         <span class="c1"># MockedDep</span>
         <span class="n">dep</span><span class="o">.</span><span class="n">print</span><span class="o">.</span><span class="n">assert_called</span><span class="p">()</span>
@@ -190,7 +191,7 @@ we wouldn’t need to use <a class="reference internal" href="../reference/injec
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 12, 2024.
+      Last updated on Aug 05, 2024.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>

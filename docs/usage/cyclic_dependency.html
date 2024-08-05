@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Cyclic Dependency Example &#8212; injectable 4.0.0 documentation</title>
+    <title>Cyclic Dependency Example &#8212; injectable 4.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pydoctheme.css" />
     
@@ -31,7 +31,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="../index.html">injectable-4.0.0</a> &#187;</li>
+        <li><a href="../index.html">injectable-4.0.1</a> &#187;</li>
           <li><a href="index.html" accesskey="U">Usage Examples</a> &#187;</li> 
       </ul>
     </div>
@@ -58,10 +58,15 @@ our <code class="docutils literal notranslate"><span class="pre">CyclicDependenc
 falling into a cyclic import loop.</p>
 <p>For each of the services we inject the other one with a lazy modifier which will prevent
 us from falling into an instantiation loop as lazy dependencies are only instantiated
-when its attributes are accessed or its methods are invoked.</p>
+when its attributes are accessed or its methods are invoked. Also, each service can be
+declared as singleton to avoid creating multiple instances of the same service.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>The <a class="reference internal" href="lazy_injection.html#lazy-injection-example"><span class="std std-ref">Lazy Injection Example</span></a> details how lazy injection works.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="singletons.html#singleton-example"><span class="std std-ref">Singletons Example</span></a> details how singletons work.</p>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">cyclic_dependency_example.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
@@ -99,7 +104,7 @@ when its attributes are accessed or its methods are invoked.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">Autowired</span><span class="p">,</span> <span class="n">autowired</span>
 
 
-<span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">singleton</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ServiceA</span><span class="p">:</span>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_b</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
@@ -117,7 +122,7 @@ when its attributes are accessed or its methods are invoked.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">injectable</span> <span class="kn">import</span> <span class="n">injectable</span><span class="p">,</span> <span class="n">autowired</span><span class="p">,</span> <span class="n">Autowired</span>
 
 
-<span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="nd">@injectable</span><span class="p">(</span><span class="n">qualifier</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">singleton</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ServiceB</span><span class="p">:</span>
     <span class="nd">@autowired</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_a</span><span class="p">:</span> <span class="n">Autowired</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
@@ -211,7 +216,7 @@ when its attributes are accessed or its methods are invoked.</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Rodrigo Martins de Oliveira.
-      Last updated on Jul 12, 2024.
+      Last updated on Aug 05, 2024.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>

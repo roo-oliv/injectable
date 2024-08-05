@@ -13,6 +13,8 @@ with it.
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from examples.singletons.singleton_client import SingletonClient
 from injectable import Autowired, autowired, load_injection_container
@@ -22,8 +24,8 @@ class Singletons(Example):
     @autowired
     def __init__(
         self,
-        client1: Autowired(SingletonClient),
-        client2: Autowired(SingletonClient),
+        client1: Annotated[SingletonClient, Autowired],
+        client2: Annotated[SingletonClient, Autowired],
     ):
         self.client1 = client1
         self.client2 = client2

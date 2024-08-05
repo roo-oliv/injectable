@@ -1,7 +1,8 @@
 """
 In this example you'll see how the :class:`Autowired <injectable.Autowired>` type
 annotation can be used with the ``typing.Annotated`` type annotation to separate metadata
-from type hints and comply with linters.
+from type hints and comply with linters. For completeness, the use of
+:class:`Autowired <injectable.Autowired>` without ``typing.Annotated`` is also shown.
 
 .. note::
 
@@ -28,6 +29,7 @@ from type hints and comply with linters.
 
 # sphinx-start
 from typing import Annotated
+
 from examples import Example
 from examples.annotated_usage.extended_service import ExtendedService
 from examples.annotated_usage.simple_service import SimpleService
@@ -41,10 +43,16 @@ class AnnotatedUsage(Example):
         simple_service: Annotated[SimpleService, Autowired],
         extended_service: Annotated[SimpleService, Autowired(ExtendedService)],
         fallback_service: Annotated[SimpleService, Autowired(namespace="fallback")],
+        simple_service_2: Autowired(SimpleService),
+        extended_service_2: Autowired(ExtendedService),
+        fallback_service_2: Autowired(SimpleService, namespace="fallback"),
     ):
         self.simple_service = simple_service
         self.extended_service = extended_service
         self.fallback_service = fallback_service
+        self.simple_service_2 = simple_service_2
+        self.extended_service_2 = extended_service_2
+        self.fallback_service_2 = fallback_service_2
 
     def run(self):
         self.simple_service.speak()
@@ -54,6 +62,15 @@ class AnnotatedUsage(Example):
         # Extended Service says: Hello!
 
         self.fallback_service.speak()
+        # Fallback Service says: Hello!
+
+        self.simple_service_2.speak()
+        # Simple Service says: Hello!
+
+        self.extended_service_2.speak()
+        # Extended Service says: Hello!
+
+        self.fallback_service_2.speak()
         # Fallback Service says: Hello!
 
 

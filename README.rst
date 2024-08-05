@@ -87,8 +87,8 @@ and designed for Humans.
 
     * - .. code:: python
 
+            from typing import Annotated, List
             from injectable import Autowired, autowired
-            from typing import List
             from models import Database
             from messaging import Broker
 
@@ -96,8 +96,8 @@ and designed for Humans.
                 @autowired
                 def __init__(
                     self,
-                    database: Autowired(Database),
-                    message_brokers: Autowired(List[Broker]),
+                    database: Annotated[Database, Autowired],
+                    message_brokers: Annotated[List[Broker], Autowired],
                 ):
                     pending = database.get_pending_messages()
                     for broker in message_brokers:
@@ -149,7 +149,8 @@ Features you'll love ❤️
 
 * **Qualifier overloading**: declare as many injectables as you like for a single
   qualifier or extending the same base class. You can inject all of them just by
-  specifying a :python:`typing.List` to :python:`Autowired`: :python:`deps: Autowired(List["qualifier"])`.
+  specifying a :python:`typing.List` to :python:`Autowired`:
+  :python:`deps: Annotated[List["qualifier"], Autowired]`.
 
 * **Transparent lazy initialization**: passing the argument :python:`lazy=True` for
   :python:`Autowired` will make your dependency to be initialized only when actually used, all
@@ -160,7 +161,7 @@ Features you'll love ❤️
 
 * **Namespaces**: specify different namespaces for injectables as in
   :python:`@injectable(namespace="foo")` and then just use them when annotating your
-  parameters as in :python:`dep: Autowired(..., namespace="foo")`.
+  parameters as in :python:`dep: Annotated[..., Autowired(namespace="foo")]`.
 
 * **Linters friendly**: :python:`Autowired` is carefully designed to comply with static linter
   analysis such as PyCharm's to preserve the parameter original type hint.

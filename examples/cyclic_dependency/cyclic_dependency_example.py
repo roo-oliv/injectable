@@ -9,11 +9,16 @@ falling into a cyclic import loop.
 
 For each of the services we inject the other one with a lazy modifier which will prevent
 us from falling into an instantiation loop as lazy dependencies are only instantiated
-when its attributes are accessed or its methods are invoked.
+when its attributes are accessed or its methods are invoked. Also, each service can be
+declared as singleton to avoid creating multiple instances of the same service.
 
 .. seealso::
 
     The :ref:`lazy_injection_example` details how lazy injection works.
+
+.. seealso::
+
+    The :ref:`singleton_example` details how singletons work.
 """
 
 # sphinx-start

@@ -1,7 +1,7 @@
 from injectable import injectable, autowired, Autowired
 
 
-@injectable(qualifier="B")
+@injectable(qualifier="B", singleton=True)
 class ServiceB:
     @autowired
     def __init__(self, service_a: Autowired("A", lazy=True)):

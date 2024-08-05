@@ -6,6 +6,8 @@ namespaces.
 """
 
 # sphinx-start
+from typing import Annotated
+
 from examples import Example
 from injectable import (
     injectable,
@@ -39,7 +41,7 @@ class InjectionContainerResetting(Example):
             # No injectable matches class 'Foo'
 
     @autowired
-    def bar(self, foo: Autowired(Foo)):
+    def bar(self, foo: Annotated[Foo, Autowired]):
         foo.do_something()
 
 
