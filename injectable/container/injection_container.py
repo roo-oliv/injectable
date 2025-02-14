@@ -156,7 +156,11 @@ class InjectionContainer:
 
     @classmethod
     def load_dependencies_from(
-        cls, absolute_search_path: str, default_namespace: str, encoding: str = "utf-8"
+        cls,
+        absolute_search_path: str,
+        default_namespace: str,
+        encoding: str = "utf-8",
+        select_innermost_module: bool = False,
     ):
         files = cls._collect_python_files(absolute_search_path)
         cls.LOADING_DEFAULT_NAMESPACE = default_namespace
@@ -169,7 +173,11 @@ class InjectionContainer:
                 continue
             cls.LOADING_FILEPATH = file.path
             try:
-                run_module(module_finder.find_module_name(file.path))
+                run_module(
+                    module_finder.find_module_name(
+                        file.path, innermost=select_innermost_module
+                    )
+                )
             except AttributeError:
                 # This is needed for some corner cases involving pytest
                 # See more at https://github.com/pytest-dev/pytest/issues/9007

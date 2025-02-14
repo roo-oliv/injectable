@@ -10,6 +10,7 @@ def load_injection_container(
     *,
     default_namespace: str = DEFAULT_NAMESPACE,
     encoding: str = "utf-8",
+    select_innermost_module: bool = False,
 ):
     """
     Loads injectables under the search path to a shared injection container under the
@@ -24,6 +25,10 @@ def load_injection_container(
             :const:`injectable.constants.DEFAULT_NAMESPACE`.
     :param encoding: (optional) defines which encoding to use when reading project files
             to discover and register injectables. Defaults to ``utf-8``.
+    :param select_innermost_module: (optional) defines whether or not the most detailed
+            sys.path should be used to resolve the module name.
+            Enabling this option helps with prefix-paths which could resolve to incorrect modules.
+            Defaults to ``false``.
 
     Usage::
 
@@ -44,4 +49,6 @@ def load_injection_container(
     elif not os.path.isabs(search_path):
         caller_path = os.path.dirname(get_caller_filepath())
         search_path = os.path.abspath(os.path.join(caller_path, search_path))
-    InjectionContainer.load_dependencies_from(search_path, default_namespace, encoding)
+    InjectionContainer.load_dependencies_from(
+        search_path, default_namespace, encoding, select_innermost_module
+    )
