@@ -383,6 +383,37 @@ class TestInjectionContainer:
         assert run_module.call_count == 2
         assert run_path.call_count == 0
 
+    def test__load_dependencies_from__with_groups(
+        self, patch_injection_container, patch_open
+    ):
+        # given
+        root = "/" if os.name != "nt" else "C:\\"
+        search_path = os.path.join(root, "fake", "path")
+        namespace = DEFAULT_NAMESPACE
+        file_collector = MagicMock()
+        file_collector.collect.return_value = {
+            MagicMock(spec=os.DirEntry),
+            MagicMock(spec=os.DirEntry),
+        }
+        patch_injection_container(
+            "PythonFileCollector",
+            return_value=file_collector,
+        )
+        patch_open(
+            read_data="from injectable import injectable\n@injectable\nclass A: ..."
+        )
+        patch_injection_container("module_finder")
+        patch_injection_container("run_module")
+        patch_injection_container("run_path")
+
+        # when
+        InjectionContainer.load_dependencies_from(
+            search_path, namespace, groups=["group1", "group2"]
+        )
+
+        # then
+        assert len(InjectionContainer.GROUPS) == 2
+
     def test__register_injectable__with_defaults(self, patch_injection_container):
         # given
         klass = TestInjectionContainer

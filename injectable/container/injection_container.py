@@ -1,7 +1,7 @@
 import os
 import warnings
 from runpy import run_path, run_module
-from typing import Dict, Optional, Callable
+from typing import Dict, List, Optional, Callable
 from typing import Set
 
 from pycollect import PythonFileCollector, module_finder
@@ -36,6 +36,7 @@ class InjectionContainer:
     LOADING_FILEPATH: Optional[str] = None
     LOADED_FILEPATHS: Set[str] = set()
     NAMESPACES: Dict[str, Namespace] = {}
+    GROUPS: Optional[List[str]] = None
 
     def __new__(cls):
         raise NotImplementedError("InjectionContainer must not be instantiated")
@@ -156,10 +157,15 @@ class InjectionContainer:
 
     @classmethod
     def load_dependencies_from(
-        cls, absolute_search_path: str, default_namespace: str, encoding: str = "utf-8"
+        cls,
+        absolute_search_path: str,
+        default_namespace: str,
+        groups: Optional[list[str]] = None,
+        encoding: str = "utf-8",
     ):
         files = cls._collect_python_files(absolute_search_path)
         cls.LOADING_DEFAULT_NAMESPACE = default_namespace
+        cls.GROUPS = groups
         if default_namespace not in cls.NAMESPACES:
             cls.NAMESPACES[default_namespace] = Namespace()
         for file in files:

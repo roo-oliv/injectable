@@ -43,13 +43,33 @@ def filter_by_group(
     group: str = None,
     exclude_groups: Sequence[str] = None,
 ) -> Set[Injectable]:
+    matches = _filter_by_container_groups(matches)
+    matches = _filter_by_group_and_exclude(matches, group, exclude_groups)
+
+    return matches
+
+
+def _filter_by_container_groups(matches: Set[Injectable]) -> Set[Injectable]:
+    container_groups = InjectionContainer.GROUPS or []
+    if not container_groups or not any(
+        [i for i in matches if i.group in container_groups]
+    ):
+        return matches
+
+    container_matches = {
+        inj for inj in matches if inj.group is None or inj.group in container_groups
+    }
+
+    return container_matches
+
+
+def _filter_by_group_and_exclude(matches, group, exclude_groups):
     exclude = exclude_groups or []
-    matches = {
+    return {
         inj
         for inj in matches
         if (group is None or inj.group == group) and inj.group not in exclude
     }
-    return matches
 
 
 def resolve_single_injectable(

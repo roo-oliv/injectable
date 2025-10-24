@@ -93,3 +93,19 @@ class TestLoadInjectionContainer:
         assert load.called is True
         default_namespace_arg = load.call_args[0][1]
         assert default_namespace_arg == default_namespace
+
+    def test__load_injection_container__with_explicit_groups(
+        self, get_caller_filepath_mock, injection_container_mock
+    ):
+        # given
+        get_caller_filepath_mock.return_value = os.path.join("fake", "path", "file.py")
+        group_name = "group_name"
+
+        # when
+        load_injection_container(groups=[group_name])
+
+        # then
+        load = injection_container_mock.load_dependencies_from
+        assert load.called is True
+        group_name_arg = load.call_args[0][2]
+        assert group_name_arg == [group_name]

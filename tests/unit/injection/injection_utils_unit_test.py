@@ -55,19 +55,25 @@ class TestGetNamespaceInjectables:
 
 
 class TestFilterByGroup:
-    def test__filter_by_group__when_exclude_groups_is_none(self):
+    def test__filter_by_group__when_exclude_groups_is_none_and_container_groups_is_none(
+        self, injection_container_mock: InjectionContainer
+    ):
         # given
+        injection_container_mock.GROUPS = None
         injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
 
         # when
-        matches = filter_by_group({*injectables}, group="A")
+        matches = filter_by_group({*injectables}, group="A", exclude_groups=None)
 
         # then
         assert len(matches) == 2
         assert all(match in injectables[:2] for match in matches)
 
-    def test__filter_by_group__when_group_is_none(self):
+    def test__filter_by_group__when_group_is_none_and_container_groups_is_none(
+        self, injection_container_mock: InjectionContainer
+    ):
         # given
+        injection_container_mock.GROUPS = None
         injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
 
         # when
@@ -77,12 +83,120 @@ class TestFilterByGroup:
         assert len(matches) == 2
         assert all(match in injectables[:2] for match in matches)
 
-    def test__filter_by_group__when_group_and_exclude_groups_are_set(self):
+    def test__filter_by_group__when_group_and_exclude_groups_are_set_and_container_groups_is_none(
+        self, injection_container_mock: InjectionContainer
+    ):
         # given
+        injection_container_mock.GROUPS = None
         injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
 
         # when
         matches = filter_by_group({*injectables}, group="A", exclude_groups=["A"])
+
+        # then
+        assert len(matches) == 0
+
+    def test__filter_by_group__when_exclude_groups_is_none_and_container_groups_is_set(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = ["A"]
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables}, group="A")
+
+        # then
+        assert len(matches) == 2
+        assert all(match in injectables[:2] for match in matches)
+
+    def test__filter_by_group__when_group_is_none_and_container_groups_is_set(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = ["A"]
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables})
+
+        # then
+        assert len(matches) == 2
+
+    def test__filter_by_group__when_group_conflicts_with_container_groups(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = ["B"]
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables}, group="A")
+
+        # then
+        assert len(matches) == 0
+
+    def test__filter_by_group__when_group_is_none_and_exclude_groups_and_container_groups_are_set(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = ["A"]
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables}, exclude_groups=["B"])
+
+        # then
+        assert len(matches) == 2
+        assert all(match in injectables[:2] for match in matches)
+
+    def test__filter_by_group__when_group_and_exclude_groups_and_container_groups_are_all_set(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = ["B"]
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables}, group="A", exclude_groups=["A"])
+
+        # then
+        assert len(matches) == 0
+
+    def test__filter_by_group__when_all_parameters_are_none(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = None
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables})
+
+        # then
+        assert len(matches) == 3
+        assert all(match in injectables for match in matches)
+
+    def test__filter_by_group__when_container_groups_allows_all_injectables(
+        self, injection_container_mock: InjectionContainer
+    ):
+        # given
+        injection_container_mock.GROUPS = ["A", "B"]
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables})
+
+        # then
+        assert len(matches) == 3
+        assert all(match in injectables for match in matches)
+
+    def test__filter_by_group__when_exclude_groups_excludes_all_injectables(self):
+        # given
+        injectables = [MagicMock(group="A"), MagicMock(group="A"), MagicMock(group="B")]
+
+        # when
+        matches = filter_by_group({*injectables}, exclude_groups=["A", "B"])
 
         # then
         assert len(matches) == 0

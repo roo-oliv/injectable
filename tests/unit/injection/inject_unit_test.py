@@ -54,6 +54,7 @@ class TestInject:
         registry_type = RegistryType.CLASS
         get_dependency_registry_type_mock.return_value = registry_type
         get_namespace_injectables_mock.return_value = matches
+        filter_by_group_mock.return_value = matches
         resolve_single_injectable_mock.return_value = injectable
         dependency = "TEST"
 
@@ -70,7 +71,6 @@ class TestInject:
         assert dependency_name_arg is dependency_name
         assert registry_type_arg is registry_type
         assert namespace_arg is DEFAULT_NAMESPACE
-        assert filter_by_group_mock.called is False
         assert resolve_single_injectable_mock.called is True
         (
             dependency_name_arg,
@@ -272,6 +272,7 @@ class TestInjectMultiple:
         registry_type = RegistryType.CLASS
         get_dependency_registry_type_mock.return_value = registry_type
         get_namespace_injectables_mock.return_value = matches
+        filter_by_group_mock.return_value = matches
         dependency = "TEST"
 
         # when
@@ -287,7 +288,6 @@ class TestInjectMultiple:
         assert dependency_name_arg is dependency
         assert registry_type_arg is registry_type
         assert namespace_arg is DEFAULT_NAMESPACE
-        assert filter_by_group_mock.called is False
         assert all(injectable.get_instance.called is True for injectable in injectables)
         assert all(
             injectable.get_instance.call_args[1]["lazy"] is False
